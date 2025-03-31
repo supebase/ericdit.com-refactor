@@ -34,7 +34,7 @@ export default defineAppConfig({
       slots: {
         root: "rounded-[calc(var(--ui-radius)*1)]", // 警告框圆角大小
       },
-    }
+    },
   },
 
   // 消息提示配置

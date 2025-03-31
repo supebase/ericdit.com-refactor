@@ -44,6 +44,7 @@
             </div>
           </div>
         </div>
+
         <div
           class="ml-10 cursor-pointer text-neutral-400"
           @click="toggleReplyInput">
@@ -56,6 +57,26 @@
             {{ replyCount > 0 ? `${replyCount} 条回复` : "回复" }}
           </button>
         </div>
+
+        <div
+          class="transform transition-all duration-500 ease-in-out"
+          :class="
+            isReplying
+              ? 'scale-100 opacity-100 max-h-[110px]'
+              : 'scale-0 opacity-0 max-h-0 overflow-hidden'
+          ">
+          <div>
+            <CommentEditor
+              :placeholder="`回复：${comment.user_created.first_name}`"
+              :is-submitting="isSubmitting"
+              @submit="handleSubmit" />
+            <UIcon
+              v-if="isReplying"
+              @click="cancelReply"
+              name="hugeicons:cancel-circle"
+              class="size-5 text-neutral-500 cursor-pointer absolute -top-2 -right-1" />
+          </div>
+        </div>
       </div>
     </template>
 
@@ -65,26 +86,6 @@
         :comment-id="comment.id" />
     </template>
   </UCard>
-
-  <div
-    class="transform transition-all duration-500 ease-in-out"
-    :class="
-      isReplying
-        ? 'scale-100 opacity-100 max-h-[110px]'
-        : 'scale-0 opacity-0 max-h-0 overflow-hidden'
-    ">
-    <div>
-      <CommentEditor
-        :placeholder="`回复：${comment.user_created.first_name}`"
-        :is-submitting="isSubmitting"
-        @submit="handleSubmit" />
-      <UIcon
-        v-if="isReplying"
-        @click="cancelReply"
-        name="hugeicons:cancel-circle"
-        class="size-5 text-neutral-500 cursor-pointer absolute -top-2 -right-1" />
-    </div>
-  </div>
 </template>
 
 <script setup lang="ts">

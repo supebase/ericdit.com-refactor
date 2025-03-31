@@ -1,5 +1,5 @@
 <template>
-  <div class="select-none pb-6">
+  <div class="select-none">
     <!-- 1. 首先判断评论功能是否关闭 -->
     <UAlert
       v-if="!allowComments"
@@ -61,7 +61,7 @@
                 ? 'scale-100 opacity-100 max-h-[110px]'
                 : 'scale-0 opacity-0 max-h-0 overflow-hidden'
             ">
-            <div class="duration-500">
+            <div :class="!totalComments ? 'mb-6' : ''">
               <CommentEditor
                 :is-submitting="isSubmitting"
                 :placeholder="randomPlaceholder"
