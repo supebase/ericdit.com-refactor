@@ -7,7 +7,7 @@
           position="bottom-right"
           :color="usersStatus[reply.user_created.id] ? 'primary' : 'neutral'">
           <UAvatar
-            :src="useAssets(reply.user_created.avatar || '')"
+            :src="userAvatarUrl || undefined"
             :alt="!reply.user_created.avatar ? reply.user_created.first_name : undefined"
             size="sm"
             loading="lazy"
@@ -44,6 +44,11 @@ import type { Comments } from "~/types";
 const props = defineProps<{
   reply: Comments.Item;
 }>();
+
+const { getUserAvatarUrl } = useComments();
+const userAvatarUrl = computed(() =>
+  getUserAvatarUrl(props.reply.user_created.id, props.reply.user_created.avatar)
+);
 
 const { usersStatus, subscribeUserStatus } = usePresence();
 

@@ -1,6 +1,6 @@
 <template>
   <div class="container mx-auto py-8 select-none">
-    <div class="rounded-lg">
+    <div class="space-y-8">
       <div class="flex items-center gap-4">
         <ProfileAvatarUpload />
         <div class="w-full">
@@ -17,14 +17,6 @@
           </div>
         </div>
       </div>
-
-      <UAlert
-        color="neutral"
-        variant="soft"
-        icon="hugeicons:user-circle-02"
-        description="如果上传头像后未更新，请尝试刷新页面。"
-        class="my-6">
-      </UAlert>
 
       <div class="grid grid-cols-2 gap-4 mb-8">
         <div class="p-4 rounded-lg bg-neutral-950/40">

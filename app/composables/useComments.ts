@@ -11,6 +11,9 @@ import type { Comments } from "~/types";
 export const useComments = () => {
   const { $directus, $content, $realtimeClient } = useNuxtApp();
 
+  // 用户头像缓存状态
+  const userAvatars = useState<Record<string, string>>("comments:userAvatars", () => ({}));
+
   /**
    * 获取评论列表，可以是文章的评论或评论的回复
    * @param options - 查询选项，包含过滤、排序、分页等条件
@@ -70,7 +73,8 @@ export const useComments = () => {
     contentId: string,
     callback: (item: any) => void
   ): Promise<() => void> => {
-    const { subscription } = await $realtimeClient.subscribe("comments", {
+    // 订阅评论更新
+    const { subscription: commentSubscription } = await $realtimeClient.subscribe("comments", {
       query: {
         filter: {
           content_id: { _eq: contentId },
@@ -78,18 +82,53 @@ export const useComments = () => {
       },
     });
 
-    for await (const item of subscription) {
-      callback(item);
-    }
+    // 订阅用户头像更新
+    const { subscription: userSubscription } = await $realtimeClient.subscribe("directus_users", {
+      query: {
+        fields: ["id", "avatar"],
+      },
+    });
 
+    // 处理评论更新
+    (async () => {
+      for await (const item of commentSubscription) {
+        callback(item);
+      }
+    })();
+
+    // 处理用户头像更新
+    (async () => {
+      for await (const item of userSubscription) {
+        if (item.event === "update") {
+          userAvatars.value[item.data[0]?.id] = useAssets(item.data[0]?.avatar);
+        }
+      }
+    })();
+
+    // 返回清理函数
     return () => {
-      subscription.return();
+      commentSubscription.return();
+      userSubscription.return();
     };
+  };
+
+  /**
+   * 获取用户头像URL
+   * @param userId - 用户ID
+   * @param avatarId - 头像ID
+   */
+  const getUserAvatarUrl = (userId: string, avatarId: string | null): string | null => {
+    if (!avatarId) return null;
+    if (!userAvatars.value[userId]) {
+      userAvatars.value[userId] = useAssets(avatarId);
+    }
+    return userAvatars.value[userId];
   };
 
   return {
     getCommentsList,
     createComment,
     subscribeComments,
+    getUserAvatarUrl,
   };
 };

@@ -24,14 +24,8 @@
 </template>
 
 <script setup lang="ts">
-interface AvatarData {
-  avatarUrl: string;
-  isLoading: Ref<boolean>;
-  uploadAvatar: (file: File) => Promise<void>;
-}
-
 const { user } = useAuth();
-const { avatarUrl, isLoading, uploadAvatar } = useProfileAvatar() as AvatarData;
+const { avatarUrl, isLoading, uploadAvatar } = useProfileAvatar();
 const toast = useToast();
 
 const fileInput = ref<HTMLInputElement | null>(null);

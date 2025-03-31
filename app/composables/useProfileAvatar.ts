@@ -1,13 +1,19 @@
 import type { User } from "~/types";
 
+interface ProfileAvatarReturn {
+  avatarUrl: ComputedRef<string | null>;
+  isLoading: Ref<boolean>;
+  uploadAvatar: (file: File) => Promise<void>;
+}
+
 /**
  * 用户头像管理组合式函数
- * @returns {Object} 返回头像相关的状态和方法
+ * @returns {ProfileAvatarReturn} 返回头像相关的状态和方法
  * - avatarUrl: 计算属性，返回当前用户头像的URL
  * - isLoading: 上传状态标志
  * - uploadAvatar: 头像上传方法
  */
-export const useProfileAvatar = (): object => {
+export const useProfileAvatar = (): ProfileAvatarReturn => {
   // 注入必要的依赖
   const { $authClient, $file, $user } = useNuxtApp();
   const { user } = useAuth();

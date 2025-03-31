@@ -15,7 +15,7 @@
               position="bottom-right"
               :color="userStatus ? 'primary' : 'neutral'">
               <UAvatar
-                :src="useAssets(comment.user_created.avatar || '')"
+                :src="userAvatarUrl || undefined"
                 :alt="!comment.user_created.avatar ? comment.user_created.first_name : undefined"
                 size="sm"
                 loading="lazy"
@@ -95,6 +95,11 @@ const props = defineProps<{
   comment: Comments.Item;
   isReplying: boolean;
 }>();
+
+const { getUserAvatarUrl } = useComments();
+const userAvatarUrl = computed(() =>
+  getUserAvatarUrl(props.comment.user_created.id, props.comment.user_created.avatar)
+);
 
 const emit = defineEmits<{
   (e: "reply", data: { commentId: string; content: string }): void;
