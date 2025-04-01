@@ -1,25 +1,13 @@
 <template>
   <div>
-    <div
-      v-if="isLoading && !replies.length"
-      class="flex justify-center pb-4">
-      <UProgress
-        animation="swing"
-        color="neutral"
-        size="sm"
-        class="max-w-[60px]" />
-    </div>
-
-    <div
-      class="space-y-6"
-      v-else>
+    <div class="space-y-6">
       <CommentReplyItem
         v-for="reply in displayReplies"
         :key="reply.id"
         :reply="reply" />
 
       <div
-        v-if="replies.length > 2"
+        v-if="replies.length > 1"
         class="text-sm ml-10">
         <button
           class="text-neutral-500 nums tabular-nums cursor-pointer"
@@ -57,7 +45,7 @@ const fetchReplies = async () => {
 };
 
 const displayReplies = computed(() => {
-  return isExpanded.value ? replies.value : replies.value.slice(0, 2);
+  return isExpanded.value ? replies.value : replies.value.slice(0, 1);
 });
 
 const toggleExpand = () => {

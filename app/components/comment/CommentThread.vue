@@ -55,11 +55,11 @@
         <!-- 评论编辑器和评论列表保持不变 -->
         <div>
           <div
-            class="transform transition-all duration-500 ease-in-out"
+            class="transform transition-all duration-300 ease-in-out"
             :class="
               showMainCommentForm
-                ? 'scale-100 opacity-100 max-h-[110px]'
-                : 'scale-0 opacity-0 max-h-0 overflow-hidden'
+                ? 'translate-y-0 opacity-100 max-h-[110px]'
+                : '-translate-y-3 opacity-0 max-h-0 overflow-hidden'
             ">
             <div :class="!totalComments ? 'mb-6' : ''">
               <CommentEditor

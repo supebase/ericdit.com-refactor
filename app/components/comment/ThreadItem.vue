@@ -12,6 +12,7 @@
           <div class="mr-3">
             <UChip
               inset
+              size="xs"
               position="bottom-right"
               :color="userStatus ? 'primary' : 'neutral'">
               <UAvatar
@@ -46,11 +47,11 @@
         </div>
 
         <div
-          class="ml-10 cursor-pointer text-neutral-400"
+          class="cursor-pointer text-neutral-400"
           @click="toggleReplyInput">
           {{ comment.comment }}
         </div>
-        <div class="mt-1 ml-10">
+        <div class="mt-1">
           <button
             @click="toggleReplyInput"
             class="text-sm text-neutral-500 nums tabular-nums cursor-pointer">
@@ -59,11 +60,11 @@
         </div>
 
         <div
-          class="transform transition-all duration-500 ease-in-out"
+          class="transform transition-all duration-300 ease-in-out"
           :class="
             isReplying
-              ? 'scale-100 opacity-100 max-h-[110px]'
-              : 'scale-0 opacity-0 max-h-0 overflow-hidden'
+              ? 'translate-y-0 opacity-100 max-h-[110px]'
+              : '-translate-y-3 opacity-0 max-h-0 overflow-hidden'
           ">
           <div>
             <CommentEditor

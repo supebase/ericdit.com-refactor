@@ -1,9 +1,15 @@
 <template>
-  <div>
-    <div class="flex items-center">
+  <div class="relative">
+    <div class="absolute top-2 left-2">
+      <UIcon
+        name="hugeicons:arrow-move-down-right"
+        class="size-5 text-neutral-700/80" />
+    </div>
+    <div class="flex items-center ml-10">
       <div class="mr-3">
         <UChip
           inset
+          size="xs"
           position="bottom-right"
           :color="usersStatus[reply.user_created.id] ? 'primary' : 'neutral'">
           <UAvatar

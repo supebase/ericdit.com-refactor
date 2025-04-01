@@ -1,13 +1,7 @@
 <template>
-  <div class="select-none">
-    <div class="flex items-center my-6">
-      <USeparator>
-        <div class="text-neutral-600 text-sm nums tabular-nums">我的收藏</div>
-      </USeparator>
-    </div>
-
+  <div class="select-none py-8">
     <div
-      v-if="loading"
+      v-if="isLoading && !bookmarks"
       class="fixed inset-0 flex justify-center items-center">
       <UIcon
         name="svg-spinners:ring-resize"
@@ -15,12 +9,23 @@
     </div>
 
     <div
-      v-else-if="bookmarks.length === 0"
-      class="flex flex-col items-center justify-center py-12 space-y-4">
+      v-else-if="error"
+      class="flex items-center justify-center min-h-[50vh]">
+      <UAlert
+        color="error"
+        variant="soft"
+        icon="hugeicons:alert-02"
+        :description="error?.message || '加载失败，请稍后重试'">
+      </UAlert>
+    </div>
+
+    <div
+      v-else-if="bookmarks?.length === 0"
+      class="flex flex-col items-center justify-center space-y-4 min-h-[calc(100vh-14rem)]">
       <UIcon
         name="hugeicons:bookmark-off-02"
-        class="text-4xl text-neutral-600" />
-      <p class="text-neutral-600 text-sm">暂无收藏内容</p>
+        class="text-4xl text-neutral-700" />
+      <p class="text-neutral-600 text-sm">暂无收藏任何内容</p>
     </div>
 
     <div
@@ -43,13 +48,13 @@
           </div>
           <UButton
             :ui="{ leadingIcon: 'size-4' }"
-            icon="hugeicons:bookmark-remove-02"
-            color="neutral"
-            variant="link"
+            icon="hugeicons:cancel-circle"
+            color="error"
+            variant="soft"
             size="xs"
-            class="cursor-pointer size-4"
-            :loading="isProcessing"
-            :disabled="isProcessing"
+            class="cursor-pointer"
+            :loading="processingIds.includes(bookmark.id)"
+            :disabled="processingIds.includes(bookmark.id)"
             @click="() => removeBookmark(bookmark)" />
         </div>
       </UCard>
@@ -66,29 +71,26 @@ definePageMeta({
 
 const { getBookmarks, deleteBookmark, subscribeBookmarks } = useBookmarks();
 const { user } = useAuth();
-const bookmarks = ref<Bookmarks.Item[]>([]);
-const loading = ref(true);
-const isProcessing = ref(false);
+const processingIds = ref<string[]>([]);
 
-const fetchBookmarks = async () => {
-  if (!user.value?.id) return;
+const {
+  data: bookmarks,
+  refresh,
+  status,
+  error,
+} = await useLazyAsyncData(async () => {
+  if (!user.value?.id) return [];
 
-  try {
-    loading.value = true;
-    const response = await getBookmarks({
-      fields: ["id", "content_id.*", "date_created"],
-      sort: ["-date_created"],
-      filter: {
-        user_created: { _eq: user.value.id },
-      },
-    });
-    bookmarks.value = response;
-  } catch (error) {
-    console.error("Failed to fetch bookmarks:", error);
-  } finally {
-    loading.value = false;
-  }
-};
+  return getBookmarks({
+    fields: ["id", "content_id.*", "date_created"],
+    sort: ["-date_created"],
+    filter: {
+      user_created: { _eq: user.value.id },
+    },
+  });
+});
+
+const isLoading = computed(() => status.value === "pending");
 
 const getContentId = (contentId: string | { id: string; title: string }): string => {
   return typeof contentId === "string" ? contentId : contentId.id;
@@ -99,22 +101,20 @@ const getContentTitle = (contentId: string | { id: string; title: string }): str
 };
 
 const removeBookmark = async (bookmark: Bookmarks.Item) => {
-  if (isProcessing.value) return;
+  if (processingIds.value.includes(bookmark.id)) return;
 
   try {
-    isProcessing.value = true;
+    processingIds.value.push(bookmark.id);
     await deleteBookmark(bookmark.id);
-    bookmarks.value = bookmarks.value.filter((b) => b.id !== bookmark.id);
+    await refresh();
   } catch (error) {
     console.error("Failed to remove bookmark:", error);
   } finally {
-    isProcessing.value = false;
+    processingIds.value = processingIds.value.filter((id) => id !== bookmark.id);
   }
 };
 
-onMounted(async () => {
-  await fetchBookmarks();
-
+onMounted(() => {
   subscribeBookmarks(
     {
       fields: ["id", "content_id.*", "date_created"],
@@ -124,7 +124,7 @@ onMounted(async () => {
     },
     async (event) => {
       if (["create", "delete"].includes(event.event)) {
-        await fetchBookmarks();
+        await refresh();
       }
     }
   );
@@ -132,7 +132,7 @@ onMounted(async () => {
 
 watch(user, () => {
   if (user.value?.id) {
-    fetchBookmarks();
+    refresh();
   } else {
     bookmarks.value = [];
   }

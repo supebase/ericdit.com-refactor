@@ -18,9 +18,9 @@
 }
 
 .dark {
-  --scrollbar-track: var(--color-neutral-800);
-  --scrollbar-thumb: var(--color-neutral-700);
-  --scrollbar-thumb-hover: var(--color-neutral-900);
+  --scrollbar-track: var(--color-neutral-900);
+  --scrollbar-thumb: var(--color-neutral-800);
+  --scrollbar-thumb-hover: var(--color-neutral-800);
 }
 
 html {
@@ -34,7 +34,7 @@ body {
 }
 
 ::-webkit-scrollbar {
-  width: 12px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {
@@ -43,7 +43,7 @@ body {
 
 ::-webkit-scrollbar-thumb {
   background: var(--scrollbar-thumb);
-  border-radius: 6px;
+  border-radius: 8px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
