@@ -26,7 +26,7 @@
 
           <div class="flex-1 mb-1.5">
             <div class="flex justify-between items-center">
-              <div class="flex items-center space-x-2 text-sm nums tabular-nums">
+              <div class="flex items-center space-x-2 text-[13px] nums tabular-nums">
                 <div class="text-base font-medium">{{ comment.user_created.first_name }}</div>
                 <div class="text-neutral-600">
                   {{ useDateFormatter(comment.date_created) }}
@@ -54,7 +54,7 @@
         <div class="mt-1">
           <button
             @click="toggleReplyInput"
-            class="text-sm text-neutral-500 nums tabular-nums cursor-pointer">
+            class="text-[13px] text-neutral-500 nums tabular-nums cursor-pointer">
             {{ replyCount > 0 ? `${replyCount} 条回复` : "回复" }}
           </button>
         </div>

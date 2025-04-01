@@ -8,7 +8,7 @@
 
       <div
         v-if="replies.length > 1"
-        class="text-sm ml-10">
+        class="text-[13px] ml-10">
         <button
           class="text-neutral-500 nums tabular-nums cursor-pointer"
           @click="toggleExpand">

@@ -23,7 +23,7 @@
 
       <div class="flex-1 mb-1.5">
         <div class="flex justify-between items-center">
-          <div class="flex items-center text-sm space-x-2 nums tabular-nums">
+          <div class="flex items-center text-[13px] space-x-2 nums tabular-nums">
             <div class="text-base font-medium">{{ reply.user_created.first_name }}</div>
             <div class="text-neutral-600">{{ useDateFormatter(reply.date_created) }}</div>
             <UIcon

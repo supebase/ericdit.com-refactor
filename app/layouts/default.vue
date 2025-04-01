@@ -1,6 +1,6 @@
 <template>
-  <div class="flex flex-col h-screen">
-    <header class="sticky top-0 z-50 border-b border-b-neutral-800">
+  <div class="flex flex-col min-h-screen">
+    <header class="sticky top-0 z-50 bg-neutral-900">
       <div class="max-w-md mx-auto py-4 flex justify-between items-center px-5 sm:px-0">
         <Transition
           name="fade"
@@ -27,21 +27,25 @@
           <AuthUserStatus />
         </div>
       </div>
+      <hr />
     </header>
 
-    <div class="flex-1 overflow-auto">
-      <div class="flex flex-col min-h-full max-w-md mx-auto px-5 sm:px-0">
+    <div class="flex-1">
+      <div class="flex flex-col h-full max-w-md mx-auto px-5 sm:px-0">
         <main class="container mx-auto flex-1">
           <slot />
         </main>
-
-        <footer class="container mx-auto py-4 select-none">
-          <div class="text-center text-sm text-neutral-600 uppercase">
-            &copy; 2001-{{ new Date().getFullYear() }} - Created by Eric
-          </div>
-        </footer>
       </div>
     </div>
+
+    <footer class="sticky bottom-0 z-50 bg-neutral-900">
+      <hr />
+      <div class="py-4 select-none">
+        <div class="text-center text-sm text-neutral-600 uppercase">
+          &copy; 2001-{{ new Date().getFullYear() }} - Created by Eric
+        </div>
+      </div>
+    </footer>
   </div>
 </template>
 

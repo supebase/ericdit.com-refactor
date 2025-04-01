@@ -13,7 +13,7 @@
     "@directus/sdk": "^19.1.0",
     "@nuxt/ui": "^3.0.2",
     "@vueuse/nuxt": "^13.0.0",
-    "nuxt": "^3.16.1",
+    "nuxt": "^3.16.2",
     "nuxt-emoji-picker": "^1.1.0",
     "typescript": "^5.8.2",
     "vue": "^3.5.13",

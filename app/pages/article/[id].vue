@@ -38,6 +38,7 @@ const CONTENT_FIELDS = [
   "allow_comments",
   "user_created.*",
   "date_created",
+  "date_updated",
 ] as const;
 
 const {

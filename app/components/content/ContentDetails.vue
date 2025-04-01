@@ -2,22 +2,31 @@
   <article class="py-4 space-y-5">
     <div class="text-xl font-bold">{{ content.title }}</div>
     <div
-      class="flex justify-between items-center text-sm text-neutral-500 nums tabular-nums select-none">
+      class="flex justify-between items-end text-sm text-neutral-500 nums tabular-nums select-none">
       <div class="flex items-center space-x-3">
-        <UAvatar
-          :src="useAssets(content.user_created.avatar) || undefined"
-          size="sm" />
-        <div class="text-base text-neutral-50 font-medium">
-          {{ content.user_created.first_name }}
-        </div>
-        <UIcon
-          name="hugeicons:arrow-right-01"
-          class="size-3 text-neutral-500" />
         <div>
-          {{ useDateFormatter(content.date_created) }}
+          <UAvatar
+            :src="useAssets(content.user_created.avatar) || undefined"
+            size="lg" />
+        </div>
+        <div class="flex flex-col">
+          <div class="text-base text-neutral-50 font-medium">
+            {{ content.user_created.first_name }}
+          </div>
+          <div class="flex items-center text-[13px] space-x-2">
+            <div>{{ useDateFormatter(content.date_created) }}发布</div>
+            <div
+              class="flex items-center space-x-2"
+              v-if="content.date_updated">
+              <UIcon
+                name="hugeicons:arrow-right-01"
+                class="size-3 text-neutral-500" />
+              <div>{{ useDateFormatter(content.date_updated) }}更新</div>
+            </div>
+          </div>
         </div>
       </div>
-      <div>阅读约 {{ useArticleMetrics(content.body) }}</div>
+      <div class="text-[13px]">阅读约 {{ useArticleMetrics(content.body) }}</div>
     </div>
 
     <Suspense>
