@@ -1,6 +1,6 @@
 <template>
   <div class="relative">
-    <div class="absolute top-2 left-2">
+    <div class="absolute top-0 left-2">
       <UIcon
         name="hugeicons:arrow-move-down-right"
         class="size-5 text-neutral-700/80" />

@@ -3,17 +3,20 @@
     <div
       v-for="(digit, index) in displayDigits"
       :key="index"
-      class="number-column">
-      <div
-        class="number-scroll"
-        :style="{ transform: `translateY(${digit * -10}%)` }">
+      :class="[digit === ',' ? 'comma' : 'number-column']">
+      <template v-if="digit === ','"> , </template>
+      <template v-else>
         <div
-          v-for="n in 10"
-          :key="n"
-          class="number-cell">
-          {{ n - 1 }}
+          class="number-scroll"
+          :style="{ transform: `translateY(${digit * -10}%)` }">
+          <div
+            v-for="n in 10"
+            :key="n"
+            class="number-cell">
+            {{ n - 1 }}
+          </div>
         </div>
-      </div>
+      </template>
     </div>
   </div>
 </template>
@@ -25,10 +28,10 @@ const props = defineProps<{
 }>();
 
 const displayDigits = computed(() => {
-  return String(props.value)
-    .padStart(props.minLength || 1, "0")
-    .split("")
-    .map(Number);
+  // 先转换为带千分位的字符串
+  const formattedNumber = new Intl.NumberFormat().format(props.value);
+  // 移除所有非数字字符（保留逗号）
+  return formattedNumber.split("").map((char) => (char === "," ? char : Number(char)));
 });
 </script>
 
@@ -48,6 +51,12 @@ const displayDigits = computed(() => {
   height: 1.25em;
   width: 0.6em;
   text-align: center;
+  line-height: 1.25em;
+}
+
+.comma {
+  padding: 0 0.1em;
+  height: 1.25em;
   line-height: 1.25em;
 }
 </style>

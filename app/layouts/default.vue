@@ -18,6 +18,7 @@
             <SharedNavigationBack />
           </div>
         </Transition>
+
         <div class="flex items-center space-x-8">
           <SharedBookmarkCounter
             v-if="isAuthenticated"

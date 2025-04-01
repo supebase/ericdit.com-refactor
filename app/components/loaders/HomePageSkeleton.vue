@@ -1,17 +1,35 @@
+<script setup>
+const items = Array.from({ length: 3 }, () => ({
+  type: Math.random() > 0.5 ? "image" : "text",
+}));
+</script>
+
 <template>
   <div class="container">
-    <div class="space-y-6 mt-3">
+    <div class="space-y-6 mt-5">
       <article
-        v-for="i in 3"
-        :key="i"
+        v-for="(item, index) in items"
+        :key="index"
         class="py-1">
         <div class="space-y-3">
           <!-- 标题骨架 -->
           <div class="text-lg mb-2 bg-neutral-800 h-6 w-3/4 rounded-md animate-pulse"></div>
 
-          <!-- 图片/内容骨架 -->
+          <!-- 图片骨架 -->
           <div
+            v-if="item.type === 'image'"
             class="bg-neutral-800 rounded-lg aspect-[calc(4*3+1)/8] object-cover w-full animate-pulse"></div>
+
+          <!-- 文字内容骨架 -->
+          <div
+            v-else
+            class="space-y-2">
+            <div class="h-4 bg-neutral-800 rounded w-full animate-pulse"></div>
+            <div class="h-4 bg-neutral-800 rounded w-11/12 animate-pulse"></div>
+            <div class="h-4 bg-neutral-800 rounded w-4/5 animate-pulse"></div>
+            <div class="h-4 bg-neutral-800 rounded w-9/12 animate-pulse"></div>
+            <div class="h-4 bg-neutral-800 rounded w-10/12 animate-pulse"></div>
+          </div>
 
           <!-- 底部操作栏 -->
           <div class="flex justify-between items-center space-x-4">
