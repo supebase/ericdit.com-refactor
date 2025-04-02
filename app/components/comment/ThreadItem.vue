@@ -41,7 +41,9 @@
 
               <SharedLikeButton
                 :comment-id="comment.id"
-                :icon-size="18" />
+                :icon-size="21"
+                :icon-name="`hugeicons:clapping-02`"
+                :icon-name-active="`hugeicons:waving-hand-02`" />
             </div>
           </div>
         </div>

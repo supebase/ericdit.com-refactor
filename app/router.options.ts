@@ -48,21 +48,44 @@ export const safeBack = () => {
 
 export default <RouterConfig>{
   scrollBehavior(to, from, savedPosition) {
-    if (savedPosition) {
-      return {
-        ...savedPosition,
-      };
+    const scrollContainer = document.querySelector(".overflow-y-auto");
+    if (!scrollContainer) return;
+
+    // 如果是从首页访问文章页面，保存首页的滚动位置
+    if (from.path === "/" && to.path.includes("/article/")) {
+      sessionStorage.setItem(
+        "homeScrollPosition",
+        JSON.stringify({
+          top: scrollContainer.scrollTop,
+          left: scrollContainer.scrollLeft,
+        })
+      );
+      // 文章页面滚动到顶部
+      scrollContainer.scrollTo({
+        top: 0,
+        left: 0,
+      });
+      return;
     }
 
-    if (to.hash) {
-      return {
-        el: to.hash,
-      };
+    // 如果是从文章页面返回首页，恢复之前保存的位置
+    if (from.path.includes("/article/") && to.path === "/") {
+      const savedPosition = sessionStorage.getItem("homeScrollPosition");
+      if (savedPosition) {
+        const position = JSON.parse(savedPosition);
+        sessionStorage.removeItem("homeScrollPosition");
+        scrollContainer.scrollTo({
+          top: position.top,
+          left: position.left,
+        });
+        return;
+      }
     }
 
-    return {
+    // 其他情况滚动到顶部
+    scrollContainer.scrollTo({
       top: 0,
       left: 0,
-    };
+    });
   },
 };

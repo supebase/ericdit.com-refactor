@@ -12,7 +12,9 @@
         v-if="isProcessing" />
       <UIcon
         v-else
-        :name="isLiked ? 'hugeicons:heart-check' : 'hugeicons:favourite'"
+        :name="
+          isLiked ? iconNameActive || 'hugeicons:heart-check' : iconName || 'hugeicons:favourite'
+        "
         :size="iconSize" />
       <SharedAnimateNumber :value="likesCount" />
     </button>
@@ -24,6 +26,8 @@ const props = defineProps<{
   commentId?: string;
   contentId?: string;
   iconSize?: number;
+  iconName?: string;
+  iconNameActive?: string;
 }>();
 
 const { isAuthenticated } = useAuth();

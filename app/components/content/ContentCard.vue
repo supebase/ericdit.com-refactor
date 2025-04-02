@@ -101,9 +101,16 @@
           </div>
         </div>
         <div
-          class="text-[15px] text-neutral-400"
+          class="flex items-center space-x-2"
           v-else>
-          @{{ content.user_created.first_name }}
+          <UIcon
+            name="hugeicons:quill-write-02"
+            size="18"
+            class="text-neutral-400">
+          </UIcon>
+          <span class="text-sm text-neutral-400">
+            {{ content.user_created.first_name }}
+          </span>
         </div>
 
         <SharedCommentCounter
