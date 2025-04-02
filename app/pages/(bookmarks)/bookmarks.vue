@@ -43,7 +43,7 @@
             loading="lazy" />
 
           <NuxtLink :to="{ name: 'article-id', params: { id: getContentId(bookmark.content_id) } }">
-            <div class="text-base font-medium">
+            <div class="text-base font-medium line-clamp-1">
               {{ getContentTitle(bookmark.content_id) }}
             </div>
             <div class="text-sm text-neutral-500">

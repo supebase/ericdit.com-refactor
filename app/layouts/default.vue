@@ -1,6 +1,6 @@
 <template>
   <div class="fixed inset-0 flex flex-col">
-    <header class="flex-none bg-neutral-900">
+    <header class="flex-none">
       <div class="max-w-md mx-auto py-4 flex justify-between items-center px-5">
         <Transition
           name="fade"
@@ -38,7 +38,7 @@
       </div>
     </div>
 
-    <footer class="flex-none bg-neutral-900">
+    <footer class="flex-none">
       <hr />
       <div class="py-4 select-none">
         <div class="text-center text-sm text-neutral-600 uppercase">

@@ -3,7 +3,7 @@
     <!-- 1. 首先判断评论功能是否关闭 -->
     <UAlert
       v-if="!allowComments"
-      color="info"
+      color="warning"
       variant="soft"
       icon="hugeicons:comment-block-02"
       description="本页面评论功能已关闭。"
@@ -24,19 +24,20 @@
       <!-- 3. 评论加载中显示加载动画 -->
       <div
         v-else-if="isLoading && !comments"
-        class="flex justify-center my-8">
+        class="flex flex-col justify-center items-center space-y-3 my-8">
         <UProgress
           animation="swing"
           color="neutral"
           size="sm"
-          class="max-w-[60px]" />
+          class="max-w-[80px]" />
+        <div class="text-sm text-neutral-600">正在加载评论</div>
       </div>
 
       <!-- 4. 没有评论时显示提示 -->
       <template v-else>
         <UAlert
           v-if="!totalComments"
-          color="warning"
+          color="neutral"
           variant="soft"
           icon="hugeicons:comment-02"
           description="暂无评论，快来发表你的观点吧！"

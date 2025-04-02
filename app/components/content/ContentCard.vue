@@ -1,10 +1,10 @@
 <template>
-  <article class="py-4 select-none">
+  <article class="py-5 select-none">
     <NuxtLink :to="{ name: 'article-id', params: { id: content.id } }">
       <!-- 非单图模式的标题显示 -->
       <div
-        v-if="displayType !== 'single'"
-        class="text-lg mb-2">
+        v-if="displayType !== 'single' && displayType === 'text'"
+        class="text-lg font-bold mb-2">
         {{ content.title }}
       </div>
 
@@ -23,16 +23,33 @@
           :src="useAssets(content.images[0].directus_files_id) || undefined"
           @load="onImageLoad('single')"
           class="rounded-lg aspect-[calc(4*3+1)/8] object-cover w-full" />
+        <!-- 添加作者头像 -->
+        <div class="absolute top-3 left-3">
+          <UAvatar
+            :src="useAssets(content.user_created.avatar) || undefined"
+            size="md"
+            loading="lazy" />
+        </div>
+        <div class="absolute top-3 right-3">
+          <UBadge
+            variant="soft"
+            color="neutral"
+            class="nums tabular-nums">
+            {{ useDateFormatter(content.date_created) }}
+          </UBadge>
+        </div>
         <div
-          class="absolute bottom-0 left-0 right-0 p-3 m-2 bg-black/50 backdrop-blur-sm rounded-lg">
-          <div class="text-base text-white text-center">{{ content.title }}</div>
+          class="absolute bottom-0 left-0 right-0 p-3 m-2 bg-black/30 backdrop-blur-sm rounded-lg">
+          <div class="text-base text-white text-center font-bold line-clamp-1">
+            {{ content.title }}
+          </div>
         </div>
       </div>
 
       <!-- 文本内容显示 -->
       <div
         v-else-if="displayType === 'text'"
-        class="line-clamp-3 text-base text-neutral-400">
+        class="line-clamp-4 text-base text-neutral-400">
         {{ cleanBody }}
       </div>
 
@@ -45,7 +62,7 @@
           wheel-gestures
           :items="content.images"
           :ui="{
-            item: 'basis-[85%] transition-opacity [&:not(.is-snapped)]:opacity-40 duration-500',
+            item: 'basis-[80%] transition-opacity [&:not(.is-snapped)]:opacity-30 duration-500',
           }">
           <div class="relative">
             <div
@@ -65,7 +82,9 @@
     </NuxtLink>
 
     <div class="flex justify-between items-center mt-4">
-      <div class="flex items-center space-x-2">
+      <div
+        class="flex items-center space-x-2"
+        v-if="displayType !== 'single'">
         <UAvatar
           :src="useAssets(content.user_created.avatar) || undefined"
           size="xs"
@@ -73,6 +92,11 @@
         <div class="text-sm text-neutral-400 nums tabular-nums">
           {{ useDateFormatter(content.date_created) }}
         </div>
+      </div>
+      <div
+        class="text-[15px] text-neutral-400"
+        v-else>
+        @{{ content.user_created.first_name }}
       </div>
 
       <SharedCommentCounter

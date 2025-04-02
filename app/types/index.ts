@@ -69,6 +69,8 @@ export namespace Contents {
     fields: string[]; // 需要返回的字段
     sort?: string[]; // 排序条件
     filter?: Record<string, any>; // 过滤条件
+    limit?: number; // 每页数量
+    page?: number; // 当前页码
   }
 }
 
