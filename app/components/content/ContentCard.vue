@@ -1,5 +1,11 @@
 <template>
-  <article class="py-5 select-none">
+  <UCard
+    :ui="{
+      body: displayType !== 'single' && displayType === 'text' ? '' : 'p-0',
+      footer: 'px-4 pt-0',
+    }"
+    variant="soft"
+    class="my-5 select-none">
     <NuxtLink :to="{ name: 'article-id', params: { id: content.id } }">
       <!-- 非单图模式的标题显示 -->
       <div
@@ -22,15 +28,15 @@
         <img
           :src="useAssets(content.images[0].directus_files_id) || undefined"
           @load="onImageLoad('single')"
-          class="rounded-lg aspect-[calc(4*3+1)/8] object-cover w-full" />
+          class="aspect-[calc(4*3+1)/8] object-cover w-full rounded-t-lg" />
         <!-- 添加作者头像 -->
-        <div class="absolute top-3 left-3">
+        <div class="absolute top-4 left-4">
           <UAvatar
             :src="useAssets(content.user_created.avatar) || undefined"
             size="md"
             loading="lazy" />
         </div>
-        <div class="absolute top-3 right-3">
+        <div class="absolute top-4 right-4">
           <UBadge
             variant="soft"
             color="neutral"
@@ -56,15 +62,15 @@
       <!-- 图库轮播显示 -->
       <div v-else>
         <UCarousel
-          v-slot="{ item }: { item: { directus_files_id: string } }"
+          v-slot="{ item, index }: { item: { directus_files_id: string }, index: number }"
           autoplay
           class-names
           wheel-gestures
           :items="content.images"
           :ui="{
-            item: 'basis-[80%] transition-opacity [&:not(.is-snapped)]:opacity-30 duration-500',
+            item: 'basis-[80%] transition-all duration-500 [&:not(.is-snapped)]:opacity-30 [&:not(.is-snapped)]:scale-95 [&:not(.is-snapped)]:grayscale',
           }">
-          <div class="relative">
+          <div class="relative group">
             <div
               v-if="carouselImageLoading"
               class="absolute inset-0 flex items-center justify-center bg-neutral-800 rounded-lg">
@@ -75,42 +81,44 @@
             <img
               :src="useAssets(item.directus_files_id) || undefined"
               @load="onImageLoad('carousel')"
-              class="rounded-lg aspect-[calc(4*3+1)/8] object-cover" />
+              class="aspect-[calc(4*3+1)/8] object-cover rounded-t-lg" />
           </div>
         </UCarousel>
       </div>
     </NuxtLink>
 
-    <div class="flex justify-between items-center mt-4">
-      <div
-        class="flex items-center space-x-2"
-        v-if="displayType !== 'single'">
-        <UAvatar
-          :src="useAssets(content.user_created.avatar) || undefined"
-          size="xs"
-          loading="lazy" />
-        <div class="text-sm text-neutral-400 nums tabular-nums">
-          {{ useDateFormatter(content.date_created) }}
+    <template #footer>
+      <div class="flex justify-between items-center mt-4">
+        <div
+          class="flex items-center space-x-2"
+          v-if="displayType !== 'single'">
+          <UAvatar
+            :src="useAssets(content.user_created.avatar) || undefined"
+            size="xs"
+            loading="lazy" />
+          <div class="text-sm text-neutral-400 nums tabular-nums">
+            {{ useDateFormatter(content.date_created) }}
+          </div>
         </div>
-      </div>
-      <div
-        class="text-[15px] text-neutral-400"
-        v-else>
-        @{{ content.user_created.first_name }}
-      </div>
+        <div
+          class="text-[15px] text-neutral-400"
+          v-else>
+          @{{ content.user_created.first_name }}
+        </div>
 
-      <SharedCommentCounter
-        :content-id="content.id"
-        :allow-comments="content.allow_comments"
-        :icon-size="18" />
-      <SharedLikeButton
-        :content-id="content.id"
-        :icon-size="18" />
-      <SharedBookmarkButton
-        :content-id="content.id"
-        :icon-size="18" />
-    </div>
-  </article>
+        <SharedCommentCounter
+          :content-id="content.id"
+          :allow-comments="content.allow_comments"
+          :icon-size="18" />
+        <SharedLikeButton
+          :content-id="content.id"
+          :icon-size="18" />
+        <SharedBookmarkButton
+          :content-id="content.id"
+          :icon-size="18" />
+      </div>
+    </template>
+  </UCard>
 </template>
 
 <script setup lang="ts">
