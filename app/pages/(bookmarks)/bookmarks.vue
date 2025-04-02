@@ -33,19 +33,26 @@
       class="space-y-6">
       <UCard
         v-for="bookmark in bookmarks"
-        :key="bookmark.id">
-        <NuxtLink
-          :to="{ name: 'article-id', params: { id: getContentId(bookmark.content_id) } }"
-          class="block mb-2">
-          <h2 class="text-sm font-medium">
-            {{ getContentTitle(bookmark.content_id) }}
-          </h2>
-        </NuxtLink>
+        :key="bookmark.id"
+        variant="soft"
+        class="relative">
+        <div class="flex items-center space-x-3">
+          <UAvatar
+            :src="useAssets(bookmark.user_created.avatar) || undefined"
+            size="lg"
+            loading="lazy" />
 
-        <div class="flex items-center justify-between">
-          <div class="text-xs text-neutral-500">
-            {{ useDateFormatter(bookmark.date_created) }}收藏
-          </div>
+          <NuxtLink :to="{ name: 'article-id', params: { id: getContentId(bookmark.content_id) } }">
+            <div class="text-base font-medium">
+              {{ getContentTitle(bookmark.content_id) }}
+            </div>
+            <div class="text-sm text-neutral-500">
+              {{ useDateFormatter(bookmark.date_created) }}收藏
+            </div>
+          </NuxtLink>
+        </div>
+
+        <div class="absolute -top-2 -right-2">
           <UButton
             :ui="{ leadingIcon: 'size-4' }"
             icon="hugeicons:cancel-circle"
@@ -82,7 +89,7 @@ const {
   if (!user.value?.id) return [];
 
   return getBookmarks({
-    fields: ["id", "content_id.*", "date_created"],
+    fields: ["id", "content_id.*", "user_created.*", "date_created"],
     sort: ["-date_created"],
     filter: {
       user_created: { _eq: user.value.id },

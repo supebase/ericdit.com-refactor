@@ -1,7 +1,7 @@
 <template>
-  <div class="flex flex-col min-h-screen">
-    <header class="sticky top-0 z-50 bg-neutral-900">
-      <div class="max-w-md mx-auto py-4 flex justify-between items-center px-5 sm:px-0">
+  <div class="fixed inset-0 flex flex-col">
+    <header class="flex-none bg-neutral-900">
+      <div class="max-w-md mx-auto py-4 flex justify-between items-center px-5">
         <Transition
           name="fade"
           mode="out-in">
@@ -30,15 +30,15 @@
       <hr />
     </header>
 
-    <div class="flex-1">
-      <div class="flex flex-col h-full max-w-md mx-auto px-5 sm:px-0">
-        <main class="container mx-auto flex-1">
+    <div class="flex-1 overflow-y-auto overflow-x-hidden">
+      <div class="flex flex-col max-w-md mx-auto px-5">
+        <main class="container mx-auto">
           <slot />
         </main>
       </div>
     </div>
 
-    <footer class="sticky bottom-0 z-50 bg-neutral-900">
+    <footer class="flex-none bg-neutral-900">
       <hr />
       <div class="py-4 select-none">
         <div class="text-center text-sm text-neutral-600 uppercase">
