@@ -11,6 +11,10 @@ export default defineNuxtConfig({
 
   experimental: {
     payloadExtraction: true,
+    renderJsonPayloads: true,
+    asyncContext: true, // 添加异步上下文支持
+    componentIslands: true, // 启用组件孤岛架构
+    treeshakeClientOnly: true, // 优化客户端代码
   },
 
   runtimeConfig: {
@@ -26,7 +30,12 @@ export default defineNuxtConfig({
       htmlAttrs: {
         lang: "zh-CN",
       },
-      viewport: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover",
+      viewport:
+        "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover",
+      link: [
+        { rel: "dns-prefetch", href: "https://fonts.googleapis.com" },
+        { rel: "preconnect", href: "https://fonts.gstatic.com", crossorigin: "anonymous" },
+      ],
     },
   },
 
@@ -40,24 +49,46 @@ export default defineNuxtConfig({
       target: "esnext",
       cssCodeSplit: true,
       chunkSizeWarningLimit: 1000,
+      terserOptions: {
+        compress: {
+          drop_console: true,
+          drop_debugger: true,
+          pure_funcs: ["console.log", "console.info"],
+          passes: 2,
+        },
+        mangle: true,
+      },
     },
     optimizeDeps: {
-      include: ["vue", "vue-router", "@vueuse/core"],
+      include: ["vue", "vue-router", "@vueuse/core", "@directus/sdk"],
+      exclude: ["nuxt-emoji-picker"], // 排除不需要预构建的包
+    },
+    css: {
+      devSourcemap: false,
     },
   },
 
   nitro: {
     minify: true,
-    compressPublicAssets: true,
+    compressPublicAssets: {
+      gzip: true,
+      brotli: true,
+    },
     sourceMap: false,
     timing: false,
     esbuild: {
       options: {
         target: "esnext",
+        minify: true,
+        treeShaking: true,
+        minifyIdentifiers: true,
+        minifySyntax: true,
+        minifyWhitespace: true,
       },
     },
     prerender: {
       crawlLinks: true,
+      routes: ["/"],
     },
   },
 
