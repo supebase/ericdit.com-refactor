@@ -37,7 +37,7 @@
       <SharedFadeIn
         v-for="(content, index) in contents"
         :key="content.id"
-        :delay="index * 100">
+        :delay="index * 50">
         <ContentCard :content="content" />
       </SharedFadeIn>
       <div v-if="contents?.length === 0">暂无内容</div>

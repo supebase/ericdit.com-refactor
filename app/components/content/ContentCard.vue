@@ -55,7 +55,7 @@
       <!-- 文本内容显示 -->
       <div
         v-else-if="displayType === 'text'"
-        class="line-clamp-4 text-base text-neutral-400">
+        class="line-clamp-4 text-[15px] text-neutral-300">
         {{ cleanBody }}
       </div>
 
@@ -104,7 +104,7 @@
           class="flex items-center space-x-2"
           v-else>
           <UIcon
-            name="hugeicons:quill-write-02"
+            name="hugeicons:quill-write-01"
             size="18"
             class="text-neutral-400">
           </UIcon>
@@ -119,7 +119,9 @@
           :icon-size="18" />
         <SharedLikeButton
           :content-id="content.id"
-          :icon-size="18" />
+          :icon-size="18"
+          :icon-name="`hugeicons:favourite`"
+          :icon-name-active="`hugeicons:heart-check`" />
         <SharedBookmarkButton
           :content-id="content.id"
           :icon-size="18" />

@@ -38,13 +38,13 @@
 
           <SharedLikeButton
             :comment-id="reply.id"
-            :icon-size="21"
-            :icon-name="`hugeicons:clapping-02`"
-            :icon-name-active="`hugeicons:waving-hand-02`" />
+            :icon-size="18"
+            :icon-name="`hugeicons:favourite`"
+            :icon-name-active="`hugeicons:heart-check`" />
         </div>
       </div>
     </div>
-    <div class="ml-10 text-neutral-400">{{ reply.comment }}</div>
+    <div class="ml-10 mt-1 text-[15px] text-neutral-400">{{ reply.comment }}</div>
   </div>
 </template>
 

@@ -1,5 +1,6 @@
 {
-  "name": "nuxt-app",
+  "name": "eric-app",
+  "version": "0.6.8",
   "private": true,
   "type": "module",
   "scripts": {

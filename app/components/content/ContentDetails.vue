@@ -48,7 +48,7 @@
     <div class="flex justify-between items-center select-none">
       <SharedLikeButton
         :content-id="content.id"
-        :icon-size="20" />
+        :icon-size="22" />
       <div class="flex items-center space-x-6">
         <UIcon
           name="hugeicons:share-05"

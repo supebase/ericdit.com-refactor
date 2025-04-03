@@ -13,7 +13,7 @@
       <UIcon
         v-else
         :name="
-          isLiked ? iconNameActive || 'hugeicons:heart-check' : iconName || 'hugeicons:favourite'
+          isLiked ? iconNameActive || 'hugeicons:waving-hand-02' : iconName || 'hugeicons:clapping-02'
         "
         :size="iconSize"
         :class="{ 'scale-effect': showScale }" />

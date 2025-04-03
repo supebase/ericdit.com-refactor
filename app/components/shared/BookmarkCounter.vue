@@ -14,7 +14,7 @@
       <NuxtLink to="/bookmarks">
         <UIcon
           name="hugeicons:all-bookmark"
-          class="size-6 text-neutral-400" />
+          class="size-[25px] text-neutral-400" />
       </NuxtLink>
     </UChip>
   </div>
