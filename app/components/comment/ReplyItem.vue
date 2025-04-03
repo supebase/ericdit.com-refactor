@@ -1,6 +1,8 @@
 <template>
   <div class="relative">
-    <div class="absolute top-0 left-2">
+    <div
+      v-if="showArrow"
+      class="absolute top-1 left-2">
       <UIcon
         name="hugeicons:arrow-move-down-right"
         class="size-5 text-neutral-700/80" />
@@ -51,6 +53,7 @@ import type { Comments } from "~/types";
 
 const props = defineProps<{
   reply: Comments.Item;
+  showArrow?: boolean;
 }>();
 
 const { getUserAvatarUrl } = useComments();

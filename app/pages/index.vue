@@ -1,5 +1,25 @@
 <template>
   <div class="container select-none">
+    <!-- 新内容提示 -->
+    <div
+      class="nums tabular-nums transform duration-300"
+      :class="
+        newContentCount > 0 ? 'translate-y-0 opacity-100 my-4' : '-translate-y-6 opacity-0 h-0'
+      ">
+      <UButton
+        block
+        color="primary"
+        variant="soft"
+        @click="handleLoadNewContent">
+        <template #leading>
+          <UIcon
+            name="hugeicons:reload"
+            class="size-4" />
+        </template>
+        发现 <SharedAnimateNumber :value="newContentCount" /> 条新内容
+      </UButton>
+    </div>
+
     <div v-if="isLoading && !contents?.length">
       <LoadersHomePageSkeleton />
     </div>
@@ -120,13 +140,26 @@ async function loadMore() {
 // 设置无限滚动
 useInfiniteScroll(loadMoreTrigger, loadMore, { distance: 10 });
 
+// 新内容计数
+const newContentCount = ref(0);
+
+// 处理加载新内容
+async function handleLoadNewContent() {
+  page.value = 1;
+  hasMore.value = true;
+  newContentCount.value = 0;
+  await refresh();
+}
+
 onMounted(() => {
   subscribeContents(
     {
       fields: [...CONTENT_FIELDS],
     },
     async (event) => {
-      if (["create", "update", "delete"].includes(event.event)) {
+      if (event.event === "create") {
+        newContentCount.value++;
+      } else if (["update", "delete"].includes(event.event)) {
         page.value = 1;
         hasMore.value = true;
         await refresh();

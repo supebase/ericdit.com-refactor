@@ -15,7 +15,8 @@
         :name="
           isLiked ? iconNameActive || 'hugeicons:heart-check' : iconName || 'hugeicons:favourite'
         "
-        :size="iconSize" />
+        :size="iconSize"
+        :class="{ 'scale-effect': showScale }" />
       <SharedAnimateNumber :value="likesCount" />
     </button>
   </div>
@@ -68,6 +69,8 @@ const fetchLikes = async () => {
   }
 };
 
+const showScale = ref(false);
+
 const handleLikeAction = async () => {
   if (!isAuthenticated.value || isProcessing.value) return;
 
@@ -87,6 +90,10 @@ const handleLikeAction = async () => {
       likesCount.value++;
       isLiked.value = true;
       currentLikeId.value = newLike.id;
+      showScale.value = true;
+      setTimeout(() => {
+        showScale.value = false;
+      }, 300);
     }
   } catch (error) {
     console.error("Failed to toggle like:", error);
@@ -121,3 +128,21 @@ watch(isAuthenticated, (newValue) => {
   }
 });
 </script>
+
+<style scoped>
+.scale-effect {
+  animation: scale 0.3s ease-in-out;
+}
+
+@keyframes scale {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+</style>

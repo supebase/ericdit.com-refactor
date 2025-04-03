@@ -41,8 +41,8 @@
     <footer class="flex-none">
       <hr />
       <div class="py-4 select-none">
-        <div class="text-center text-sm text-neutral-600 uppercase">
-          &copy; 2001-{{ new Date().getFullYear() }} - Created by Eric
+        <div class="text-center text-sm text-neutral-600">
+          2001-{{ new Date().getFullYear() }} &copy; Eric
         </div>
       </div>
     </footer>

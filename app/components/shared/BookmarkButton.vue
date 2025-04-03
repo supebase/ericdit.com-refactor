@@ -13,7 +13,8 @@
       <UIcon
         v-else
         :name="isBookmarked ? 'hugeicons:bookmark-minus-02' : 'hugeicons:bookmark-add-02'"
-        :size="iconSize" />
+        :size="iconSize"
+        :class="{ 'bookmark-animation': showAnimation }" />
     </button>
   </div>
 </template>
@@ -55,6 +56,8 @@ const fetchBookmarkStatus = async () => {
   }
 };
 
+const showAnimation = ref(false);
+
 const handleBookmarkAction = async () => {
   if (!isAuthenticated.value || isProcessing.value) return;
 
@@ -70,6 +73,10 @@ const handleBookmarkAction = async () => {
       });
       isBookmarked.value = true;
       currentBookmarkId.value = newBookmark.id;
+      showAnimation.value = true;
+      setTimeout(() => {
+        showAnimation.value = false;
+      }, 500);
     }
   } catch (error) {
     console.error("Failed to toggle bookmark:", error);
@@ -104,3 +111,28 @@ watch(isAuthenticated, (newValue) => {
   }
 });
 </script>
+
+<style scoped>
+.bookmark-animation {
+  animation: bookmark-effect 0.5s ease-in-out;
+  transform-origin: top center;
+}
+
+@keyframes bookmark-effect {
+  0% {
+    transform: translateY(0) scale(1) rotate(0);
+  }
+  25% {
+    transform: translateY(-4px) scale(1.1) rotate(-15deg);
+  }
+  50% {
+    transform: translateY(-2px) scale(1.2) rotate(10deg);
+  }
+  75% {
+    transform: translateY(-1px) scale(1.1) rotate(-5deg);
+  }
+  100% {
+    transform: translateY(0) scale(1) rotate(0);
+  }
+}
+</style>

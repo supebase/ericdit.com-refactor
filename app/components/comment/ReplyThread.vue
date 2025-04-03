@@ -2,9 +2,10 @@
   <div>
     <div class="space-y-6">
       <CommentReplyItem
-        v-for="reply in displayReplies"
+        v-for="(reply, index) in displayReplies"
         :key="reply.id"
-        :reply="reply" />
+        :reply="reply"
+        :show-arrow="index === 0" />
 
       <div
         v-if="replies.length > 1"

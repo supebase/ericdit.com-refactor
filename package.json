@@ -23,6 +23,7 @@
     "@iconify-json/hugeicons": "^1.2.4",
     "@iconify-json/svg-spinners": "^1.2.2",
     "@nuxtjs/mdc": "^0.16.1",
-    "@tailwindcss/typography": "^0.5.16"
+    "@tailwindcss/typography": "^0.5.16",
+    "@types/node": "^22.14.0"
   }
 }
