@@ -1,20 +1,38 @@
 <template>
   <UDrawer
-    v-model="isOpen"
-    handle-only>
+    v-model:open="open"
+    :dismissible="false"
+    :handle="false"
+    direction="top"
+    title="最近有什么新鲜事？"
+    description="分享互联网！无论是热点新闻、生活趣闻，还是个人见闻，都可以在这里和大家聊聊～"
+    :ui="{ content: 'max-w-md mx-auto' }">
     <UIcon
       name="hugeicons:quill-write-02"
       class="size-[25px] text-neutral-400 cursor-pointer" />
-    <template #content>
-      <div class="h-screen m-4">
-        <UCard variant="soft">
-          <div class="text-center text-sm text-neutral-500">TODO: 用户发表内容</div>
-        </UCard>
+    <template #body>
+      <div class="flex flex-col space-y-6">
+        <UTextarea
+          variant="soft"
+          label="Content" />
+      </div>
+    </template>
+
+    <template #footer>
+      <div class="flex justify-end space-x-4">
+        <UButton
+          label="发布"
+          color="neutral" />
+        <UButton
+          label="取消"
+          color="neutral"
+          variant="outline"
+          @click="open = false" />
       </div>
     </template>
   </UDrawer>
 </template>
 
 <script setup lang="ts">
-const isOpen = ref(false);
+const open = ref(false);
 </script>

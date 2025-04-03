@@ -1,5 +1,3 @@
-import { ref } from "vue";
-
 export const useVersionCheck = () => {
   const needsUpdate = ref(false);
 
@@ -17,11 +15,12 @@ export const useVersionCheck = () => {
       const { version } = await response.json();
 
       const currentVersion = getCurrentVersion();
-      if (version !== currentVersion) {
+      // 只有当不是首次访问（currentVersion 不为 "0"）且版本不同时才提示更新
+      if (currentVersion !== "0" && version !== currentVersion) {
         needsUpdate.value = true;
-        // 存储新版本号
-        localStorage.setItem("app-version", version);
       }
+      // 存储新版本号
+      localStorage.setItem("app-version", version);
     } catch (error) {
       console.error("Version check failed:", error);
     }

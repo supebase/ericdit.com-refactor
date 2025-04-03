@@ -38,6 +38,15 @@ export default defineAppConfig({
         root: "rounded-[calc(var(--ui-radius)*1)]", // 警告框圆角大小
       },
     },
+    drawer: {
+      compoundVariants: [
+        {
+          class: {
+            content: "rounded-b-[calc(var(--ui-radius)*1.5)]", // 抽屉内内容圆角大小
+          },
+        },
+      ],
+    },
   },
 
   // 消息提示配置

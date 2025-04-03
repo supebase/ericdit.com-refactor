@@ -3,17 +3,13 @@ import { resolve, dirname } from "path";
 
 export default defineNitroPlugin(() => {
   // 只在生产构建时生成版本文件
-  if (process.env.NODE_ENV !== "production" || process.env.NITRO_PRESET === "node-server") {
+  if (process.dev) {
     return;
   }
-
-  console.log("Version plugin is running...");
 
   try {
     // 读取 package.json 中的版本号
     const packagePath = resolve(process.cwd(), "package.json");
-    console.log("Reading package.json from:", packagePath);
-
     const packageJson = JSON.parse(readFileSync(packagePath, "utf-8"));
     const buildTime = new Date().toISOString();
     const version = {
@@ -27,7 +23,6 @@ export default defineNitroPlugin(() => {
 
     // 确保目标目录存在
     const versionFilePath = resolve(process.cwd(), "public/version.json");
-    console.log("Writing version file to:", versionFilePath);
 
     const targetDir = dirname(versionFilePath);
 
@@ -37,7 +32,6 @@ export default defineNitroPlugin(() => {
 
     // 写入到 public 目录
     writeFileSync(versionFilePath, versionData);
-    console.log("Version file generated successfully");
   } catch (error) {
     console.error("Error generating version file:", error);
   }
