@@ -5,11 +5,10 @@
         <ProfileAvatarUpload />
         <div class="w-full">
           <div class="text-2xl font-bold">{{ user?.first_name }}</div>
-          <div class="text-neutral-500 flex justify-between items-center">
+          <div class="text-sm text-neutral-500 flex justify-between items-center">
             <div>{{ user?.email }}</div>
             <div class="text-sm text-neutral-500 flex items-center space-x-2">
               <UIcon
-                v-if="user?.location"
                 name="hugeicons:location-04"
                 class="size-4" />
               <div>{{ user?.location }}</div>
@@ -18,7 +17,7 @@
         </div>
       </div>
 
-      <div class="grid grid-cols-2 gap-4 mb-8">
+      <div class="grid grid-cols-2 gap-8">
         <div class="p-4 rounded-lg bg-neutral-950/40">
           <div class="text-2xl font-bold text-center">
             <SharedAnimateNumber

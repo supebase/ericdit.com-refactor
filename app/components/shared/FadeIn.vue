@@ -1,6 +1,4 @@
 <script setup>
-import { ref, onMounted } from "vue";
-
 const props = defineProps({
   delay: {
     type: Number,

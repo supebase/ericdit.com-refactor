@@ -34,12 +34,15 @@
       </UAlert>
     </div>
     <template v-else>
-      <SharedFadeIn
-        v-for="(content, index) in contents"
-        :key="content.id"
-        :delay="index * 50">
-        <ContentCard :content="content" />
-      </SharedFadeIn>
+      <div class="divide-y divide-neutral-800">
+        <SharedFadeIn
+          v-for="(content, index) in contents"
+          :key="content.id"
+          :delay="index * 50"
+          class="py-5">
+          <ContentCard :content="content" />
+        </SharedFadeIn>
+      </div>
       <div v-if="contents?.length === 0">暂无内容</div>
 
       <!-- 加载更多的骨架屏 -->

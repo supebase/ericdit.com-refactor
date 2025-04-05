@@ -2,7 +2,7 @@
   <div class="relative">
     <div
       v-if="showArrow"
-      class="absolute top-1 left-2">
+      class="absolute top-0 left-2">
       <UIcon
         name="hugeicons:arrow-move-down-right"
         class="size-5 text-neutral-700/80" />
@@ -17,16 +17,15 @@
           <UAvatar
             :src="userAvatarUrl || undefined"
             :alt="!reply.user_created.avatar ? reply.user_created.first_name : undefined"
-            size="sm"
             loading="lazy"
-            class="uppercase" />
+            class="uppercase size-7" />
         </UChip>
       </div>
 
       <div class="flex-1 mb-1.5">
         <div class="flex justify-between items-center">
           <div class="flex items-center text-[13px] space-x-2 nums tabular-nums">
-            <div class="text-base font-medium">{{ reply.user_created.first_name }}</div>
+            <div class="text-sm font-medium">{{ reply.user_created.first_name }}</div>
             <div class="text-neutral-600">{{ useDateFormatter(reply.date_created) }}</div>
             <UIcon
               name="hugeicons:arrow-right-01"

@@ -18,16 +18,15 @@
               <UAvatar
                 :src="userAvatarUrl || undefined"
                 :alt="!comment.user_created.avatar ? comment.user_created.first_name : undefined"
-                size="sm"
                 loading="lazy"
-                class="uppercase" />
+                class="uppercase size-7" />
             </UChip>
           </div>
 
           <div class="flex-1 mb-1.5">
             <div class="flex justify-between items-center">
               <div class="flex items-center space-x-2 text-[13px] nums tabular-nums">
-                <div class="text-base font-medium">{{ comment.user_created.first_name }}</div>
+                <div class="text-sm font-medium">{{ comment.user_created.first_name }}</div>
                 <div class="text-neutral-600">
                   {{ useDateFormatter(comment.date_created) }}
                 </div>
@@ -53,7 +52,7 @@
           @click="toggleReplyInput">
           {{ comment.comment }}
         </div>
-        <div class="mt-1">
+        <div class="mt-1" :class="isReplying ? 'hidden' : ''">
           <button
             @click="toggleReplyInput"
             class="text-[13px] text-neutral-500 nums tabular-nums cursor-pointer">

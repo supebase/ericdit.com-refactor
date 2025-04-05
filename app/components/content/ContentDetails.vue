@@ -1,5 +1,5 @@
 <template>
-  <article class="py-4 space-y-5">
+  <article class="py-5 space-y-5">
     <div class="text-2xl font-bold">{{ content.title }}</div>
     <div
       class="flex justify-between items-end text-sm text-neutral-500 nums tabular-nums select-none">

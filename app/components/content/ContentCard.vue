@@ -1,11 +1,12 @@
 <template>
   <UCard
     :ui="{
-      body: displayType !== 'single' && displayType === 'text' ? '' : 'p-0',
-      footer: 'px-4 pt-0',
+      root: 'bg-neutral-900 divide-none',
+      body: '!p-0',
+      footer: '!p-0',
     }"
     variant="soft"
-    class="my-5 select-none">
+    class="select-none first:pt-0 last:pb-0">
     <NuxtLink :to="{ name: 'article-id', params: { id: content.id } }">
       <!-- 非单图模式的标题显示 -->
       <div
@@ -28,7 +29,7 @@
         <img
           :src="useAssets(content.images[0].directus_files_id) || undefined"
           @load="onImageLoad('single')"
-          class="aspect-[calc(4*3+1)/8] object-cover w-full rounded-t-lg" />
+          class="aspect-[calc(4*3+1)/8] object-cover w-full rounded-lg" />
         <!-- 添加作者头像 -->
         <div class="absolute top-4 left-4">
           <UAvatar
@@ -81,7 +82,7 @@
             <img
               :src="useAssets(item.directus_files_id) || undefined"
               @load="onImageLoad('carousel')"
-              class="aspect-[calc(4*3+1)/8] object-cover rounded-t-lg" />
+              class="aspect-[calc(4*3+1)/8] object-cover rounded-lg" />
           </div>
         </UCarousel>
       </div>
@@ -104,7 +105,7 @@
           class="flex items-center space-x-2"
           v-else>
           <UIcon
-            name="hugeicons:quill-write-01"
+            name="hugeicons:quill-write-02"
             size="18"
             class="text-neutral-400">
           </UIcon>
