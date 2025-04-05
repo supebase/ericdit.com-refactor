@@ -15,6 +15,7 @@ export default defineNuxtConfig({
     asyncContext: true, // 添加异步上下文支持
     componentIslands: true, // 启用组件孤岛架构
     treeshakeClientOnly: true, // 优化客户端代码
+    crossOriginPrefetch: true, // 启用跨域预取优化
   },
 
   runtimeConfig: {
@@ -55,8 +56,15 @@ export default defineNuxtConfig({
           drop_debugger: true,
           pure_funcs: ["console.log", "console.info"],
           passes: 2,
+          unsafe: true, // 启用不安全但有效的压缩
+          unsafe_arrows: true, // 优化箭头函数
         },
-        mangle: true,
+        mangle: {
+          toplevel: true, // 启用顶级变量名混淆
+        },
+      },
+      rollupOptions: {
+        treeshake: true, // 启用 tree shaking
       },
     },
     optimizeDeps: {
@@ -84,6 +92,7 @@ export default defineNuxtConfig({
         minifyIdentifiers: true,
         minifySyntax: true,
         minifyWhitespace: true,
+        legalComments: "none", // 移除所有注释
       },
     },
     prerender: {
@@ -96,11 +105,26 @@ export default defineNuxtConfig({
         maxAge: 60 * 60 * 24 * 365,
       },
     ],
+    routeRules: {
+      // 静态资源缓存策略
+      "/_nuxt/**": {
+        headers: {
+          "cache-control": "public, max-age=31536000, immutable",
+        },
+      },
+      // API 路由缓存策略
+      "/api/**": {
+        cors: true,
+        headers: {
+          "cache-control": "public, max-age=3600",
+        },
+      },
+    },
   },
 
   build: {
     transpile: ["vue-router"],
-    analyze: false,
+    analyze: true,
   },
 
   mdc: {
