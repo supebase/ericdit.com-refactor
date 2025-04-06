@@ -83,13 +83,17 @@
               :src="useAssets(item.directus_files_id) || undefined"
               @load="onImageLoad('carousel')"
               class="aspect-[calc(4*3+1)/8] object-cover rounded-lg" />
+            <div
+              class="absolute bottom-2 left-2 bg-black/30 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-full">
+              {{ index + 1 }}/{{ content.images.length }}
+            </div>
           </div>
         </UCarousel>
       </div>
     </NuxtLink>
 
     <template #footer>
-      <div class="flex justify-between items-center mt-4">
+      <div class="flex justify-between items-center mt-3">
         <div
           class="flex items-center space-x-2"
           v-if="displayType !== 'single'">
@@ -105,8 +109,8 @@
           class="flex items-center space-x-2"
           v-else>
           <UIcon
-            name="hugeicons:quill-write-02"
-            size="18"
+            name="hugeicons:at"
+            size="19"
             class="text-neutral-400">
           </UIcon>
           <span class="text-sm text-neutral-400">
@@ -120,9 +124,8 @@
           :icon-size="18" />
         <SharedLikeButton
           :content-id="content.id"
-          :icon-size="18"
-          :icon-name="`hugeicons:favourite`"
-          :icon-name-active="`hugeicons:heart-check`" />
+          :icon-size="20"
+          likeType="clap" />
         <SharedBookmarkButton
           :content-id="content.id"
           :icon-size="18" />

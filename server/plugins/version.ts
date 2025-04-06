@@ -1,5 +1,6 @@
 import { writeFileSync, mkdirSync, existsSync, readFileSync } from "fs";
 import { resolve, dirname } from "path";
+import { createHash } from "crypto";
 
 export default defineNitroPlugin(() => {
   // 只在生产构建时生成版本文件
@@ -12,10 +13,15 @@ export default defineNitroPlugin(() => {
     const packagePath = resolve(process.cwd(), "package.json");
     const packageJson = JSON.parse(readFileSync(packagePath, "utf-8"));
     const buildTime = new Date().toISOString();
+
+    // 生成唯一的构建哈希值
+    const buildHash = createHash("md5").update(buildTime).digest("hex").substring(0, 8);
+
     const version = {
       version: packageJson.version,
       buildTime,
-      fullVersion: `${packageJson.version}-${buildTime.split("T")[0]}`,
+      buildHash,
+      fullVersion: `${packageJson.version}-${buildTime.split("T")[0]}-${buildHash}`,
     };
 
     // 创建版本文件

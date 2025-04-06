@@ -41,8 +41,7 @@
               <SharedLikeButton
                 :comment-id="comment.id"
                 :icon-size="18"
-                :icon-name="`hugeicons:favourite`"
-                :icon-name-active="`hugeicons:heart-check`" />
+                likeType="heart" />
             </div>
           </div>
         </div>
@@ -52,7 +51,9 @@
           @click="toggleReplyInput">
           {{ comment.comment }}
         </div>
-        <div class="mt-1" :class="isReplying ? 'hidden' : ''">
+        <div
+          class="mt-1"
+          :class="isReplying ? 'hidden' : ''">
           <button
             @click="toggleReplyInput"
             class="text-[13px] text-neutral-500 nums tabular-nums cursor-pointer">

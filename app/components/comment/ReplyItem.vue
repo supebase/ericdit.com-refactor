@@ -38,8 +38,7 @@
           <SharedLikeButton
             :comment-id="reply.id"
             :icon-size="18"
-            :icon-name="`hugeicons:favourite`"
-            :icon-name-active="`hugeicons:heart-check`" />
+            likeType="heart" />
         </div>
       </div>
     </div>

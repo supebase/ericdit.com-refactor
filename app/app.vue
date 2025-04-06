@@ -44,7 +44,8 @@ const appConfig = useAppConfig();
 
 // 导入认证和用户状态相关的组合式函数
 const { refreshUser, isAuthenticated } = useAuth();
-const { updateLastActivity, updateUserStatus, cleanup } = usePresence();
+const { updateLastActivity, updateUserStatus, cleanup: cleanupPresence } = usePresence();
+const { needsUpdate, startVersionCheck, cleanup: cleanupVersionCheck } = useVersionCheck();
 
 // 用户活动监听相关配置
 const USER_ACTIVITY_EVENTS = ["mousedown", "keydown", "scroll", "touchstart"] as const;
@@ -92,8 +93,6 @@ const disableActivityTracking = async () => {
   isActivityTrackingEnabled = false;
 };
 
-const { needsUpdate, startVersionCheck } = useVersionCheck();
-
 const refreshPage = () => {
   window.location.reload();
 };
@@ -134,7 +133,8 @@ if (import.meta.client) {
 
   // 组件卸载时清理资源
   onUnmounted(() => {
-    cleanup();
+    cleanupPresence();
+    cleanupVersionCheck();
     if (isActivityTrackingEnabled) {
       disableActivityTracking();
     }

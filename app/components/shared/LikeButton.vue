@@ -4,7 +4,10 @@
       @click="handleLike"
       :disabled="!isAuthenticated || isProcessing"
       class="text-sm flex items-center space-x-2 text-neutral-400 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-      :class="{ 'text-red-500': isLiked }">
+      :class="{
+        'text-red-500': isLiked && likeType === 'heart',
+        'text-orange-500': isLiked && likeType === 'clap',
+      }">
       <UIcon
         name="svg-spinners:ring-resize"
         :size="iconSize"
@@ -12,9 +15,7 @@
         v-if="isProcessing" />
       <UIcon
         v-else
-        :name="
-          isLiked ? iconNameActive || 'hugeicons:waving-hand-02' : iconName || 'hugeicons:clapping-02'
-        "
+        :name="getIconName"
         :size="iconSize"
         :class="{ 'scale-effect': showScale }" />
       <SharedAnimateNumber :value="likesCount" />
@@ -29,6 +30,7 @@ const props = defineProps<{
   iconSize?: number;
   iconName?: string;
   iconNameActive?: string;
+  likeType?: "heart" | "clap";
 }>();
 
 const { isAuthenticated } = useAuth();
@@ -103,6 +105,20 @@ const handleLikeAction = async () => {
 };
 
 const handleLike = useDebounceFn(handleLikeAction, 500);
+
+// 计算属性获取图标名称
+const getIconName = computed(() => {
+  if (props.iconName || props.iconNameActive) {
+    return isLiked.value ? props.iconNameActive : props.iconName;
+  }
+
+  // 根据点赞类型返回默认图标
+  if (props.likeType === "heart") {
+    return isLiked.value ? "hugeicons:heart-check" : "hugeicons:favourite";
+  } else {
+    return isLiked.value ? "hugeicons:waving-hand-02" : "hugeicons:clapping-02";
+  }
+});
 
 onMounted(async () => {
   subscribeLikes(

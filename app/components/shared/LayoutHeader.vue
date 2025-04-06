@@ -21,9 +21,9 @@
       <div class="flex items-center space-x-9">
         <SharedBookmarkCounter
           v-if="isAuthenticated"
-          class="translate-y-0.5" />
+          class="translate-y-1" />
 
-        <AuthUserCreate v-if="isAuthenticated" />
+        <!-- <AuthUserCreate v-if="isAuthenticated" /> -->
         <AuthUserStatus />
       </div>
     </div>

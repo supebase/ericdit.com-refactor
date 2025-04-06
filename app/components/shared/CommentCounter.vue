@@ -12,8 +12,17 @@
       "
       :size="iconSize"
       class="text-neutral-400" />
-    <span class="text-sm text-neutral-400">
-      <SharedAnimateNumber :value="allowComments ? commentsCount : 0" />
+    <span
+      class="text-sm text-neutral-400"
+      :class="{ 'opacity-60 flex items-center': !allowComments }">
+      <template v-if="!allowComments">
+        <UIcon
+          name="hugeicons:no-signal"
+          class="size-3" />
+      </template>
+      <template v-else>
+        <SharedAnimateNumber :value="commentsCount" />
+      </template>
     </span>
   </NuxtLink>
 </template>
