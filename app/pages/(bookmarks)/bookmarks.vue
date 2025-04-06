@@ -144,4 +144,8 @@ watch(user, () => {
     bookmarks.value = [];
   }
 });
+
+useSeoMeta({
+  title: "我的收藏",
+});
 </script>

@@ -22,7 +22,7 @@ export default defineNuxtConfig({
 
   app: {
     keepalive: true,
-    // buildAssetsDir: "static",
+    buildAssetsDir: "static",
     head: {
       htmlAttrs: {
         lang: "zh-CN",
@@ -61,39 +61,6 @@ export default defineNuxtConfig({
       },
       rollupOptions: {
         treeshake: true, // 启用 tree shaking
-        output: {
-          // 使用函数形式的 manualChunks
-          manualChunks(id) {
-            // Vue 相关库
-            if (id.includes("node_modules/vue") || id.includes("node_modules/vue-router")) {
-              return "vue-vendor";
-            }
-            // UI 组件库
-            if (id.includes("node_modules/@nuxt/ui")) {
-              return "ui-vendor";
-            }
-            // VueUse 工具库
-            if (id.includes("node_modules/@vueuse")) {
-              return "vueuse-vendor";
-            }
-            // Directus SDK
-            if (id.includes("node_modules/@directus/sdk")) {
-              return "directus-vendor";
-            }
-            // Emoji Picker
-            if (id.includes("node_modules/nuxt-emoji-picker")) {
-              return "emoji-vendor";
-            }
-            // MDC 相关
-            if (id.includes("node_modules/@nuxtjs/mdc")) {
-              return "mdc-vendor";
-            }
-            // 其他第三方库
-            if (id.includes("node_modules")) {
-              return "vendor";
-            }
-          },
-        },
       },
     },
     optimizeDeps: {
@@ -134,41 +101,6 @@ export default defineNuxtConfig({
         maxAge: 60 * 60 * 24 * 365,
       },
     ],
-    routeRules: {
-      // 首页路由优化
-      "/": {
-        prerender: true, // 预渲染首页
-        cache: {
-          // 缓存首页
-          maxAge: 60 * 10, // 10分钟
-        },
-      },
-      // 静态资源缓存策略
-      "/_nuxt/**": {
-        headers: {
-          "cache-control": "public, max-age=31536000, immutable",
-        },
-      },
-      // API 路由缓存策略
-      "/api/**": {
-        cors: true,
-        headers: {
-          "cache-control": "public, max-age=3600",
-        },
-      },
-      // 添加静态资源的缓存策略
-      "/static/**": {
-        headers: {
-          "cache-control": "public, max-age=31536000, immutable",
-        },
-      },
-      // 图片资源缓存策略
-      "/**/*.{jpg,jpeg,png,svg,webp}": {
-        headers: {
-          "cache-control": "public, max-age=31536000, immutable",
-        },
-      },
-    },
   },
 
   build: {

@@ -134,4 +134,8 @@ onActivated(() => {
 onMounted(() => {
   loadUserStats();
 });
+
+useSeoMeta({
+  title: "个人资料",
+});
 </script>

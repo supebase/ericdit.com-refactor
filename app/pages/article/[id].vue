@@ -71,4 +71,8 @@ onMounted(() => {
     }
   );
 });
+
+useSeoMeta({
+  title: computed(() => content.value?.title || "正在加载"),
+});
 </script>

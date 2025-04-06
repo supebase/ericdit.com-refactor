@@ -140,4 +140,8 @@ if (import.meta.client) {
     }
   });
 }
+
+useHead({
+  titleTemplate: "%s - Eric",
+});
 </script>

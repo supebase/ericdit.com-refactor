@@ -170,4 +170,8 @@ onMounted(() => {
     }
   );
 });
+
+useSeoMeta({
+  title: "探索",
+});
 </script>

@@ -21,4 +21,8 @@ watch(
   },
   { immediate: true }
 );
+
+useSeoMeta({
+  title: "登录",
+});
 </script>

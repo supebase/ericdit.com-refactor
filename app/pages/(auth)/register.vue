@@ -21,4 +21,8 @@ watch(
   },
   { immediate: true }
 );
+
+useSeoMeta({
+  title: "注册新用户",
+});
 </script>
