@@ -22,7 +22,7 @@ export default defineNuxtConfig({
 
   app: {
     keepalive: true,
-    buildAssetsDir: "static",
+    // buildAssetsDir: "static",
     head: {
       htmlAttrs: {
         lang: "zh-CN",
