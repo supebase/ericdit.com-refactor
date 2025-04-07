@@ -79,9 +79,13 @@ const CONTENT_FIELDS = [
   "date_created",
 ] as const;
 
+const {
+  public: { directusDefaultPageSize },
+} = useRuntimeConfig();
+
 // 分页相关状态
 const page = ref(1);
-const limit = 5;
+const limit = directusDefaultPageSize as number;
 const hasMore = ref(true);
 const isFetchingNextPage = ref(false);
 const loadMoreTrigger = ref<HTMLElement | null>(null);

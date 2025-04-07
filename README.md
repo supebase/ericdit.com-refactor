@@ -1,5 +1,7 @@
 # Nuxt Minimal Starter
 
+For database schema, please refer to types/index.ts
+
 Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
 ## Setup
