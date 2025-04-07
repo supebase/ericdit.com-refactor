@@ -5,9 +5,10 @@
       class="flex justify-between items-end text-sm text-neutral-500 nums tabular-nums select-none">
       <div class="flex items-center space-x-3">
         <div>
-          <UAvatar
+          <SharedAvatar
             :src="useAssets(content.user_created.avatar) || undefined"
-            size="lg" />
+            size="lg"
+            :alt="content.user_created.first_name" />
         </div>
         <div class="flex flex-col">
           <div class="text-base text-neutral-50 font-medium">

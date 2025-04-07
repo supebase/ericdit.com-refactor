@@ -14,11 +14,11 @@
           size="xs"
           position="bottom-right"
           :color="usersStatus[reply.user_created.id] ? 'primary' : 'neutral'">
-          <UAvatar
+          <SharedAvatar
             :src="userAvatarUrl || undefined"
             :alt="!reply.user_created.avatar ? reply.user_created.first_name : undefined"
-            loading="lazy"
-            class="uppercase size-7" />
+            size="sm"
+            class="uppercase" />
         </UChip>
       </div>
 

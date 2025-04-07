@@ -14,8 +14,8 @@
       v-if="imageError"
       class="absolute inset-0 flex items-center justify-center bg-neutral-800/50 rounded-lg">
       <UIcon
-        name="hugeicons:image-broken"
-        class="size-7 text-neutral-500" />
+        name="hugeicons:image-not-found-02"
+        class="size-7 text-red-600" />
     </div>
 
     <!-- 图片组件 -->

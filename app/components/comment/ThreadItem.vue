@@ -15,11 +15,11 @@
               size="xs"
               position="bottom-right"
               :color="userStatus ? 'primary' : 'neutral'">
-              <UAvatar
+              <SharedAvatar
                 :src="userAvatarUrl || undefined"
                 :alt="!comment.user_created.avatar ? comment.user_created.first_name : undefined"
-                loading="lazy"
-                class="uppercase size-7" />
+                size="sm"
+                class="uppercase" />
             </UChip>
           </div>
 

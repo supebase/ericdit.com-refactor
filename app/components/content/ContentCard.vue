@@ -32,10 +32,9 @@
           class="aspect-[calc(4*3+1)/8] object-cover w-full rounded-lg" />
         <!-- 添加作者头像 -->
         <div class="absolute top-4 left-4">
-          <UAvatar
+          <SharedAvatar
             :src="useAssets(content.user_created.avatar) || undefined"
-            size="md"
-            loading="lazy" />
+            size="md" />
         </div>
         <div class="absolute top-4 right-4">
           <UBadge
@@ -97,10 +96,9 @@
         <div
           class="flex items-center space-x-2"
           v-if="displayType !== 'single'">
-          <UAvatar
+          <SharedAvatar
             :src="useAssets(content.user_created.avatar) || undefined"
-            size="xs"
-            loading="lazy" />
+            size="sm" />
           <div class="text-sm text-neutral-400 nums tabular-nums">
             {{ useDateFormatter(content.date_created) }}
           </div>
@@ -171,7 +169,7 @@ const displayType = computed(() => {
 const onImageLoad = (type: "single" | "carousel") => {
   if (type === "single") {
     singleImageLoading.value = false;
-  } else {
+  } else if (type === "carousel") {
     carouselImageLoading.value = false;
   }
 };
