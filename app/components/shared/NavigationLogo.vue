@@ -1,5 +1,5 @@
 <template>
-  <div class="eric -ml-1">
+  <div class="eric">
     <svg
       width="197"
       height="180"
@@ -11,19 +11,19 @@
         stroke="strokeColor"
         stroke-width="6.5"
         stroke-linejoin="round"
-        class="stroke-neutral-950 dark:stroke-neutral-50" />
+        class="stroke-neutral-900 dark:stroke-neutral-100" />
       <path
         d="M143.5 93.5C141.905 96.4507 141.957 98.0915 143.5 101"
         stroke="strokeColor"
         stroke-width="4.5"
         stroke-linejoin="round"
-        class="stroke-neutral-950 dark:stroke-neutral-50" />
+        class="stroke-neutral-900 dark:stroke-neutral-100" />
       <path
         d="M194.5 130C193.193 132.929 193.074 134.571 194.5 137.5"
         stroke="strokeColor"
         stroke-width="4.5"
         stroke-linejoin="round"
-        class="stroke-neutral-950 dark:stroke-neutral-50" />
+        class="stroke-neutral-900 dark:stroke-neutral-100" />
     </svg>
   </div>
 </template>
