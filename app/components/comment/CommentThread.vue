@@ -1,5 +1,33 @@
 <template>
-  <div class="select-none">
+  <div class="select-none pb-10">
+    <div class="fixed bottom-17 z-30 left-1/2 -translate-x-1/2">
+      <UButtonGroup>
+        <UButton
+          :ui="{ base: 'rounded-[calc(var(--ui-radius)*2)]' }"
+          color="neutral"
+          size="lg">
+          <SharedLikeButton
+            :content-id="contentId"
+            :icon-size="22"
+            likeType="clap" />
+        </UButton>
+        <USeparator
+          class="h-4 my-auto"
+          orientation="vertical" />
+        <UButton
+          :ui="{ base: 'rounded-[calc(var(--ui-radius)*2)]' }"
+          color="neutral"
+          size="lg"
+          class="cursor-pointer">
+          <SharedCommentCounter
+            :content-id="contentId"
+            :allow-comments="allowComments"
+            :icon-size="18"
+            @click="scrollToComments" />
+        </UButton>
+      </UButtonGroup>
+    </div>
+
     <!-- 1. 首先判断评论功能是否关闭 -->
     <UAlert
       v-if="!allowComments"
@@ -7,7 +35,7 @@
       variant="soft"
       icon="hugeicons:comment-block-02"
       description="本页面评论功能已关闭。"
-      class="my-6">
+      class="mb-8">
     </UAlert>
 
     <template v-else>
@@ -18,13 +46,13 @@
         variant="soft"
         icon="hugeicons:alert-02"
         :description="error?.message || '加载评论失败，请稍后重试。'"
-        class="my-8">
+        class="mb-8">
       </UAlert>
 
       <!-- 3. 评论加载中显示加载动画 -->
       <div
         v-else-if="isLoading && !comments"
-        class="flex flex-col justify-center items-center space-y-3 my-8">
+        class="flex flex-col justify-center items-center space-y-3 mb-8">
         <UProgress
           animation="swing"
           color="neutral"
@@ -41,20 +69,20 @@
           variant="soft"
           icon="hugeicons:comment-02"
           description="暂无评论，快来发表你的观点吧！"
-          class="my-6 text-neutral-500">
+          class="mb-8 text-neutral-500">
         </UAlert>
 
         <!-- 5. 有评论时显示评论数量 -->
-        <USeparator
+        <!-- <USeparator
           v-else
           class="mt-3">
           <div class="text-neutral-400 dark:text-neutral-600 text-sm nums tabular-nums">
             <span> 有 {{ totalComments }} 条评论，快来加入讨论！ </span>
           </div>
-        </USeparator>
+        </USeparator> -->
 
         <!-- 评论编辑器和评论列表保持不变 -->
-        <div>
+        <div id="comments">
           <div
             class="transform transition-all duration-300 ease-in-out"
             :class="
@@ -62,7 +90,7 @@
                 ? 'translate-y-0 opacity-100 max-h-[110px]'
                 : '-translate-y-3 opacity-0 max-h-0 overflow-hidden'
             ">
-            <div :class="!totalComments ? 'mb-6' : ''">
+            <div :class="!totalComments ? 'mb-8' : ''">
               <CommentEditor
                 :is-submitting="isSubmitting"
                 :placeholder="randomPlaceholder"
@@ -73,7 +101,7 @@
 
         <div
           v-if="rootComments.length"
-          class="my-8">
+          class="mb-8">
           <CommentThreadItem
             v-for="comment in rootComments"
             :key="comment.id"
@@ -242,6 +270,13 @@ const handleReply = async ({ commentId, content }: ReplyData) => {
 const refreshAllComments = async () => {
   await refreshComments();
   await Promise.all(Object.values(commentRefs.value).map((ref) => ref?.refreshReplies()));
+};
+
+const scrollToComments = () => {
+  const commentsElement = document.getElementById("comments");
+  if (commentsElement) {
+    commentsElement.scrollIntoView({ behavior: "smooth" });
+  }
 };
 
 onMounted(() => {

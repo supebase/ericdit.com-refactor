@@ -1,7 +1,5 @@
 <template>
-  <NuxtLink
-    :to="{ name: 'article-id', params: { id: contentId } }"
-    class="flex justify-end items-center space-x-2">
+  <div class="flex justify-end items-center space-x-2">
     <UIcon
       :name="
         !allowComments
@@ -24,7 +22,7 @@
         <SharedAnimateNumber :value="commentsCount" />
       </template>
     </span>
-  </NuxtLink>
+  </div>
 </template>
 
 <script setup lang="ts">

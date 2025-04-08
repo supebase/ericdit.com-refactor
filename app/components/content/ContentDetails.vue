@@ -47,19 +47,13 @@
     </Suspense>
 
     <div class="flex justify-between items-center select-none">
-      <SharedLikeButton
+      <UIcon
+        name="hugeicons:share-05"
+        class="size-5 text-neutral-600 dark:text-neutral-400 cursor-pointer"
+        @click="shareButton(content.title, getPreviewText(content.body))" />
+      <SharedBookmarkButton
         :content-id="content.id"
-        :icon-size="22"
-        likeType="clap" />
-      <div class="flex items-center space-x-6">
-        <UIcon
-          name="hugeicons:share-05"
-          class="size-5 text-neutral-600 dark:text-neutral-400 cursor-pointer"
-          @click="shareButton(content.title, getPreviewText(content.body))" />
-        <SharedBookmarkButton
-          :content-id="content.id"
-          :icon-size="20" />
-      </div>
+        :icon-size="20" />
     </div>
   </article>
 </template>
