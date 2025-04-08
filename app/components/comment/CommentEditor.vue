@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-neutral-950/40 rounded-lg p-1" :class="isAuthenticated ? 'mt-4' : 'hidden'">
+  <div class="bg-neutral-200/30 dark:bg-neutral-950/40 rounded-lg p-1" :class="isAuthenticated ? 'mt-4' : 'hidden'">
     <UTextarea
       ref="commentInput"
       v-model="content"

@@ -11,8 +11,17 @@
       <!-- 非单图模式的标题显示 -->
       <div
         v-if="displayType !== 'single' && displayType === 'text'"
-        class="text-lg font-bold mb-2">
-        {{ content.title }}
+        class="flex items-center space-x-2 -ml-10">
+        <SharedAvatar
+          :src="useAssets(content.user_created.avatar) || undefined"
+          size="md" />
+        <div
+          class="flex justify-between items-center w-full nums tabular-nums">
+          <div class="text-base font-bold text-neutral-700 dark:text-neutral-300">
+            {{ content.user_created.first_name }}
+          </div>
+          <div class="text-sm text-neutral-600 dark:text-neutral-400">{{ useDateFormatter(content.date_created) }}</div>
+        </div>
       </div>
 
       <!-- 单图显示 -->
@@ -31,10 +40,18 @@
           @load="onImageLoad('single')"
           class="aspect-[calc(4*3+1)/8] object-cover w-full rounded-lg" />
         <!-- 添加作者头像 -->
-        <div class="absolute top-4 left-4">
+        <div class="absolute top-0 -left-10">
           <SharedAvatar
             :src="useAssets(content.user_created.avatar) || undefined"
             size="md" />
+        </div>
+        <div class="absolute top-4 left-4">
+          <UBadge
+            variant="soft"
+            color="neutral"
+            class="nums tabular-nums">
+            {{ content.user_created.first_name }}
+          </UBadge>
         </div>
         <div class="absolute top-4 right-4">
           <UBadge
@@ -55,12 +72,19 @@
       <!-- 文本内容显示 -->
       <div
         v-else-if="displayType === 'text'"
-        class="line-clamp-4 text-[15px] text-neutral-700 dark:text-neutral-300">
+        class="line-clamp-5 text-[15px] text-neutral-700 dark:text-neutral-300">
+        <div class="font-bold">{{ content.title }}</div>
         {{ cleanBody }}
       </div>
 
       <!-- 图库轮播显示 -->
       <div v-else>
+        <!-- 添加作者头像 -->
+        <div class="absolute top-4 -left-10">
+          <SharedAvatar
+            :src="useAssets(content.user_created.avatar) || undefined"
+            size="md" />
+        </div>
         <UCarousel
           v-slot="{ item, index }: { item: { directus_files_id: string }, index: number }"
           autoplay
@@ -68,9 +92,10 @@
           wheel-gestures
           :items="content.images"
           :ui="{
-            item: 'basis-[80%] transition-all duration-500 [&:not(.is-snapped)]:opacity-30 [&:not(.is-snapped)]:scale-95 [&:not(.is-snapped)]:grayscale',
-          }">
-          <div class="relative group">
+            item: 'basis-[85%] transition-all duration-500 [&:not(.is-snapped)]:opacity-30 [&:not(.is-snapped)]:scale-95 [&:not(.is-snapped)]:grayscale',
+          }"
+          class="ml-0.5">
+          <div class="relative">
             <div
               v-if="carouselImageLoading"
               class="absolute inset-0 flex items-center justify-center bg-neutral-100 dark:bg-neutral-800 rounded-lg">
@@ -93,29 +118,6 @@
 
     <template #footer>
       <div class="flex justify-between items-center mt-3">
-        <div
-          class="flex items-center space-x-2"
-          v-if="displayType !== 'single'">
-          <SharedAvatar
-            :src="useAssets(content.user_created.avatar) || undefined"
-            size="sm" />
-          <div class="text-sm text-neutral-600 dark:text-neutral-400 nums tabular-nums">
-            {{ useDateFormatter(content.date_created) }}
-          </div>
-        </div>
-        <div
-          class="flex items-center space-x-2"
-          v-else>
-          <UIcon
-            name="hugeicons:at"
-            size="19"
-            class="text-neutral-600 dark:text-neutral-400">
-          </UIcon>
-          <span class="text-sm text-neutral-600 dark:text-neutral-400">
-            {{ content.user_created.first_name }}
-          </span>
-        </div>
-
         <SharedCommentCounter
           :content-id="content.id"
           :allow-comments="content.allow_comments"

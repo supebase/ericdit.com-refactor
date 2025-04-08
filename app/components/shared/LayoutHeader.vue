@@ -4,18 +4,14 @@
       <Transition
         name="fade"
         mode="out-in">
-        <div
+        <SharedNavigationLogo
           v-if="$route.path === '/'"
-          key="logo">
-          <SharedNavigationLogo />
-        </div>
-        <div
+          key="logo" />
+        <SharedNavigationBack
           v-else
           key="icon"
           @click="safeBack()"
-          class="cursor-pointer">
-          <SharedNavigationBack />
-        </div>
+          class="cursor-pointer" />
       </Transition>
 
       <div class="flex items-center space-x-9">

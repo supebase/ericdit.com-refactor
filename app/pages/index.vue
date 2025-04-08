@@ -34,7 +34,7 @@
       </UAlert>
     </div>
     <template v-else>
-      <div class="divide-y divide-neutral-200 dark:divide-neutral-800">
+      <div class="divide-y divide-neutral-200 dark:divide-neutral-800 ml-10">
         <SharedFadeIn
           v-for="(content, index) in contents"
           :key="content.id"

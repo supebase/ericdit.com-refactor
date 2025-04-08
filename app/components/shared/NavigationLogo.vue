@@ -1,5 +1,5 @@
 <template>
-  <div class="eric">
+  <div class="eric -ml-1">
     <svg
       width="197"
       height="180"

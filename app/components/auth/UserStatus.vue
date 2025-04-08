@@ -6,7 +6,7 @@
           <SharedAvatar
             :src="useAssets(user?.avatar || '')"
             :alt="!user?.avatar ? user?.first_name : undefined"
-            size="lg"
+            size="md"
             class="uppercase" />
         </NuxtLink>
       </div>
@@ -15,7 +15,7 @@
       <NuxtLink to="/login">
         <UAvatar
           icon="hugeicons:lock-key"
-          class="size-9" />
+          class="size-8" />
       </NuxtLink>
     </template>
   </div>

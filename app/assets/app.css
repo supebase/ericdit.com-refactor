@@ -51,7 +51,7 @@ body {
 }
 
 .eric svg {
-  width: 38px;
+  width: 32px;
   height: auto;
   will-change: transform;
 }
@@ -195,4 +195,12 @@ hr {
     rgba(113, 113, 122, 0.25),
     rgba(113, 113, 122, 0)
   );
+}
+
+.v3-emoji-picker .v3-body {
+  padding: 11px 0 15px 11px !important;
+}
+
+.v3-emoji-picker .v3-footer {
+  display: none !important;
 }

@@ -1,5 +1,7 @@
 <template>
-  <UPopover v-model:open="isPickerVisible">
+  <UPopover
+    :ui="{ content: 'ring-0 shadow-none bg-transparent' }"
+    v-model:open="isPickerVisible">
     <div class="mt-1.5">
       <UIcon
         name="hugeicons:smile"
