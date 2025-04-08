@@ -11,7 +11,7 @@
             :alt="content.user_created.first_name" />
         </div>
         <div class="flex flex-col">
-          <div class="text-base text-neutral-50 font-medium">
+          <div class="text-base text-neutral-900 dark:text-neutral-50 font-medium">
             {{ content.user_created.first_name }}
           </div>
           <div class="flex items-center text-[13px] space-x-2">
@@ -54,7 +54,7 @@
       <div class="flex items-center space-x-6">
         <UIcon
           name="hugeicons:share-05"
-          class="size-5 text-neutral-400 cursor-pointer"
+          class="size-5 text-neutral-600 dark:text-neutral-400 cursor-pointer"
           @click="shareButton(content.title, getPreviewText(content.body))" />
         <SharedBookmarkButton
           :content-id="content.id"

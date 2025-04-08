@@ -30,7 +30,7 @@
           color="neutral"
           size="sm"
           class="max-w-[80px]" />
-        <div class="text-sm text-neutral-600">正在加载评论</div>
+        <div class="text-sm text-neutral-400 dark:text-neutral-600">正在加载评论</div>
       </div>
 
       <!-- 4. 没有评论时显示提示 -->
@@ -41,14 +41,14 @@
           variant="soft"
           icon="hugeicons:comment-02"
           description="暂无评论，快来发表你的观点吧！"
-          class="my-6">
+          class="my-6 text-neutral-500">
         </UAlert>
 
         <!-- 5. 有评论时显示评论数量 -->
         <USeparator
           v-else
           class="mt-3">
-          <div class="text-neutral-600 text-sm nums tabular-nums">
+          <div class="text-neutral-400 dark:text-neutral-600 text-sm nums tabular-nums">
             <span> 有 {{ totalComments }} 条评论，快来加入讨论！ </span>
           </div>
         </USeparator>

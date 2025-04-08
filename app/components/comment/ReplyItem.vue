@@ -26,11 +26,11 @@
         <div class="flex justify-between items-center">
           <div class="flex items-center text-[13px] space-x-2 nums tabular-nums">
             <div class="text-sm font-medium">{{ reply.user_created.first_name }}</div>
-            <div class="text-neutral-600">{{ useDateFormatter(reply.date_created) }}</div>
+            <div class="text-neutral-400 dark:text-neutral-600">{{ useDateFormatter(reply.date_created) }}</div>
             <UIcon
               name="hugeicons:arrow-right-01"
-              class="size-3 text-neutral-600" />
-            <div class="text-neutral-600">
+              class="size-3 text-neutral-400 dark:text-neutral-600" />
+            <div class="text-neutral-400 dark:text-neutral-600">
               {{ reply.user_created.location }}
             </div>
           </div>
@@ -42,7 +42,7 @@
         </div>
       </div>
     </div>
-    <div class="ml-10 mt-1 text-[15px] text-neutral-400">{{ reply.comment }}</div>
+    <div class="ml-10 mt-1 text-[15px] text-neutral-600 dark:text-neutral-400">{{ reply.comment }}</div>
   </div>
 </template>
 

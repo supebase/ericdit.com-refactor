@@ -1,12 +1,14 @@
 <template>
   <footer class="flex-none">
     <hr />
-    <div class="py-4 select-none">
-      <div class="text-center text-sm text-neutral-600 space-x-2">
+    <div class="py-4 select-none flex justify-center items-center gap-3">
+      <div class="text-center text-sm text-neutral-400 dark:text-neutral-600 space-x-2">
         <span>2001-{{ new Date().getFullYear() }} &copy; Eric</span>
-        <span>&bull;</span>
+        <span class="text-neutral-300 dark:text-neutral-700 text-xs">&bull;</span>
         <span>{{ version }}（{{ useDateFormatter(buildTime) }}）</span>
       </div>
+
+      <SharedColorMode />
     </div>
   </footer>
 </template>

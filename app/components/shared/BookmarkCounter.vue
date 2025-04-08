@@ -14,7 +14,7 @@
       <NuxtLink to="/bookmarks">
         <UIcon
           name="hugeicons:all-bookmark"
-          class="size-6 text-neutral-400"
+          class="size-6 text-neutral-600 dark:text-neutral-400"
           :class="{ 'bookmark-animation': showAnimation }" />
       </NuxtLink>
     </UChip>

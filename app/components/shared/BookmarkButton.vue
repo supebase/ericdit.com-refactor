@@ -3,7 +3,7 @@
     <button
       @click="handleBookmark"
       :disabled="!isAuthenticated || isProcessing"
-      class="text-sm flex items-center space-x-2 text-neutral-400 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+      class="text-sm flex items-center space-x-2 text-neutral-500 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
       :class="{ 'text-yellow-500': isBookmarked }">
       <UIcon
         name="svg-spinners:ring-resize"

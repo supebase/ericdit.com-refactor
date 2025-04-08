@@ -1,7 +1,7 @@
 <template>
   <UCard
     :ui="{
-      root: replyCount ? 'divide-neutral-900 divide-y-2' : 'divide-none',
+      root: replyCount ? 'divide-neutral-100 dark:divide-neutral-900 divide-y-2' : 'divide-none',
       body: replyCount ? 'p-4 sm:p-6' : 'p-0 sm:p-0',
     }"
     variant="soft"
@@ -27,13 +27,13 @@
             <div class="flex justify-between items-center">
               <div class="flex items-center space-x-2 text-[13px] nums tabular-nums">
                 <div class="text-sm font-medium">{{ comment.user_created.first_name }}</div>
-                <div class="text-neutral-600">
+                <div class="text-neutral-400 dark:text-neutral-600">
                   {{ useDateFormatter(comment.date_created) }}
                 </div>
                 <UIcon
                   name="hugeicons:arrow-right-01"
-                  class="size-3 text-neutral-600" />
-                <div class="text-neutral-600">
+                  class="size-3 text-neutral-400 dark:text-neutral-600" />
+                <div class="text-neutral-400 dark:text-neutral-600">
                   {{ comment.user_created.location }}
                 </div>
               </div>
@@ -47,7 +47,7 @@
         </div>
 
         <div
-          class="mt-1 cursor-pointer text-[15px] text-neutral-400"
+          class="mt-1 cursor-pointer text-[15px] text-neutral-600 dark:text-neutral-400"
           @click="toggleReplyInput">
           {{ comment.comment }}
         </div>

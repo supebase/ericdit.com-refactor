@@ -8,7 +8,7 @@
       size="3xl"
       class="uppercase" />
     <div
-      class="absolute -bottom-1 -right-1 bg-neutral-900 size-5 rounded-full flex items-center justify-center">
+      class="absolute -bottom-1 -right-1 bg-white dark:bg-neutral-900 size-5 rounded-full flex items-center justify-center">
       <UIcon
         :name="isLoading ? 'svg-spinners:ring-resize' : 'hugeicons:upload-circle-01'"
         class="size-4 text-neutral-500" />

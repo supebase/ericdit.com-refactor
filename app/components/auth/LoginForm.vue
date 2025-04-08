@@ -38,7 +38,7 @@
       {{ isSubmitting ? "正在处理" : "登录" }}
     </UButton>
 
-    <USeparator><span class="text-neutral-600 text-sm">或者</span></USeparator>
+    <USeparator><span class="text-neutral-400 dark:text-neutral-600 text-sm">或者</span></USeparator>
 
     <UButton
       variant="soft"

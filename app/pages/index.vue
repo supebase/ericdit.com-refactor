@@ -34,7 +34,7 @@
       </UAlert>
     </div>
     <template v-else>
-      <div class="divide-y divide-neutral-800">
+      <div class="divide-y divide-neutral-200 dark:divide-neutral-800">
         <SharedFadeIn
           v-for="(content, index) in contents"
           :key="content.id"
@@ -53,7 +53,7 @@
       <!-- 没有更多内容的提示 -->
       <div
         v-if="!hasMore && contents && contents.length > 0"
-        class="text-center text-sm text-neutral-700 py-4">
+        class="text-center text-sm text-neutral-300 dark:text-neutral-700 py-4">
         已显示全部内容
       </div>
 
@@ -85,7 +85,7 @@ const {
 
 // 分页相关状态
 const page = ref(1);
-const limit = directusDefaultPageSize as number;
+const limit = directusDefaultPageSize as unknown as number;
 const hasMore = ref(true);
 const isFetchingNextPage = ref(false);
 const loadMoreTrigger = ref<HTMLElement | null>(null);

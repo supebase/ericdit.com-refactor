@@ -3,7 +3,7 @@
     <button
       @click="handleLike"
       :disabled="!isAuthenticated || isProcessing"
-      class="text-sm flex items-center space-x-2 text-neutral-400 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+      class="text-sm flex items-center space-x-2 text-neutral-500 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
       :class="{
         'text-red-500': isLiked && likeType === 'heart',
         'text-orange-500': isLiked && likeType === 'clap',
@@ -15,7 +15,7 @@
         v-if="isProcessing" />
       <UIcon
         v-else
-        :name="getIconName"
+        :name="getIconName || ''"
         :size="iconSize"
         :class="{ 'scale-effect': showScale }" />
       <SharedAnimateNumber :value="likesCount" />

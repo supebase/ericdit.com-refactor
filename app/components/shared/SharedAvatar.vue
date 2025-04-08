@@ -2,10 +2,10 @@
   <div class="relative">
     <div
       v-if="avatarLoading"
-      class="absolute inset-0 ring-1 ring-neutral-800 flex items-center justify-center bg-neutral-800 rounded-full">
+      class="absolute inset-0 ring-1 ring-neutral-100 dark:ring-neutral-800 flex items-center justify-center bg-neutral-100 dark:bg-neutral-800 rounded-full">
       <UIcon
         :name="loadingIcon"
-        :class="[`size-${iconSize}`, 'text-neutral-600 animate-pulse']" />
+        :class="[`size-${iconSize}`, 'text-neutral-500 animate-pulse']" />
     </div>
     <UAvatar
       :src="src"

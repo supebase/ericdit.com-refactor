@@ -1,7 +1,7 @@
 <template>
   <UCard
     :ui="{
-      root: 'bg-neutral-900 divide-none',
+      root: 'bg-white dark:bg-neutral-900 divide-none',
       body: '!p-0',
       footer: '!p-0',
     }"
@@ -21,10 +21,10 @@
         class="relative">
         <div
           v-if="singleImageLoading"
-          class="absolute inset-0 flex items-center justify-center bg-neutral-800 rounded-lg">
+          class="absolute inset-0 flex items-center justify-center bg-neutral-100 dark:bg-neutral-800 rounded-lg">
           <UIcon
             name="hugeicons:image-03"
-            class="size-7 text-neutral-600 animate-pulse" />
+            class="size-7 text-neutral-400 dark:text-neutral-600 animate-pulse" />
         </div>
         <img
           :src="useAssets(content.images[0].directus_files_id) || undefined"
@@ -45,7 +45,7 @@
           </UBadge>
         </div>
         <div
-          class="absolute bottom-0 left-0 right-0 p-3 m-2 bg-black/30 backdrop-blur-sm rounded-lg">
+          class="absolute bottom-0 left-0 right-0 p-3 m-2 bg-neutral-300/40 dark:bg-black/30 backdrop-blur-sm rounded-lg">
           <div class="text-base text-white text-center font-bold line-clamp-1">
             {{ content.title }}
           </div>
@@ -55,7 +55,7 @@
       <!-- 文本内容显示 -->
       <div
         v-else-if="displayType === 'text'"
-        class="line-clamp-4 text-[15px] text-neutral-300">
+        class="line-clamp-4 text-[15px] text-neutral-700 dark:text-neutral-300">
         {{ cleanBody }}
       </div>
 
@@ -73,10 +73,10 @@
           <div class="relative group">
             <div
               v-if="carouselImageLoading"
-              class="absolute inset-0 flex items-center justify-center bg-neutral-800 rounded-lg">
+              class="absolute inset-0 flex items-center justify-center bg-neutral-100 dark:bg-neutral-800 rounded-lg">
               <UIcon
                 name="hugeicons:image-03"
-                class="size-7 text-neutral-600 animate-pulse" />
+                class="size-7 text-neutral-400 dark:text-neutral-600 animate-pulse" />
             </div>
             <img
               :src="useAssets(item.directus_files_id) || undefined"
@@ -99,7 +99,7 @@
           <SharedAvatar
             :src="useAssets(content.user_created.avatar) || undefined"
             size="sm" />
-          <div class="text-sm text-neutral-400 nums tabular-nums">
+          <div class="text-sm text-neutral-600 dark:text-neutral-400 nums tabular-nums">
             {{ useDateFormatter(content.date_created) }}
           </div>
         </div>
@@ -109,9 +109,9 @@
           <UIcon
             name="hugeicons:at"
             size="19"
-            class="text-neutral-400">
+            class="text-neutral-600 dark:text-neutral-400">
           </UIcon>
-          <span class="text-sm text-neutral-400">
+          <span class="text-sm text-neutral-600 dark:text-neutral-400">
             {{ content.user_created.first_name }}
           </span>
         </div>

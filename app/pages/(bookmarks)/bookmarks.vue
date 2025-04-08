@@ -24,8 +24,8 @@
       class="flex flex-col items-center justify-center space-y-4 min-h-[calc(100vh-14rem)]">
       <UIcon
         name="hugeicons:bookmark-block-02"
-        class="text-4xl text-neutral-700" />
-      <p class="text-neutral-700 text-sm font-medium">暂无收藏任何内容</p>
+        class="text-4xl text-neutral-300 dark:text-neutral-700" />
+      <p class="text-neutral-300 dark:text-neutral-700 text-sm font-medium">暂无收藏任何内容</p>
     </div>
 
     <div

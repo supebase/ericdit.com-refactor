@@ -11,9 +11,9 @@
           : 'hugeicons:comment-02'
       "
       :size="iconSize"
-      class="text-neutral-400" />
+      class="text-neutral-500" />
     <span
-      class="text-sm text-neutral-400"
+      class="text-sm text-neutral-500"
       :class="{ 'opacity-60 flex items-center': !allowComments }">
       <template v-if="!allowComments">
         <UIcon
