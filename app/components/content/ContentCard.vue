@@ -11,17 +11,8 @@
       <!-- 非单图模式的标题显示 -->
       <div
         v-if="displayType !== 'single' && displayType === 'text'"
-        class="flex items-center space-x-2 -ml-10">
-        <SharedAvatar
-          :src="useAssets(content.user_created.avatar) || undefined"
-          size="md" />
-        <div
-          class="flex justify-between items-center w-full nums tabular-nums">
-          <div class="text-base font-bold text-neutral-700 dark:text-neutral-300">
-            {{ content.user_created.first_name }}
-          </div>
-          <div class="text-sm text-neutral-600 dark:text-neutral-400">{{ useDateFormatter(content.date_created) }}</div>
-        </div>
+        class="flex items-center space-x-2 mb-2">
+        <div class="font-bold text-lg">{{ content.title }}</div>
       </div>
 
       <!-- 单图显示 -->
@@ -39,20 +30,6 @@
           :src="useAssets(content.images[0].directus_files_id) || undefined"
           @load="onImageLoad('single')"
           class="aspect-[calc(4*3+1)/8] object-cover w-full rounded-lg" />
-        <!-- 添加作者头像 -->
-        <div class="absolute top-0 -left-10">
-          <SharedAvatar
-            :src="useAssets(content.user_created.avatar) || undefined"
-            size="md" />
-        </div>
-        <div class="absolute top-4 left-4">
-          <UBadge
-            variant="soft"
-            color="neutral"
-            class="nums tabular-nums">
-            {{ content.user_created.first_name }}
-          </UBadge>
-        </div>
         <div class="absolute top-4 right-4">
           <UBadge
             variant="soft"
@@ -73,18 +50,11 @@
       <div
         v-else-if="displayType === 'text'"
         class="line-clamp-5 text-[15px] text-neutral-700 dark:text-neutral-300">
-        <div class="font-bold">{{ content.title }}</div>
         {{ cleanBody }}
       </div>
 
       <!-- 图库轮播显示 -->
       <div v-else>
-        <!-- 添加作者头像 -->
-        <div class="absolute top-4 -left-10">
-          <SharedAvatar
-            :src="useAssets(content.user_created.avatar) || undefined"
-            size="md" />
-        </div>
         <UCarousel
           v-slot="{ item, index }: { item: { directus_files_id: string }, index: number }"
           autoplay
@@ -92,7 +62,7 @@
           wheel-gestures
           :items="content.images"
           :ui="{
-            item: 'basis-[85%] transition-all duration-500 [&:not(.is-snapped)]:opacity-30 [&:not(.is-snapped)]:scale-95 [&:not(.is-snapped)]:grayscale',
+            item: 'basis-[80%] transition-all duration-500 [&:not(.is-snapped)]:opacity-30 [&:not(.is-snapped)]:scale-95 [&:not(.is-snapped)]:grayscale',
           }"
           class="ml-0.5">
           <div class="relative">
@@ -108,7 +78,7 @@
               @load="onImageLoad('carousel')"
               class="aspect-[calc(4*3+1)/8] object-cover rounded-lg" />
             <div
-              class="absolute bottom-2 left-2 bg-black/30 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-full">
+              class="absolute bottom-2 left-2 nums tabular-nums bg-black/30 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-full">
               {{ index + 1 }}/{{ content.images.length }}
             </div>
           </div>
@@ -118,6 +88,7 @@
 
     <template #footer>
       <div class="flex justify-between items-center mt-3">
+        <div class="text-sm text-neutral-500 nums tabular-nums">{{ useDateFormatter(content.date_created) }}</div>
         <SharedCommentCounter
           :content-id="content.id"
           :allow-comments="content.allow_comments"

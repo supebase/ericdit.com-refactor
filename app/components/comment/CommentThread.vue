@@ -120,6 +120,8 @@
 <script setup lang="ts">
 import { AUTH_ERROR_MESSAGES } from "~/types/auth";
 
+const CommentThreadItem = defineAsyncComponent(() => import("~/components/comment/ThreadItem.vue"));
+
 interface ReplyData {
   commentId: string;
   content: string;

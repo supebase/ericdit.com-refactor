@@ -34,7 +34,7 @@
       </UAlert>
     </div>
     <template v-else>
-      <div class="divide-y divide-neutral-200 dark:divide-neutral-800 ml-10">
+      <div class="divide-y divide-neutral-200 dark:divide-neutral-800">
         <SharedFadeIn
           v-for="(content, index) in contents"
           :key="content.id"
@@ -66,6 +66,8 @@
 </template>
 
 <script setup lang="ts">
+const ContentCard = defineAsyncComponent(() => import("~/components/content/ContentCard.vue"));
+
 const { getContents, subscribeContents } = useContents();
 
 const CONTENT_FIELDS = [

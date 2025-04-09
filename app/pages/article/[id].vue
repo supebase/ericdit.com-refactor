@@ -28,6 +28,8 @@
 </template>
 
 <script setup lang="ts">
+const CommentThread = defineAsyncComponent(() => import("~/components/comment/CommentThread.vue"));
+
 const route = useRoute();
 const { getContent, subscribeContents } = useContents();
 
