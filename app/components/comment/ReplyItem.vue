@@ -5,7 +5,7 @@
       class="absolute top-0 left-2">
       <UIcon
         name="hugeicons:arrow-move-down-right"
-        class="size-5 text-neutral-700/80" />
+        class="size-5 text-neutral-300/80 dark:text-neutral-700/80" />
     </div>
     <div class="flex items-center ml-10">
       <div class="mr-3">

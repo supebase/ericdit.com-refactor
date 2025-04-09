@@ -49,7 +49,7 @@
     <div class="flex justify-between items-center select-none">
       <UIcon
         name="hugeicons:share-05"
-        class="size-5 text-neutral-600 dark:text-neutral-400 cursor-pointer"
+        class="size-5 text-neutral-400 dark:text-neutral-500 cursor-pointer"
         @click="shareButton(content.title, getPreviewText(content.body))" />
       <SharedBookmarkButton
         :content-id="content.id"

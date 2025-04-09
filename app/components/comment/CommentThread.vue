@@ -1,14 +1,14 @@
 <template>
   <div class="select-none pb-10">
     <div class="fixed bottom-17 z-30 left-1/2 -translate-x-1/2">
-      <UButtonGroup>
+      <UButtonGroup class="shadow-lg rounded-2xl">
         <UButton
           :ui="{ base: 'rounded-[calc(var(--ui-radius)*2)]' }"
           color="neutral"
           size="lg">
           <SharedLikeButton
             :content-id="contentId"
-            :icon-size="22"
+            :icon-size="21"
             likeType="clap" />
         </UButton>
         <USeparator

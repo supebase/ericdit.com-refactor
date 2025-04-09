@@ -6,7 +6,7 @@
       <UIcon
         name="hugeicons:smile"
         @click.stop="openPicker"
-        class="size-5 text-neutral-400 cursor-pointer hover:text-primary-400 transform duration-500" />
+        class="size-5 text-neutral-600 dark:text-neutral-400 cursor-pointer transform duration-500" />
     </div>
 
     <template #content>

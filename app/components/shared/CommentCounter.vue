@@ -9,10 +9,10 @@
           : 'hugeicons:comment-02'
       "
       :size="iconSize"
-      class="text-neutral-500" />
+      class="text-neutral-400 dark:text-neutral-500" />
     <span
-      class="text-sm text-neutral-500"
-      :class="{ 'opacity-60 flex items-center': !allowComments }">
+      class="text-sm text-neutral-400 dark:text-neutral-500"
+      :class="{ 'flex items-center': !allowComments }">
       <template v-if="!allowComments">
         <UIcon
           name="hugeicons:no-signal"
