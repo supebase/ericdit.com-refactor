@@ -26,7 +26,6 @@ export namespace User {
   export interface Status {
     id: string; // 状态记录ID
     user_created: User.Profile; // 关联的用户信息
-    status: boolean; // 在线状态
     last_activity_at: string | null; // 最后活动时间
   }
 }

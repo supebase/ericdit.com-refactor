@@ -3,7 +3,7 @@ import type { User } from "~/types";
 // 添加返回类型接口
 interface UserStatusComposable {
   usersStatus: Ref<Record<string, boolean>>;
-  updateUserStatus: (status: boolean) => Promise<void>;
+  updateUserStatus: () => Promise<void>;
   checkUserStatus: (userId: string) => Promise<boolean>;
   updateLastActivity: () => void;
   subscribeUserStatus: (userId: string) => Promise<(() => void) | undefined>;
@@ -38,7 +38,7 @@ export const usePresence = (): UserStatusComposable => {
    * 更新用户在线状态
    * @param status - 用户状态（true: 在线，false: 离线）
    */
-  const updateUserStatus = async (status: boolean) => {
+  const updateUserStatus = async () => {
     if (!user.value?.id || isUpdating) return;
 
     try {
@@ -57,14 +57,12 @@ export const usePresence = (): UserStatusComposable => {
       if (existingStatus.length > 0) {
         await $directus.request(
           $content.updateItem("users_status", existingStatus[0]?.id ?? "", {
-            status,
             last_activity_at: now,
           })
         );
       } else {
         await $directus.request(
           $content.createItem("users_status", {
-            status,
             last_activity_at: now,
           })
         );
@@ -98,9 +96,9 @@ export const usePresence = (): UserStatusComposable => {
       const now = new Date();
       const diffMinutes = (now.getTime() - lastActivity.getTime()) / (1000 * 60);
 
-      const status = (diffMinutes <= OFFLINE_THRESHOLD_MINUTES && response[0]?.status) || false;
-      usersStatus.value[userId] = status;
-      return status;
+      const isOnline = diffMinutes <= OFFLINE_THRESHOLD_MINUTES;
+      usersStatus.value[userId] = isOnline;
+      return isOnline;
     } catch (error) {
       console.error("Failed to check user status:", error);
       return false;
@@ -113,15 +111,13 @@ export const usePresence = (): UserStatusComposable => {
    * @returns {Promise<void>}
    */
   const subscribeUserStatus = async (userId: string): Promise<(() => void) | undefined> => {
-    //if (usersStatus.value[userId] !== undefined) return;
-
     try {
       const { subscription } = await $realtimeClient.subscribe("users_status", {
         query: {
           filter: {
             user_created: { _eq: userId },
           },
-          fields: ["status", "last_activity_at"],
+          fields: ["last_activity_at"],
         },
       });
 
@@ -162,7 +158,7 @@ export const usePresence = (): UserStatusComposable => {
     clearTimeout(activityTimeout);
     activityTimeout = setTimeout(() => {
       if (user.value?.id) {
-        updateUserStatus(true);
+        updateUserStatus();
       }
     }, ACTIVITY_TIMEOUT_MS);
   };

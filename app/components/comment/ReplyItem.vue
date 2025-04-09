@@ -22,7 +22,7 @@
         </UChip>
       </div>
 
-      <div class="flex-1 mb-1.5">
+      <div class="flex-1">
         <div class="flex justify-between items-center">
           <div class="flex items-center text-[13px] space-x-2 nums tabular-nums">
             <div class="text-sm font-medium">{{ reply.user_created.first_name }}</div>
@@ -42,7 +42,7 @@
         </div>
       </div>
     </div>
-    <div class="ml-10 mt-1 text-[15px] text-neutral-600 dark:text-neutral-400">{{ reply.comment }}</div>
+    <div class="ml-10 mt-2 text-[15px] text-neutral-600 dark:text-neutral-400">{{ reply.comment }}</div>
   </div>
 </template>
 

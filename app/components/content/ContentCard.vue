@@ -47,14 +47,14 @@
       </div>
 
       <!-- 文本内容显示 -->
-      <div
-        v-else-if="displayType === 'text'"
-        class="line-clamp-4 text-[15px] text-neutral-700 dark:text-neutral-300">
+      <div v-else-if="displayType === 'text'">
         <div class="flex items-center space-x-2 text-sm text-neutral-500 nums tabular-nums mb-1">
           <div>{{ useDateFormatter(content.date_created) }}</div>
           <div>{{ useArticleMetrics(content.body) }}</div>
         </div>
-        {{ cleanBody }}
+        <div class="line-clamp-4 text-[15px] text-neutral-700 dark:text-neutral-300">
+          {{ cleanBody }}
+        </div>
       </div>
 
       <!-- 图库轮播显示 -->

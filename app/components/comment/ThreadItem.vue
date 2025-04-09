@@ -23,7 +23,7 @@
             </UChip>
           </div>
 
-          <div class="flex-1 mb-1.5">
+          <div class="flex-1">
             <div class="flex justify-between items-center">
               <div class="flex items-center space-x-2 text-[13px] nums tabular-nums">
                 <div class="text-sm font-medium">{{ comment.user_created.first_name }}</div>
@@ -47,7 +47,7 @@
         </div>
 
         <div
-          class="mt-1 cursor-pointer text-[15px] text-neutral-600 dark:text-neutral-400"
+          class="mt-2 cursor-pointer text-[15px] text-neutral-600 dark:text-neutral-400"
           @click="toggleReplyInput">
           {{ comment.comment }}
         </div>

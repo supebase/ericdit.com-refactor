@@ -51,7 +51,7 @@ const enableActivityTracking = async () => {
     window.addEventListener(event, debouncedUpdateActivity);
   });
   isActivityTrackingEnabled = true;
-  await updateUserStatus(true);
+  await updateUserStatus();
 };
 
 /**
@@ -74,7 +74,7 @@ onMounted(async () => {
   try {
     await refreshUser();
     if (isAuthenticated.value) {
-      await updateUserStatus(true);
+      await updateUserStatus();
     }
   } catch (error) {
     console.error("Failed to restore user session:", error);
@@ -96,7 +96,7 @@ if (import.meta.client) {
       } else if (!newValue && isActivityTrackingEnabled) {
         await disableActivityTracking();
         if (oldValue) {
-          await updateUserStatus(false);
+          await updateUserStatus();
         }
       }
     },

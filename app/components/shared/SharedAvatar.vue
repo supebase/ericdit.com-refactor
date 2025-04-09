@@ -1,7 +1,7 @@
 <template>
   <div class="relative">
     <div
-      v-if="avatarLoading"
+      v-if="avatarLoading && src"
       class="absolute inset-0 ring-1 ring-neutral-100 dark:ring-neutral-800 flex items-center justify-center bg-neutral-100 dark:bg-neutral-800 rounded-full">
       <UIcon
         :name="loadingIcon"
@@ -9,6 +9,7 @@
     </div>
     <UAvatar
       :src="src"
+      :alt="alt"
       :size="size"
       @load="onImageLoad"
       loading="lazy"
@@ -21,6 +22,7 @@
 const props = withDefaults(
   defineProps<{
     src?: string;
+    alt?: string;
     size?: "xs" | "sm" | "md" | "lg" | "xl";
     loadingIcon?: string;
   }>(),
@@ -30,7 +32,7 @@ const props = withDefaults(
   }
 );
 
-const avatarLoading = ref(true);
+const avatarLoading = ref(!!props.src);
 
 // 根据不同size设置不同的图标大小
 const iconSize = computed(() => {
