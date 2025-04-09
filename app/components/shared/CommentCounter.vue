@@ -13,11 +13,7 @@
     <span
       class="text-sm text-neutral-400 dark:text-neutral-500"
       :class="{ 'flex items-center': !allowComments }">
-      <template v-if="!allowComments">
-        <UIcon
-          name="hugeicons:no-signal"
-          class="size-3" />
-      </template>
+      <template v-if="!allowComments"> </template>
       <template v-else>
         <SharedAnimateNumber :value="commentsCount" />
       </template>

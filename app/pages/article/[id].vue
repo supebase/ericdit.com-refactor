@@ -74,7 +74,9 @@ onMounted(() => {
   );
 });
 
-useSeoMeta({
+useSeo({
   title: computed(() => content.value?.title || "正在加载"),
+  description: computed(() => content.value?.body?.substring(0, 100) || ""),
+  type: "article",
 });
 </script>

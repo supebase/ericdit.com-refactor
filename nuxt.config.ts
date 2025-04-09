@@ -16,6 +16,7 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
+      siteUrl: import.meta.env.SITE_URL,
       directusApiUrl: import.meta.env.DIRECTUS_API_URL,
       directusDefaultPageSize: import.meta.env.DIRECTUS_DEFAULT_PAGE_SIZE,
     },

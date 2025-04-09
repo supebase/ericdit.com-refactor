@@ -135,7 +135,8 @@ onMounted(() => {
   loadUserStats();
 });
 
-useSeoMeta({
+useSeo({
   title: "个人资料",
+  noindex: true,
 });
 </script>

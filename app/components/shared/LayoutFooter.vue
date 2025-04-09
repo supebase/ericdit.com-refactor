@@ -5,7 +5,7 @@
       <div class="text-center text-sm text-neutral-400 dark:text-neutral-600 space-x-2">
         <span>2001-{{ new Date().getFullYear() }} &copy; Eric</span>
         <span class="text-neutral-300 dark:text-neutral-700 text-xs">&bull;</span>
-        <span>{{ version }}（{{ useDateFormatter(buildTime) }}）</span>
+        <span>{{ version }}（{{ useDateFormatter(buildTime) }}构建）</span>
       </div>
 
       <SharedColorMode />

@@ -6,13 +6,17 @@
       <NuxtPage />
 
       <!-- 版本更新提示 -->
-      <SharedUpdateNotification v-model="needsUpdate" />
+      <UpdateNotification v-model="needsUpdate" />
     </NuxtLayout>
   </UApp>
 </template>
 
 <script setup lang="ts">
 const appConfig = useAppConfig();
+
+const UpdateNotification = defineAsyncComponent(
+  () => import("./components/shared/UpdateNotification.vue")
+);
 
 // 导入认证和用户状态相关的组合式函数
 const { refreshUser, isAuthenticated } = useAuth();
@@ -63,10 +67,6 @@ const disableActivityTracking = async () => {
     activityDebounceTimer = null;
   }
   isActivityTrackingEnabled = false;
-};
-
-const refreshPage = () => {
-  window.location.reload();
 };
 
 // 组件挂载时初始化用户会话

@@ -22,7 +22,8 @@ watch(
   { immediate: true }
 );
 
-useSeoMeta({
+useSeo({
   title: "登录",
+  noindex: true,
 });
 </script>

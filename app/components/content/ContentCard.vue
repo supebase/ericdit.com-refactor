@@ -11,7 +11,7 @@
       <!-- 非单图模式的标题显示 -->
       <div
         v-if="displayType !== 'single' && displayType === 'text'"
-        class="flex items-center space-x-2 mb-2">
+        class="flex items-center space-x-2 mb-1">
         <div class="font-bold text-lg">{{ content.title }}</div>
       </div>
 
@@ -49,7 +49,11 @@
       <!-- 文本内容显示 -->
       <div
         v-else-if="displayType === 'text'"
-        class="line-clamp-5 text-[15px] text-neutral-700 dark:text-neutral-300">
+        class="line-clamp-4 text-[15px] text-neutral-700 dark:text-neutral-300">
+        <div class="flex items-center space-x-2 text-sm text-neutral-500 nums tabular-nums mb-1">
+          <div>{{ useDateFormatter(content.date_created) }}</div>
+          <div>{{ useArticleMetrics(content.body) }}</div>
+        </div>
         {{ cleanBody }}
       </div>
 
@@ -88,7 +92,6 @@
 
     <template #footer>
       <div class="flex justify-between items-center mt-3">
-        <div class="text-sm text-neutral-500 nums tabular-nums">{{ useDateFormatter(content.date_created) }}</div>
         <SharedCommentCounter
           :content-id="content.id"
           :allow-comments="content.allow_comments"

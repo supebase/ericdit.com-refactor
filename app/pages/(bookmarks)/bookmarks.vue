@@ -145,7 +145,8 @@ watch(user, () => {
   }
 });
 
-useSeoMeta({
+useSeo({
   title: "我的收藏",
+  noindex: true,
 });
 </script>

@@ -22,7 +22,8 @@ watch(
   { immediate: true }
 );
 
-useSeoMeta({
+useSeo({
   title: "注册新用户",
+  noindex: true,
 });
 </script>
