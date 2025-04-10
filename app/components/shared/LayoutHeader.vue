@@ -15,11 +15,10 @@
       </Transition>
 
       <div class="flex items-center space-x-9">
+        <SearchModal />
         <SharedBookmarkCounter
           v-if="isAuthenticated"
-          class="translate-y-1" />
-
-        <!-- <AuthUserCreate v-if="isAuthenticated" /> -->
+          class="translate-y-[3px]" />
         <AuthUserStatus />
       </div>
     </div>

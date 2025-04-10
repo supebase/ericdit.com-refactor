@@ -2,7 +2,7 @@
   <div v-if="loading && bookmarksCount == null">
     <UIcon
       name="svg-spinners:3-dots-scale"
-      class="size-6 text-neutral-500" />
+      class="size-5 text-neutral-500" />
   </div>
   <div
     v-else
@@ -10,11 +10,12 @@
     <UChip
       :color="bookmarksCount ? 'warning' : 'neutral'"
       :ui="{ base: 'py-2 px-1.5 font-bold' }"
+      :show="bookmarksCount !== null && bookmarksCount > 0"
       :text="bookmarksCount ?? undefined">
       <NuxtLink to="/bookmarks">
         <UIcon
           name="hugeicons:all-bookmark"
-          class="size-6 text-neutral-600 dark:text-neutral-400"
+          class="size-5 text-neutral-600 dark:text-neutral-400"
           :class="{ 'bookmark-animation': showAnimation }" />
       </NuxtLink>
     </UChip>
