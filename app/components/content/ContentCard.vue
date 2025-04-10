@@ -11,17 +11,19 @@
       <!-- 非单图模式的标题显示 -->
       <div
         v-if="displayType !== 'single' && displayType === 'text'"
-        class="flex items-center space-x-2 mb-1">
-        <div class="font-bold text-lg">{{ content.title }}</div>
+        class="flex items-center space-x-2 mb-3">
+        <div class="font-bold text-lg">
+          {{ content.title }}
+        </div>
       </div>
 
       <!-- 单图显示 -->
       <div
         v-if="displayType === 'single'"
-        class="relative">
+        class="group relative overflow-hidden rounded-xl">
         <div
           v-if="singleImageLoading"
-          class="absolute inset-0 flex items-center justify-center bg-neutral-100 dark:bg-neutral-800 rounded-lg">
+          class="absolute inset-0 flex items-center justify-center bg-neutral-100 dark:bg-neutral-800">
           <UIcon
             name="hugeicons:image-03"
             class="size-7 text-neutral-400 dark:text-neutral-600 animate-pulse" />
@@ -29,50 +31,65 @@
         <img
           :src="useAssets(content.images[0].directus_files_id) || undefined"
           @load="onImageLoad('single')"
-          class="aspect-[calc(4*3+1)/8] object-cover w-full rounded-lg" />
+          class="aspect-[16/9] object-cover w-full transform group-hover:scale-105 transition-transform duration-500" />
         <div class="absolute top-4 right-4">
+          <UBadge
+            variant="soft"
+            color="neutral"
+            class="nums tabular-nums shadow-lg">
+            {{ useDateFormatter(content.date_created) }}
+          </UBadge>
+        </div>
+        <div
+          class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 to-black/10 backdrop-blur-sm">
+          <div class="text-base text-white font-bold mb-2">
+            {{ content.title }}
+          </div>
+          <div class="text-sm text-neutral-200 line-clamp-1">
+            {{ cleanBody }}
+          </div>
+        </div>
+      </div>
+
+      <!-- 文本内容显示 -->
+      <div
+        v-else-if="displayType === 'text'"
+        class="group">
+        <div class="flex items-center space-x-3 text-sm mb-2">
           <UBadge
             variant="soft"
             color="neutral"
             class="nums tabular-nums">
             {{ useDateFormatter(content.date_created) }}
           </UBadge>
+          <div class="text-neutral-500 dark:text-neutral-400">
+            {{ useArticleMetrics(content.body) }}
+          </div>
         </div>
-        <div
-          class="absolute bottom-0 left-0 right-0 p-3 m-2 bg-neutral-300/40 dark:bg-black/30 backdrop-blur-sm rounded-lg">
-          <div class="text-base text-white text-center font-bold line-clamp-1">
-            {{ content.title }}
+        <div class="prose prose-neutral dark:prose-invert max-w-none">
+          <div class="line-clamp-3 text-base leading-relaxed">
+            {{ cleanBody }}
           </div>
         </div>
       </div>
 
-      <!-- 文本内容显示 -->
-      <div v-else-if="displayType === 'text'">
-        <div class="flex items-center space-x-2 text-sm text-neutral-500 nums tabular-nums mb-1">
-          <div>{{ useDateFormatter(content.date_created) }}</div>
-          <div>{{ useArticleMetrics(content.body) }}</div>
-        </div>
-        <div class="line-clamp-4 text-[15px] text-neutral-700 dark:text-neutral-300">
-          {{ cleanBody }}
-        </div>
-      </div>
-
       <!-- 图库轮播显示 -->
-      <div v-else>
+      <div
+        v-else
+        class="relative group">
         <UCarousel
-          v-slot="{ item, index }: { item: { directus_files_id: string }, index: number }"
+          v-slot="{ item }: { item: { directus_files_id: string }, index: number }"
           autoplay
           class-names
           wheel-gestures
           :items="content.images"
           :ui="{
-            item: 'basis-[80%] transition-all duration-500 [&:not(.is-snapped)]:opacity-30 [&:not(.is-snapped)]:scale-95 [&:not(.is-snapped)]:grayscale',
-          }"
-          class="ml-0.5">
-          <div class="relative">
+            item: 'basis-[80%] transition-all duration-500 [&:not(.is-snapped)]:opacity-40 [&:not(.is-snapped)]:scale-90 [&:not(.is-snapped)]:grayscale hover:cursor-grab active:cursor-grabbing',
+          }">
+          <div class="relative overflow-hidden rounded-xl">
             <div
               v-if="carouselImageLoading"
-              class="absolute inset-0 flex items-center justify-center bg-neutral-100 dark:bg-neutral-800 rounded-lg">
+              class="absolute inset-0 flex items-center justify-center bg-neutral-100 dark:bg-neutral-800">
               <UIcon
                 name="hugeicons:image-03"
                 class="size-7 text-neutral-400 dark:text-neutral-600 animate-pulse" />
@@ -80,18 +97,14 @@
             <img
               :src="useAssets(item.directus_files_id) || undefined"
               @load="onImageLoad('carousel')"
-              class="aspect-[calc(4*3+1)/8] object-cover rounded-lg" />
-            <div
-              class="absolute bottom-2 left-2 nums tabular-nums bg-black/30 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-full">
-              {{ index + 1 }}/{{ content.images.length }}
-            </div>
+              class="aspect-[16/9] object-cover w-full transform hover:scale-105 transition-transform duration-500" />
           </div>
         </UCarousel>
       </div>
     </NuxtLink>
 
     <template #footer>
-      <div class="flex justify-between items-center mt-3">
+      <div class="flex justify-between items-center mt-4 px-1">
         <SharedCommentCounter
           :content-id="content.id"
           :allow-comments="content.allow_comments"

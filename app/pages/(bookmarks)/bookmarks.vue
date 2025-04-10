@@ -59,7 +59,7 @@
             color="error"
             variant="soft"
             size="xs"
-            class="cursor-pointer"
+            class="cursor-pointer rounded-full"
             :loading="processingIds.includes(bookmark.id)"
             :disabled="processingIds.includes(bookmark.id)"
             @click="() => removeBookmark(bookmark)" />

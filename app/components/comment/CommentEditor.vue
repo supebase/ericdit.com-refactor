@@ -7,6 +7,7 @@
       variant="none"
       autoresize
       :rows="2"
+      :maxrows="6"
       :padded="false"
       size="lg"
       class="text-neutral-300 w-full"
@@ -30,7 +31,7 @@
       </div>
       <div class="flex items-center space-x-6">
         <span
-          class="text-sm nums tabular-nums select-none"
+          class="text-xs nums tabular-nums select-none"
           :class="
             content.length >= COMMENT_MAX_LENGTH
               ? 'text-red-600'

@@ -1,10 +1,14 @@
 <template>
   <div class="select-none pb-10">
     <div class="fixed bottom-17 z-30 left-1/2 -translate-x-1/2">
-      <UButtonGroup class="shadow-lg rounded-2xl">
+      <UButtonGroup
+        class="shadow-lg rounded-2xl hover:shadow-xl transition-shadow duration-300 backdrop-blur-sm bg-white/90 dark:bg-neutral-800/90">
         <UButton
-          :ui="{ base: 'rounded-[calc(var(--ui-radius)*2)]' }"
+          :ui="{
+            base: 'rounded-[calc(var(--ui-radius)*2)] transition-transform duration-200 hover:bg-white dark:hover:bg-neutral-800',
+          }"
           color="neutral"
+          variant="ghost"
           size="lg">
           <SharedLikeButton
             :content-id="contentId"
@@ -12,11 +16,15 @@
             likeType="clap" />
         </UButton>
         <USeparator
-          class="h-4 my-auto"
+          :ui="{ border: 'border-neutral-300 dark:border-neutral-600' }"
+          class="h-4 w-2 my-auto"
           orientation="vertical" />
         <UButton
-          :ui="{ base: 'rounded-[calc(var(--ui-radius)*2)]' }"
+          :ui="{
+            base: 'rounded-[calc(var(--ui-radius)*2)] transition-transform duration-200 hover:bg-white dark:hover:bg-neutral-800',
+          }"
           color="neutral"
+          variant="ghost"
           size="lg"
           class="cursor-pointer">
           <SharedCommentCounter
@@ -87,7 +95,7 @@
             class="transform transition-all duration-300 ease-in-out"
             :class="
               showMainCommentForm
-                ? 'translate-y-0 opacity-100 max-h-[110px]'
+                ? 'translate-y-0 opacity-100 max-h-[200px]'
                 : '-translate-y-3 opacity-0 max-h-0 overflow-hidden'
             ">
             <div :class="!totalComments ? 'mb-8' : ''">

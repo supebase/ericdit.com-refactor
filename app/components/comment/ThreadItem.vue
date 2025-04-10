@@ -65,7 +65,7 @@
           class="transform transition-all duration-300 ease-in-out"
           :class="
             isReplying
-              ? 'translate-y-0 opacity-100 max-h-[110px]'
+              ? 'translate-y-0 opacity-100 max-h-[200px]'
               : '-translate-y-3 opacity-0 max-h-0 overflow-hidden'
           ">
           <div>

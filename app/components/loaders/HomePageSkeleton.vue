@@ -1,6 +1,6 @@
 <script setup>
 const items = Array.from({ length: 3 }, () => ({
-  type: Math.random() > 0.5 ? "image" : "text",
+  type: ["text", "single", "carousel"][Math.floor(Math.random() * 3)],
 }));
 </script>
 
@@ -18,39 +18,68 @@ const items = Array.from({ length: 3 }, () => ({
         variant="soft"
         class="select-none first:pt-0 last:pb-0">
         <div class="relative">
+          <!-- 文本内容 -->
+          <div
+            v-if="item.type === 'text'"
+            class="space-y-3">
+            <!-- 标题和时间 -->
+            <div class="flex items-center space-x-3">
+              <div
+                class="w-24 h-6 bg-neutral-200/40 dark:bg-neutral-800/40 rounded-full animate-pulse"></div>
+              <div
+                class="w-20 h-6 bg-neutral-200/40 dark:bg-neutral-800/40 rounded-full animate-pulse"></div>
+            </div>
+            <!-- 文本段落 -->
+            <div class="space-y-2">
+              <div class="h-5 bg-neutral-200 dark:bg-neutral-800 rounded w-3/4 animate-pulse"></div>
+              <div
+                class="h-4 bg-neutral-200 dark:bg-neutral-800 rounded w-full animate-pulse"></div>
+              <div
+                class="h-4 bg-neutral-200 dark:bg-neutral-800 rounded w-11/12 animate-pulse"></div>
+            </div>
+          </div>
+
           <!-- 单图模式 -->
           <div
-            v-if="item.type === 'image'"
+            v-if="item.type === 'single'"
             class="relative">
             <div
-              class="aspect-[calc(4*3+1)/8] bg-neutral-200 dark:bg-neutral-800 rounded-lg w-full animate-pulse"></div>
+              class="aspect-[16/9] bg-neutral-200 dark:bg-neutral-800 rounded-xl w-full animate-pulse"></div>
             <!-- 右上角时间 -->
             <div class="absolute top-4 right-4">
               <div
                 class="w-24 h-6 bg-neutral-200/40 dark:bg-neutral-800/40 rounded-full animate-pulse"></div>
             </div>
-            <!-- 底部标题 -->
+            <!-- 底部渐变标题区 -->
             <div
-              class="absolute bottom-0 left-0 right-0 p-3 m-2 bg-neutral-300/40 dark:bg-black/30 backdrop-blur-sm rounded-lg">
-              <div class="h-6 bg-neutral-200/40 dark:bg-neutral-800/40 rounded animate-pulse"></div>
+              class="absolute bottom-0 left-0 right-0 p-4">
+              <div
+                class="h-6 bg-neutral-100 dark:bg-neutral-900/80 rounded mb-2 animate-pulse"></div>
+              <div
+                class="h-4 bg-neutral-100 dark:bg-neutral-900/80 rounded w-3/4 animate-pulse"></div>
             </div>
           </div>
 
-          <!-- 文本内容 -->
+          <!-- 轮播图模式 -->
           <div
-            v-if="item.type === 'text'"
-            class="space-y-2 mt-2">
-            <div class="h-5 bg-neutral-200 dark:bg-neutral-800 rounded w-3/4 animate-pulse"></div>
-            <div class="h-4 bg-neutral-200 dark:bg-neutral-800 rounded w-full animate-pulse"></div>
-            <div class="h-4 bg-neutral-200 dark:bg-neutral-800 rounded w-11/12 animate-pulse"></div>
-            <div class="h-4 bg-neutral-200 dark:bg-neutral-800 rounded w-4/5 animate-pulse"></div>
-            <div class="h-4 bg-neutral-200 dark:bg-neutral-800 rounded w-10/12 animate-pulse"></div>
+            v-if="item.type === 'carousel'"
+            class="relative">
+            <div class="flex space-x-4 overflow-hidden">
+              <div class="flex-none w-4/5">
+                <div
+                  class="aspect-[16/9] bg-neutral-200 dark:bg-neutral-800 rounded-xl animate-pulse"></div>
+              </div>
+              <div class="flex-none w-4/5 opacity-40">
+                <div
+                  class="aspect-[16/9] bg-neutral-200 dark:bg-neutral-800 rounded-xl animate-pulse"></div>
+              </div>
+            </div>
           </div>
         </div>
 
         <!-- 底部操作栏 -->
         <template #footer>
-          <div class="flex justify-between items-center mt-3">
+          <div class="flex justify-between items-center mt-4 px-1">
             <div class="w-16 h-5 bg-neutral-200 dark:bg-neutral-800 rounded animate-pulse"></div>
             <div class="w-16 h-5 bg-neutral-200 dark:bg-neutral-800 rounded animate-pulse"></div>
             <div class="w-16 h-5 bg-neutral-200 dark:bg-neutral-800 rounded animate-pulse"></div>
