@@ -2,7 +2,7 @@
   <div class="flex justify-end items-center">
     <button
       @click="handleLike"
-      :disabled="!isAuthenticated || isProcessing"
+      :disabled="isProcessing"
       class="text-sm flex items-center space-x-2 text-neutral-400 dark:text-neutral-500 cursor-pointer disabled:cursor-not-allowed">
       <UIcon
         name="svg-spinners:ring-resize"
@@ -29,6 +29,7 @@ const props = defineProps<{
   likeType?: "heart" | "clap";
 }>();
 
+const { guardAction } = useAuthGuard();
 const { isAuthenticated } = useAuth();
 const { getLikes, createLike, deleteLike, subscribeLikes } = useLikes();
 
@@ -70,7 +71,7 @@ const fetchLikes = async () => {
 const showScale = ref(false);
 
 const handleLikeAction = async () => {
-  if (!isAuthenticated.value || isProcessing.value) return;
+  if (isProcessing.value) return;
 
   try {
     isProcessing.value = true;
@@ -100,7 +101,11 @@ const handleLikeAction = async () => {
   }
 };
 
-const handleLike = useDebounceFn(handleLikeAction, 500);
+const handleLike = () => {
+  const message = props.commentId ? "登录后即可为精彩评论点赞" : "登录后即可为喜欢的内容点赞";
+
+  guardAction(() => handleLikeAction(), message);
+};
 
 // 计算属性获取图标名称
 const getIconName = computed(() => {

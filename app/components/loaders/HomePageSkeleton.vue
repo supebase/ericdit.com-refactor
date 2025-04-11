@@ -6,7 +6,7 @@ const items = Array.from({ length: 3 }, () => ({
 
 <template>
   <div>
-    <div class="space-y-6 mt-5">
+    <div class="space-y-6 my-5">
       <UCard
         v-for="(item, index) in items"
         :key="index"

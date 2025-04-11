@@ -2,7 +2,7 @@
   <div class="flex justify-end items-center">
     <button
       @click="handleBookmark"
-      :disabled="!isAuthenticated || isProcessing"
+      :disabled="isProcessing"
       class="text-sm flex items-center space-x-2 text-neutral-400 dark:text-neutral-500 cursor-pointer disabled:cursor-not-allowed">
       <UIcon
         name="svg-spinners:ring-resize"
@@ -24,6 +24,7 @@ const props = defineProps<{
   iconSize?: number;
 }>();
 
+const { guardAction } = useAuthGuard();
 const { isAuthenticated } = useAuth();
 const { getBookmarks, createBookmark, deleteBookmark, subscribeBookmarks } = useBookmarks();
 
@@ -58,7 +59,7 @@ const fetchBookmarkStatus = async () => {
 const showAnimation = ref(false);
 
 const handleBookmarkAction = async () => {
-  if (!isAuthenticated.value || isProcessing.value) return;
+  if (isProcessing.value) return;
 
   try {
     isProcessing.value = true;
@@ -84,7 +85,9 @@ const handleBookmarkAction = async () => {
   }
 };
 
-const handleBookmark = useDebounceFn(handleBookmarkAction, 500);
+const handleBookmark = () => {
+  guardAction(() => handleBookmarkAction(), "登录后即可将内容添加到收藏夹");
+};
 
 onMounted(async () => {
   subscribeBookmarks(

@@ -87,7 +87,7 @@ const {
 
 // 分页相关状态
 const page = ref(1);
-const limit = directusDefaultPageSize as unknown as number;
+const limit = Number(directusDefaultPageSize);
 const hasMore = ref(true);
 const isFetchingNextPage = ref(false);
 const loadMoreTrigger = ref<HTMLElement | null>(null);
