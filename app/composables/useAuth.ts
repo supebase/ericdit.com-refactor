@@ -116,8 +116,11 @@ export const useAuth = () => {
       const response = await $directus.request<User.Profile>($user.readMe());
       user.value = response;
     } catch (error: any) {
-      // 只在认证失败（401）或权限不足（403）时清除用户状态
-      if (error.response?.status === 401 || error.response?.status === 403) {
+      // 只在用户之前是登录状态，且遇到认证失败（401）或权限不足（403）时处理
+      if (
+        (error.response?.status === 401 || error.response?.status === 403) &&
+        user.value !== null
+      ) {
         user.value = null;
 
         const toast = useToast();
@@ -129,6 +132,9 @@ export const useAuth = () => {
         });
         // 重定向到登录页
         navigateTo("/login");
+      } else {
+        // 其他情况只清除用户状态
+        user.value = null;
       }
       throw new Error(error.errors?.[0]?.message || "获取用户信息失败");
     }
