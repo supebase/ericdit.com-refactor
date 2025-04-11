@@ -5,7 +5,7 @@
       class="fixed inset-0 flex justify-center items-center">
       <UIcon
         name="svg-spinners:ring-resize"
-        class="size-7 text-primary-500" />
+        class="size-7 text-neutral-400 dark:text-orange-200" />
     </div>
     <div
       v-else-if="error"

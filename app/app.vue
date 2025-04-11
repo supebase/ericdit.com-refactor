@@ -19,7 +19,7 @@ const UpdateNotification = defineAsyncComponent(
 );
 
 // 导入认证和用户状态相关的组合式函数
-const { refreshUser, isAuthenticated } = useAuth();
+const { refreshUser, startSessionCheck, isAuthenticated } = useAuth();
 const { updateLastActivity, updateUserStatus, cleanup: cleanupPresence } = usePresence();
 const { needsUpdate, startVersionCheck, cleanup: cleanupVersionCheck } = useVersionCheck();
 
@@ -82,6 +82,8 @@ onMounted(async () => {
 
   if (import.meta.client) {
     startVersionCheck();
+    const cleanupSession = startSessionCheck();
+    onUnmounted(() => cleanupSession?.());
   }
 });
 

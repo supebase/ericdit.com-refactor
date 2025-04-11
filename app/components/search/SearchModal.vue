@@ -1,5 +1,8 @@
 <template>
-  <UModal v-model:open="isOpen">
+  <UModal
+    v-model:open="isOpen"
+    title="Search"
+    description="站内搜索">
     <UIcon
       name="hugeicons:search-01"
       class="size-5 text-neutral-600 dark:text-neutral-400 cursor-pointer" />
@@ -32,11 +35,11 @@
               </div>
               <div class="flex flex-col min-w-0">
                 <span class="text-sm font-medium line-clamp-1">{{ item.label }}</span>
+                <span class="text-xs text-neutral-400 dark:text-neutral-600 shrink-0">{{
+                  item.suffix
+                }}</span>
               </div>
             </div>
-            <span class="text-xs text-neutral-400 dark:text-neutral-600 shrink-0">{{
-              item.suffix
-            }}</span>
           </div>
         </template>
         <template #empty>

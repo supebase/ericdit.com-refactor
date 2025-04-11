@@ -2,7 +2,7 @@
   <div v-if="loading && bookmarksCount == null">
     <UIcon
       name="svg-spinners:3-dots-scale"
-      class="size-5 text-neutral-500" />
+      class="size-5 text-neutral-400 dark:text-orange-200" />
   </div>
   <div
     v-else

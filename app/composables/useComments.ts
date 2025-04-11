@@ -13,6 +13,8 @@ export const useComments = () => {
 
   // 用户头像缓存状态
   const userAvatars = useState<Record<string, string>>("comments:userAvatars", () => ({}));
+  // 用户地理位置缓存状态
+  const userLocations = useState<Record<string, string>>("comments:userLocations", () => ({}));
 
   /**
    * 获取评论列表，可以是文章的评论或评论的回复
@@ -82,10 +84,10 @@ export const useComments = () => {
       },
     });
 
-    // 订阅用户头像更新
+    // 订阅用户头像、地理位置更新
     const { subscription: userSubscription } = await $realtimeClient.subscribe("directus_users", {
       query: {
-        fields: ["id", "avatar"],
+        fields: ["id", "avatar", "location"],
       },
     });
 
@@ -96,11 +98,17 @@ export const useComments = () => {
       }
     })();
 
-    // 处理用户头像更新
+    // 处理用户头像、地理位置更新
     (async () => {
       for await (const item of userSubscription) {
         if (item.event === "update") {
-          userAvatars.value[item.data[0]?.id] = useAssets(item.data[0]?.avatar);
+          const userData = item.data[0];
+          if (userData?.avatar) {
+            userAvatars.value[userData.id] = useAssets(userData.avatar);
+          }
+          if (userData?.location) {
+            userLocations.value[userData.id] = userData.location;
+          }
         }
       }
     })();
@@ -125,10 +133,16 @@ export const useComments = () => {
     return userAvatars.value[userId];
   };
 
+  // 添加获取用户地理位置的方法
+  const getUserLocation = (userId: string): string | null => {
+    return userLocations.value[userId] || null;
+  };
+
   return {
     getCommentsList,
     createComment,
     subscribeComments,
     getUserAvatarUrl,
+    getUserLocation,
   };
 };

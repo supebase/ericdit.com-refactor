@@ -16,8 +16,8 @@ export const useGeoLocation = async () => {
 
     if (!data.ipinfo?.text || !data.ipdata?.info1) {
       return {
-        ip: "无",
-        location: "地球",
+        ip: "未知",
+        location: "位置未知",
       };
     }
 
@@ -27,8 +27,8 @@ export const useGeoLocation = async () => {
     };
   } catch (error) {
     return {
-      ip: "无",
-      location: "地球",
+      ip: "未知",
+      location: "位置未知",
     };
   }
 };

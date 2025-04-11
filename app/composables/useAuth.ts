@@ -119,9 +119,47 @@ export const useAuth = () => {
       // 只在认证失败（401）或权限不足（403）时清除用户状态
       if (error.response?.status === 401 || error.response?.status === 403) {
         user.value = null;
+
+        const toast = useToast();
+        toast.add({
+          title: "会话已过期",
+          description: "您的登录会话已过期，请重新登录。",
+          icon: "hugeicons:lock-key",
+          color: "warning",
+        });
+        // 重定向到登录页
+        navigateTo("/login");
       }
       throw new Error(error.errors?.[0]?.message || "获取用户信息失败");
     }
+  };
+
+  // 添加自动检查机制
+  const startSessionCheck = () => {
+    if (typeof window === "undefined") return;
+
+    // 每 30 分钟检查一次
+    const interval = 30 * 60 * 1000;
+    const checkInterval = setInterval(() => {
+      if (isAuthenticated.value) {
+        refreshUser().catch(() => {});
+      }
+    }, interval);
+
+    // 页面可见性变化时也检查
+    const visibilityHandler = () => {
+      if (document.visibilityState === "visible" && isAuthenticated.value) {
+        refreshUser().catch(() => {});
+      }
+    };
+
+    document.addEventListener("visibilitychange", visibilityHandler);
+
+    // 返回清理函数
+    return () => {
+      clearInterval(checkInterval);
+      document.removeEventListener("visibilitychange", visibilityHandler);
+    };
   };
 
   return {
@@ -132,6 +170,7 @@ export const useAuth = () => {
     register,
     updateUserLocation,
     refreshUser,
+    startSessionCheck,
     validateEmail,
   };
 };

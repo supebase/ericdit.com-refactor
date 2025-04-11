@@ -34,7 +34,7 @@
                   name="hugeicons:arrow-right-01"
                   class="size-3 text-neutral-400 dark:text-neutral-600" />
                 <div class="text-neutral-400 dark:text-neutral-600">
-                  {{ comment.user_created.location }}
+                  {{ userLocation }}
                 </div>
               </div>
 
@@ -100,9 +100,12 @@ const props = defineProps<{
   isReplying: boolean;
 }>();
 
-const { getUserAvatarUrl } = useComments();
+const { getUserAvatarUrl, getUserLocation } = useComments();
 const userAvatarUrl = computed(() =>
   getUserAvatarUrl(props.comment.user_created.id, props.comment.user_created.avatar)
+);
+const userLocation = computed(
+  () => getUserLocation(props.comment.user_created.id) || props.comment.user_created.location
 );
 
 const emit = defineEmits<{

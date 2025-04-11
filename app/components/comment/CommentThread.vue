@@ -39,9 +39,9 @@
     <!-- 1. 首先判断评论功能是否关闭 -->
     <UAlert
       v-if="!allowComments"
+      :ui="{ wrapper: 'flex items-center' }"
       color="warning"
       variant="soft"
-      icon="hugeicons:comment-block-02"
       description="本页面评论功能已关闭。"
       class="mb-8">
     </UAlert>
@@ -50,9 +50,9 @@
       <!-- 2. 评论加载出错显示错误信息 -->
       <UAlert
         v-if="error"
+        :ui="{ wrapper: 'flex items-center' }"
         color="error"
         variant="soft"
-        icon="hugeicons:alert-02"
         :description="error?.message || '加载评论失败，请稍后重试。'"
         class="mb-8">
       </UAlert>
@@ -73,9 +73,9 @@
       <template v-else>
         <UAlert
           v-if="!totalComments"
+          :ui="{ wrapper: 'flex items-center' }"
           color="neutral"
           variant="soft"
-          icon="hugeicons:comment-02"
           description="暂无评论，快来发表你的观点吧！"
           class="mb-8 text-neutral-500">
         </UAlert>

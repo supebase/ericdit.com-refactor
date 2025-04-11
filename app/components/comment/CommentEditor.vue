@@ -1,12 +1,14 @@
 <template>
-  <div class="bg-neutral-200/30 dark:bg-neutral-950/40 rounded-lg p-1" :class="isAuthenticated ? 'mt-4' : 'hidden'">
+  <div
+    class="bg-neutral-200/30 dark:bg-neutral-950/40 ring-2 ring-neutral-200 dark:ring-neutral-800 rounded-lg p-1"
+    :class="isAuthenticated ? 'mt-4' : 'hidden'">
     <UTextarea
       ref="commentInput"
       v-model="content"
       color="neutral"
       variant="none"
       autoresize
-      :rows="2"
+      :rows="1"
       :maxrows="6"
       :padded="false"
       size="lg"
@@ -41,7 +43,7 @@
         </span>
         <UButton
           @click="submit"
-          :color="canSubmit ? 'primary' : 'neutral'"
+          color="neutral"
           size="lg"
           variant="ghost"
           class="hover:!bg-transparent cursor-pointer px-0"
