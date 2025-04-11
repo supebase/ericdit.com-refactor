@@ -27,6 +27,7 @@ const { needsUpdate, startVersionCheck, cleanup: cleanupVersionCheck } = useVers
 const USER_ACTIVITY_EVENTS = ["mousedown", "keydown", "scroll", "touchstart"] as const;
 let isActivityTrackingEnabled = false;
 let activityDebounceTimer: ReturnType<typeof setTimeout> | null = null;
+let cleanupSession: (() => void) | undefined;
 
 /**
  * 防抖处理用户活动更新
@@ -82,8 +83,7 @@ onMounted(async () => {
 
   if (import.meta.client) {
     startVersionCheck();
-    const cleanupSession = startSessionCheck();
-    onUnmounted(() => cleanupSession?.());
+    cleanupSession = startSessionCheck();
   }
 });
 
@@ -112,6 +112,7 @@ if (import.meta.client) {
     if (isActivityTrackingEnabled) {
       disableActivityTracking();
     }
+    cleanupSession?.();
   });
 }
 

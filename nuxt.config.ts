@@ -1,4 +1,7 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
+import { createResolver } from "@nuxt/kit";
+
+const { resolve } = createResolver(import.meta.url);
+
 export default defineNuxtConfig({
   compatibilityDate: "2024-11-01",
   devtools: { enabled: false },
@@ -10,6 +13,8 @@ export default defineNuxtConfig({
   },
 
   experimental: {
+    payloadExtraction: false,
+    renderJsonPayloads: true,
     treeshakeClientOnly: true, // 优化客户端代码
     crossOriginPrefetch: true, // 启用跨域预取优化
   },
@@ -30,7 +35,7 @@ export default defineNuxtConfig({
         lang: "zh-CN",
       },
       viewport:
-        "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover",
+        "width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover",
       link: [
         { rel: "dns-prefetch", href: "https://fonts.googleapis.com" },
         { rel: "preconnect", href: "https://fonts.gstatic.com", crossorigin: "anonymous" },
@@ -44,70 +49,43 @@ export default defineNuxtConfig({
 
   vite: {
     build: {
-      minify: "terser",
       target: "esnext",
-      cssCodeSplit: true,
-      chunkSizeWarningLimit: 1000,
-      terserOptions: {
-        compress: {
-          drop_console: true,
-          drop_debugger: true,
-          pure_funcs: ["console.log", "console.info"],
-          passes: 2,
-          unsafe: true, // 启用不安全但有效的压缩
-          unsafe_arrows: true, // 优化箭头函数
-        },
-        mangle: {
-          toplevel: true, // 启用顶级变量名混淆
-        },
-      },
       rollupOptions: {
-        treeshake: true, // 启用 tree shaking
+        output: {
+          manualChunks: {
+            "vue-vendor": ["vue", "vue-router"],
+            directus: ["@directus/sdk"],
+            vueuse: ["@vueuse/core"],
+          },
+        },
       },
     },
     optimizeDeps: {
-      include: ["vue", "vue-router", "@vueuse/core", "@directus/sdk"],
-      exclude: ["nuxt-emoji-picker"], // 排除不需要预构建的包
-    },
-    css: {
-      devSourcemap: false,
+      include: ["vue", "vue-router", "@vueuse/core", "@directus/sdk", "@nuxtjs/mdc"],
     },
   },
 
   nitro: {
-    minify: true,
-    compressPublicAssets: {
-      gzip: true,
-      brotli: true,
-    },
-    sourceMap: false,
-    timing: false,
     esbuild: {
       options: {
         target: "esnext",
-        minify: true,
-        treeShaking: true,
-        minifyIdentifiers: true,
-        minifySyntax: true,
-        minifyWhitespace: true,
-        legalComments: "none", // 移除所有注释
       },
     },
     prerender: {
       crawlLinks: true,
-      routes: ["/"],
     },
     publicAssets: [
       {
-        dir: "public",
-        maxAge: 60 * 60 * 24 * 365,
+        dir: resolve("./public"),
+        maxAge: 24 * 60 * 60 * 30,
       },
     ],
   },
 
-  build: {
-    transpile: ["vue-router"],
-    analyze: false,
+  routeRules: {
+    "/": {
+      prerender: true,
+    },
   },
 
   mdc: {
@@ -128,7 +106,7 @@ export default defineNuxtConfig({
   components: [
     {
       global: true,
-      path: "./components",
+      path: "~/components",
     },
   ],
 
