@@ -28,8 +28,9 @@
             name="hugeicons:image-03"
             class="size-7 text-neutral-400 dark:text-neutral-600 animate-pulse" />
         </div>
-        <img
-          :src="useAssets(content.images[0].directus_files_id) || undefined"
+        <NuxtImg
+          provider="directus"
+          :src="content.images[0].directus_files_id"
           @load="onImageLoad('single')"
           class="aspect-[16/9] object-cover w-full transform group-hover:scale-105 transition-transform duration-500" />
         <div class="absolute top-4 right-4">
@@ -94,8 +95,9 @@
                 name="hugeicons:image-03"
                 class="size-7 text-neutral-400 dark:text-neutral-600 animate-pulse" />
             </div>
-            <img
-              :src="useAssets(item.directus_files_id) || undefined"
+            <NuxtImg
+              provider="directus"
+              :src="item.directus_files_id"
               @load="onImageLoad('carousel')"
               class="aspect-[16/9] object-cover w-full transform hover:scale-105 transition-transform duration-500" />
           </div>
@@ -123,6 +125,8 @@
 
 <script setup lang="ts">
 import type { Contents } from "~/types";
+import { useDateFormatter } from "~/composables/useDateFormatter";
+import { useArticleMetrics } from "~/composables/useArticleMetrics";
 
 const props = defineProps<{
   content: Contents.Item;

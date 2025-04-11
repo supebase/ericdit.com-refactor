@@ -23,7 +23,8 @@
             <div class="flex items-center gap-3 flex-1 min-w-0">
               <div
                 class="w-8 h-8 shrink-0 rounded-lg overflow-hidden bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center">
-                <img
+                <NuxtImg
+                  provider="directus"
                   v-if="item.avatar"
                   :src="item.avatar.src"
                   :alt="item.label"
@@ -123,7 +124,7 @@ const groups = computed(() => [
       to: `/article/${article.id}`,
       avatar: article.images?.[0]?.directus_files_id
         ? {
-            src: useAssets(article.images[0].directus_files_id),
+            src: article.images[0].directus_files_id,
           }
         : undefined,
     })),

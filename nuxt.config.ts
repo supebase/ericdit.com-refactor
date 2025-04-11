@@ -6,7 +6,14 @@ export default defineNuxtConfig({
   compatibilityDate: "2024-11-01",
   devtools: { enabled: false },
   ssr: false,
-  modules: ["@nuxt/ui", "@vueuse/nuxt", "@nuxtjs/mdc", "nuxt-emoji-picker"],
+  modules: [
+    "@nuxt/ui",
+    "@nuxt/image",
+    "@vueuse/nuxt",
+    "@nuxtjs/mdc",
+    "nuxt-booster",
+    "nuxt-emoji-picker",
+  ],
 
   future: {
     compatibilityVersion: 4,
@@ -85,6 +92,37 @@ export default defineNuxtConfig({
   routeRules: {
     "/": {
       prerender: true,
+    },
+  },
+
+  booster: {
+    detection: {
+      performance: true,
+      browserSupport: true,
+    },
+
+    performanceMetrics: {
+      device: {
+        hardwareConcurrency: { min: 2, max: 48 },
+        deviceMemory: { min: 2 },
+      },
+      timing: {
+        fcp: 800,
+        dcl: 1200,
+      },
+    },
+    targetFormats: ["webp", "avif", "jpg|jpeg|png|gif"],
+  },
+
+  image: {
+    directus: {
+      baseURL: import.meta.env.DIRECTUS_API_URL + "/assets",
+      modifiers: {
+        withoutEnlargement: "true",
+        format: "webp",
+        quality: 80,
+        lazy: true,
+      },
     },
   },
 

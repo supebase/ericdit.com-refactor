@@ -17,12 +17,12 @@
           <SharedAvatar
             :src="userAvatarUrl || undefined"
             :alt="!reply.user_created.avatar ? reply.user_created.first_name : undefined"
-            size="sm"
+            size="xs"
             class="uppercase" />
         </UChip>
       </div>
 
-      <div class="flex-1">
+      <div class="flex-1 mb-1">
         <div class="flex justify-between items-center">
           <div class="flex items-center text-[13px] space-x-2 nums tabular-nums">
             <div class="text-sm font-medium">{{ reply.user_created.first_name }}</div>
@@ -52,6 +52,7 @@
 
 <script setup lang="ts">
 import type { Comments } from "~/types";
+import { useDateFormatter } from "~/composables/useDateFormatter";
 
 const props = defineProps<{
   reply: Comments.Item;

@@ -31,7 +31,7 @@ export const useProfileAvatar = (): ProfileAvatarReturn => {
    */
   const avatarUrl = computed(() => {
     const avatarId = user.value?.avatar;
-    return avatarId ? `${useAssets(avatarId)}` : null;
+    return avatarId ? avatarId : null;
   });
 
   /**

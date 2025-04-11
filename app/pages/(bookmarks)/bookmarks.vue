@@ -37,11 +37,10 @@
         variant="soft"
         class="relative">
         <div class="flex items-center space-x-3">
-          <UAvatar
-            :src="useAssets(bookmark.user_created.avatar) || undefined"
-            size="lg"
-            loading="lazy" />
-
+          <SharedAvatar
+            :src="bookmark.user_created.avatar"
+            :alt="bookmark.user_created.first_name"
+            size="sm" />
           <NuxtLink :to="{ name: 'article-id', params: { id: getContentId(bookmark.content_id) } }">
             <div class="text-base font-medium line-clamp-1">
               {{ getContentTitle(bookmark.content_id) }}
@@ -71,6 +70,7 @@
 
 <script setup lang="ts">
 import type { Bookmarks } from "~/types";
+import { useDateFormatter } from "~/composables/useDateFormatter";
 
 definePageMeta({
   middleware: ["auth"],

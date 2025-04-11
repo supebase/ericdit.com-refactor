@@ -6,8 +6,8 @@
       <div class="flex items-center space-x-3">
         <div>
           <SharedAvatar
-            :src="useAssets(content.user_created.avatar) || undefined"
-            size="lg"
+            :src="content.user_created.avatar"
+            size="md"
             :alt="content.user_created.first_name" />
         </div>
         <div class="flex flex-col">
@@ -61,6 +61,8 @@
 <script setup lang="ts">
 import { isClient } from "@vueuse/shared";
 import type { Contents } from "~/types";
+import { useDateFormatter } from "~/composables/useDateFormatter";
+import { useArticleMetrics } from "~/composables/useArticleMetrics";
 
 const toast = useToast();
 

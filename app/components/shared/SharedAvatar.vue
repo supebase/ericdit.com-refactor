@@ -7,12 +7,13 @@
         :name="loadingIcon"
         :class="[`size-${iconSize}`, 'text-neutral-500 animate-pulse']" />
     </div>
-    <UAvatar
+    <NuxtImg
+      provider="directus"
       :src="src"
       :alt="alt"
-      :size="size"
+      :class="[sizeClass, 'rounded-full object-cover']"
       @load="onImageLoad"
-      loading="lazy"
+      class="uppercase"
       v-bind="$attrs" />
     <slot />
   </div>
@@ -50,6 +51,18 @@ const iconSize = computed(() => {
     default:
       return "5";
   }
+});
+
+// 添加尺寸类计算属性
+const sizeClass = computed(() => {
+  const sizes = {
+    xs: "w-7",
+    sm: "w-8",
+    md: "w-10",
+    lg: "w-12",
+    xl: "w-14",
+  };
+  return sizes[props.size] || sizes.md;
 });
 
 const onImageLoad = () => {

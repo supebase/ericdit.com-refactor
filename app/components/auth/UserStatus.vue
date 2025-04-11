@@ -1,12 +1,12 @@
 <template>
-  <div class="flex items-center">
+  <div class="flex items-center select-none">
     <template v-if="isAuthenticated">
       <div class="flex items-center">
         <NuxtLink to="/profile">
           <SharedAvatar
-            :src="useAssets(user?.avatar || '')"
+            :src="user?.avatar"
             :alt="!user?.avatar ? user?.first_name : undefined"
-            size="md"
+            size="sm"
             class="uppercase" />
         </NuxtLink>
       </div>

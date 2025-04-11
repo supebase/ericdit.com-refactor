@@ -19,24 +19,17 @@
     </div>
 
     <!-- 图片组件 -->
-    <component
-      :is="ImageComponent"
-      :src="refinedSrc"
+    <NuxtImg
+      :src="props.src"
       :alt="props.alt"
       :width="props.width"
       :height="props.height"
-      loading="lazy"
       @load="onImageLoad"
       @error="onImageError" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { withTrailingSlash, withLeadingSlash, joinURL } from "ufo";
-import { useRuntimeConfig, computed } from "#imports";
-
-import ImageComponent from "#build/mdc-image-component.mjs";
-
 const props = defineProps({
   src: {
     type: String,
@@ -54,18 +47,6 @@ const props = defineProps({
     type: [String, Number],
     default: undefined,
   },
-});
-
-const refinedSrc = computed(() => {
-  if (!props.src) return "";
-
-  if (props.src.startsWith("/") && !props.src.startsWith("//")) {
-    const _base = withLeadingSlash(withTrailingSlash(useRuntimeConfig().app.baseURL));
-    if (_base !== "/" && !props.src.startsWith(_base)) {
-      return joinURL(_base, props.src);
-    }
-  }
-  return props.src;
 });
 
 // 图片状态

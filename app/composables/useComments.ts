@@ -104,7 +104,7 @@ export const useComments = () => {
         if (item.event === "update") {
           const userData = item.data[0];
           if (userData?.avatar) {
-            userAvatars.value[userData.id] = useAssets(userData.avatar);
+            userAvatars.value[userData.id] = userData.avatar;
           }
           if (userData?.location) {
             userLocations.value[userData.id] = userData.location;
@@ -128,7 +128,7 @@ export const useComments = () => {
   const getUserAvatarUrl = (userId: string, avatarId: string | null): string | null => {
     if (!avatarId) return null;
     if (!userAvatars.value[userId]) {
-      userAvatars.value[userId] = useAssets(avatarId);
+      userAvatars.value[userId] = avatarId;
     }
     return userAvatars.value[userId];
   };

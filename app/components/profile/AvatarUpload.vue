@@ -2,11 +2,10 @@
   <div
     class="flex items-center justify-center relative cursor-pointer group"
     @click="openFileInput">
-    <UAvatar
-      :src="avatarUrl || ''"
+    <SharedAvatar
+      :src="avatarUrl || undefined"
       :alt="!avatarUrl ? user?.first_name : undefined"
-      size="3xl"
-      class="uppercase" />
+      size="lg" />
     <div
       class="absolute -bottom-1 -right-1 bg-white dark:bg-neutral-900 size-5 rounded-full flex items-center justify-center">
       <UIcon
