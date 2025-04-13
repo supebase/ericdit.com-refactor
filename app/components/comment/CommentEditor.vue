@@ -68,7 +68,7 @@ const emit = defineEmits<{
 const { isAuthenticated } = useAuth();
 
 const COMMENT_MAX_LENGTH = 500;
-const INVALID_CHARS_REGEX = /[<>\/]/;
+const INVALID_CHARS_REGEX = /[<>\/&"'`=;(){}[\]]/;
 
 const content = ref("");
 const commentInput = ref<{ $el: HTMLElement } | null>(null);

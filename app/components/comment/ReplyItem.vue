@@ -45,14 +45,13 @@
       </div>
     </div>
     <div class="ml-10 mt-2 text-[15px] text-neutral-600 dark:text-neutral-400">
-      {{ reply.comment }}
+      {{ safeComment }}
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import type { Comments } from "~/types";
-import { useDateFormatter } from "~/composables/useDateFormatter";
 
 const props = defineProps<{
   reply: Comments.Item;
@@ -68,6 +67,8 @@ const userLocation = computed(
 );
 
 const { usersStatus, subscribeUserStatus } = usePresence();
+
+const safeComment = computed(() => escapeHtml(props.reply.comment));
 
 onMounted(async () => {
   await subscribeUserStatus(props.reply.user_created.id);

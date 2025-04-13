@@ -70,7 +70,6 @@
 
 <script setup lang="ts">
 import type { Bookmarks } from "~/types";
-import { useDateFormatter } from "~/composables/useDateFormatter";
 
 definePageMeta({
   middleware: ["auth"],

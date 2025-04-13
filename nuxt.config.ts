@@ -11,7 +11,6 @@ export default defineNuxtConfig({
     "@nuxt/image",
     "@vueuse/nuxt",
     "@nuxtjs/mdc",
-    "nuxt-booster",
     "nuxt-emoji-picker",
   ],
 
@@ -66,6 +65,13 @@ export default defineNuxtConfig({
           },
         },
       },
+      minify: true,
+      cssMinify: true,
+      modulePreload: {
+        polyfill: false,
+      },
+      reportCompressedSize: true,
+      chunkSizeWarningLimit: 1000,
     },
     optimizeDeps: {
       include: ["vue", "vue-router", "@vueuse/core", "@directus/sdk", "@nuxtjs/mdc"],
@@ -84,34 +90,22 @@ export default defineNuxtConfig({
     publicAssets: [
       {
         dir: resolve("./public"),
-        maxAge: 24 * 60 * 60 * 30,
+        maxAge: 24 * 60 * 60 * 90,
       },
     ],
+    routeRules: {
+      "/static/**": {
+        headers: {
+          "Cache-Control": "public, max-age=31536000, immutable",
+        },
+      },
+    },
   },
 
   routeRules: {
     "/": {
       prerender: true,
     },
-  },
-
-  booster: {
-    detection: {
-      performance: true,
-      browserSupport: true,
-    },
-
-    performanceMetrics: {
-      device: {
-        hardwareConcurrency: { min: 2, max: 48 },
-        deviceMemory: { min: 2 },
-      },
-      timing: {
-        fcp: 800,
-        dcl: 1200,
-      },
-    },
-    targetFormats: ["webp", "avif", "jpg|jpeg|png|gif"],
   },
 
   image: {

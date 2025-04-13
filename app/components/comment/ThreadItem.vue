@@ -48,7 +48,7 @@
       <div
         class="mt-2 cursor-pointer text-[15px] text-neutral-600 dark:text-neutral-400"
         @click="toggleReplyInput">
-        {{ comment.comment }}
+        {{ safeComment }}
       </div>
       <div
         class="mt-1"
@@ -92,7 +92,6 @@
 <script setup lang="ts">
 import type { Comments } from "~/types";
 const { isAuthenticated } = useAuth();
-import { useDateFormatter } from "~/composables/useDateFormatter";
 
 const props = defineProps<{
   comment: Comments.Item;
@@ -148,6 +147,8 @@ const handleSubmit = async (content: string) => {
 };
 
 const replyCount = computed(() => replyListRef.value?.repliesCount || 0);
+
+const safeComment = computed(() => escapeHtml(props.comment.comment));
 
 defineExpose({
   refreshReplies,

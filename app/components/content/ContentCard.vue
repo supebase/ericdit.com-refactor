@@ -32,6 +32,13 @@
           provider="directus"
           :src="content.images[0].directus_files_id"
           @load="onImageLoad('single')"
+          loading="eager"
+          fetchpriority="high"
+          preload
+          placeholder
+          format="webp"
+          quality="80"
+          sizes="(max-width: 768px) 100vw, 768px"
           class="aspect-[16/9] object-cover w-full transform group-hover:scale-105 transition-transform duration-500" />
         <div class="absolute top-4 right-4">
           <UBadge
@@ -99,6 +106,7 @@
               provider="directus"
               :src="item.directus_files_id"
               @load="onImageLoad('carousel')"
+              loading="lazy"
               class="aspect-[16/9] object-cover w-full transform hover:scale-105 transition-transform duration-500" />
           </div>
         </UCarousel>
@@ -125,8 +133,6 @@
 
 <script setup lang="ts">
 import type { Contents } from "~/types";
-import { useDateFormatter } from "~/composables/useDateFormatter";
-import { useArticleMetrics } from "~/composables/useArticleMetrics";
 
 const props = defineProps<{
   content: Contents.Item;
@@ -166,4 +172,12 @@ const onImageLoad = (type: "single" | "carousel") => {
     carouselImageLoading.value = false;
   }
 };
+
+// 预加载图片
+onMounted(() => {
+  if (displayType.value === "single" && props.content.images?.[0]) {
+    const img = new Image();
+    img.src = props.content.images[0].directus_files_id;
+  }
+});
 </script>

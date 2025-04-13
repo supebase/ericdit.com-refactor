@@ -61,8 +61,6 @@
 <script setup lang="ts">
 import { isClient } from "@vueuse/shared";
 import type { Contents } from "~/types";
-import { useDateFormatter } from "~/composables/useDateFormatter";
-import { useArticleMetrics } from "~/composables/useArticleMetrics";
 
 const toast = useToast();
 
