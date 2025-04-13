@@ -1,23 +1,14 @@
 <template>
-  <UCard
-    :ui="{
-      root: replyCount ? 'divide-neutral-100 dark:divide-neutral-900 divide-y-2' : 'divide-none',
-      body: replyCount ? 'p-4 sm:p-6' : 'p-0 sm:p-0',
-    }"
-    variant="soft"
-    class="my-4">
+  <UCard :ui="{
+    root: replyCount ? 'divide-neutral-100 dark:divide-neutral-900 divide-y-2' : 'divide-none',
+    body: replyCount ? 'p-4 sm:p-6' : 'p-0 sm:p-0',
+  }" variant="soft" class="my-4">
     <template #header>
       <div class="flex items-center">
         <div class="mr-3">
-          <UChip
-            inset
-            size="xs"
-            position="bottom-right"
-            :color="userStatus ? 'primary' : 'neutral'">
-            <SharedAvatar
-              :src="userAvatarUrl || undefined"
-              :alt="!comment.user_created.avatar ? comment.user_created.first_name : undefined"
-              size="xs"
+          <UChip inset size="xs" position="bottom-right" :color="userStatus ? 'primary' : 'neutral'">
+            <SharedAvatar :src="userAvatarUrl || undefined"
+              :alt="!comment.user_created.avatar ? comment.user_created.first_name : undefined" size="xs"
               class="uppercase" />
           </UChip>
         </div>
@@ -29,62 +20,41 @@
               <div class="text-neutral-400 dark:text-neutral-600">
                 {{ useDateFormatter(comment.date_created) }}
               </div>
-              <UIcon
-                name="hugeicons:arrow-right-01"
-                class="size-3 text-neutral-400 dark:text-neutral-600" />
+              <UIcon name="hugeicons:arrow-right-01" class="size-3 text-neutral-400 dark:text-neutral-600" />
               <div class="text-neutral-400 dark:text-neutral-600">
                 {{ userLocation }}
               </div>
             </div>
 
-            <SharedLikeButton
-              :comment-id="comment.id"
-              :icon-size="18"
-              likeType="heart" />
+            <SharedLikeButton :comment-id="comment.id" :icon-size="18" likeType="heart" />
           </div>
         </div>
       </div>
 
-      <div
-        class="mt-2 cursor-pointer text-[15px] text-neutral-600 dark:text-neutral-400"
-        @click="toggleReplyInput">
+      <div class="mt-2 cursor-pointer text-[15px] text-neutral-600 dark:text-neutral-400" @click="toggleReplyInput">
         {{ safeComment }}
       </div>
-      <div
-        class="mt-1"
-        :class="isReplying ? 'hidden' : ''">
-        <button
-          @click="toggleReplyInput"
-          class="text-[13px] text-neutral-500 nums tabular-nums cursor-pointer">
+      <div class="mt-1" :class="isReplying ? 'hidden' : ''">
+        <button @click="toggleReplyInput" class="text-[13px] text-neutral-500 nums tabular-nums cursor-pointer">
           {{ replyCount > 0 ? `${replyCount} 条回复` : "回复" }}
         </button>
       </div>
 
-      <div
-        class="transform transition-all duration-300 ease-in-out"
-        :class="
-          isReplying
-            ? 'translate-y-0 opacity-100 max-h-[200px]'
-            : '-translate-y-3 opacity-0 max-h-0 overflow-hidden'
+      <div class="transform transition-all duration-300 ease-in-out" :class="isReplying
+          ? 'translate-y-0 opacity-100 max-h-[200px]'
+          : '-translate-y-3 opacity-0 max-h-0 overflow-hidden'
         ">
         <div>
-          <CommentEditor
-            :placeholder="`回复：${comment.user_created.first_name}`"
-            :is-submitting="isSubmitting"
+          <CommentEditor :placeholder="`回复：${comment.user_created.first_name}`" :is-submitting="isSubmitting"
             @submit="handleSubmit" />
-          <UIcon
-            v-if="isReplying"
-            @click="cancelReply"
-            name="hugeicons:cancel-circle"
+          <UIcon v-if="isReplying" @click="cancelReply" name="hugeicons:cancel-circle"
             class="size-5 text-neutral-500 cursor-pointer absolute -top-2 -right-1" />
         </div>
       </div>
     </template>
 
     <template #default>
-      <CommentReplyThread
-        ref="replyListRef"
-        :comment-id="comment.id" />
+      <CommentReplyThread ref="replyListRef" :comment-id="comment.id" />
     </template>
   </UCard>
 </template>

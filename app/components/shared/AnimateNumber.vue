@@ -1,18 +1,10 @@
 <template>
   <div class="flex items-center nums tabular-nums">
-    <div
-      v-for="(digit, index) in displayDigits"
-      :key="index"
-      :class="[digit === ',' ? 'comma' : 'number-column']">
+    <div v-for="(digit, index) in displayDigits" :key="index" :class="[digit === ',' ? 'comma' : 'number-column']">
       <template v-if="digit === ','"> , </template>
       <template v-else>
-        <div
-          class="number-scroll"
-          :style="{ transform: `translateY(${digit * -10}%)` }">
-          <div
-            v-for="n in 10"
-            :key="n"
-            class="number-cell">
+        <div class="number-scroll" :style="{ transform: `translateY(${digit * -10}%)` }">
+          <div v-for="n in 10" :key="n" class="number-cell">
             {{ n - 1 }}
           </div>
         </div>

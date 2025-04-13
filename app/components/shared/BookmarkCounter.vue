@@ -1,21 +1,12 @@
 <template>
   <div v-if="loading && bookmarksCount == null">
-    <UIcon
-      name="svg-spinners:3-dots-scale"
-      class="size-5 text-neutral-400 dark:text-orange-200" />
+    <UIcon name="svg-spinners:3-dots-scale" class="size-5 text-neutral-400 dark:text-orange-200" />
   </div>
-  <div
-    v-else
-    class="select-none">
-    <UChip
-      :color="bookmarksCount ? 'warning' : 'neutral'"
-      :ui="{ base: 'py-2 px-1.5 font-bold' }"
-      :show="bookmarksCount !== null && bookmarksCount > 0"
-      :text="bookmarksCount ?? undefined">
+  <div v-else class="select-none">
+    <UChip :color="bookmarksCount ? 'warning' : 'neutral'" :ui="{ base: 'py-2 px-1.5 font-bold' }"
+      :show="bookmarksCount !== null && bookmarksCount > 0" :text="bookmarksCount ?? undefined">
       <NuxtLink to="/bookmarks">
-        <UIcon
-          name="hugeicons:all-bookmark"
-          class="size-5 text-neutral-600 dark:text-neutral-400"
+        <UIcon name="hugeicons:all-bookmark" class="size-5 text-neutral-600 dark:text-neutral-400"
           :class="{ 'bookmark-animation': showAnimation }" />
       </NuxtLink>
     </UChip>
@@ -98,15 +89,19 @@ watch(user, () => {
   0% {
     transform: scale(1) rotate(0);
   }
+
   25% {
     transform: scale(1.2) rotate(-15deg);
   }
+
   50% {
     transform: scale(1.3) rotate(10deg);
   }
+
   75% {
     transform: scale(1.2) rotate(-5deg);
   }
+
   100% {
     transform: scale(1) rotate(0);
   }

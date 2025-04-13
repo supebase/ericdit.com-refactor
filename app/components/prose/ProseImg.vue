@@ -1,30 +1,18 @@
 <template>
   <div class="relative">
     <!-- 加载动画 -->
-    <div
-      v-if="imageLoading && !imageError"
+    <div v-if="imageLoading && !imageError"
       class="absolute inset-0 flex items-center justify-center bg-neutral-800 rounded-lg">
-      <UIcon
-        name="hugeicons:image-03"
-        class="size-7 text-neutral-600 animate-pulse" />
+      <UIcon name="hugeicons:image-03" class="size-7 text-neutral-600 animate-pulse" />
     </div>
 
     <!-- 图片加载错误显示 -->
-    <div
-      v-if="imageError"
-      class="absolute inset-0 flex items-center justify-center bg-neutral-800/50 rounded-lg">
-      <UIcon
-        name="hugeicons:image-not-found-02"
-        class="size-7 text-red-600" />
+    <div v-if="imageError" class="absolute inset-0 flex items-center justify-center bg-neutral-800/50 rounded-lg">
+      <UIcon name="hugeicons:image-not-found-02" class="size-7 text-red-600" />
     </div>
 
     <!-- 图片组件 -->
-    <NuxtImg
-      :src="props.src"
-      :alt="props.alt"
-      :width="props.width"
-      :height="props.height"
-      @load="onImageLoad"
+    <NuxtImg :src="props.src" :alt="props.alt" :width="props.width" :height="props.height" @load="onImageLoad"
       @error="onImageError" />
   </div>
 </template>

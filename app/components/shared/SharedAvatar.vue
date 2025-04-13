@@ -1,20 +1,11 @@
 <template>
   <div class="relative">
-    <div
-      v-if="avatarLoading && src"
+    <div v-if="avatarLoading && src"
       class="absolute inset-0 ring-1 ring-neutral-100 dark:ring-neutral-800 flex items-center justify-center bg-neutral-100 dark:bg-neutral-800 rounded-full">
-      <UIcon
-        :name="loadingIcon"
-        :class="[`size-${iconSize}`, 'text-neutral-500 animate-pulse']" />
+      <UIcon :name="loadingIcon" :class="[`size-${iconSize}`, 'text-neutral-500 animate-pulse']" />
     </div>
-    <NuxtImg
-      provider="directus"
-      :src="src"
-      :alt="alt"
-      :class="[sizeClass, 'rounded-full object-cover']"
-      @load="onImageLoad"
-      class="uppercase"
-      v-bind="$attrs" />
+    <NuxtImg provider="directus" :src="src" :alt="alt" :class="[sizeClass, 'rounded-full object-cover']"
+      @load="onImageLoad" class="uppercase" v-bind="$attrs" />
     <slot />
   </div>
 </template>

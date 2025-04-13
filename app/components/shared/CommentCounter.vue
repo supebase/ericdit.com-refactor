@@ -1,18 +1,12 @@
 <template>
   <div class="flex justify-end items-center space-x-2">
-    <UIcon
-      :name="
-        !allowComments
-          ? 'hugeicons:comment-block-02'
-          : commentsCount > 0
+    <UIcon :name="!allowComments
+        ? 'hugeicons:comment-block-02'
+        : commentsCount > 0
           ? 'hugeicons:comment-01'
           : 'hugeicons:comment-02'
-      "
-      :size="iconSize"
-      class="text-neutral-400 dark:text-neutral-500" />
-    <span
-      class="text-sm text-neutral-400 dark:text-neutral-500"
-      :class="{ 'flex items-center': !allowComments }">
+      " :size="iconSize" class="text-neutral-400 dark:text-neutral-500" />
+    <span class="text-sm text-neutral-400 dark:text-neutral-500" :class="{ 'flex items-center': !allowComments }">
       <template v-if="!allowComments"> </template>
       <template v-else>
         <SharedAnimateNumber :value="commentsCount" />

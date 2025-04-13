@@ -1,19 +1,9 @@
 <template>
   <div class="flex justify-end items-center">
-    <button
-      @click="handleLike"
-      :disabled="isProcessing"
+    <button @click="handleLike" :disabled="isProcessing"
       class="text-sm flex items-center space-x-2 text-neutral-400 dark:text-neutral-500 cursor-pointer disabled:cursor-not-allowed">
-      <UIcon
-        name="svg-spinners:ring-resize"
-        :size="iconSize"
-        class="text-neutral-500"
-        v-if="isProcessing" />
-      <UIcon
-        v-else
-        :name="getIconName || ''"
-        :size="iconSize"
-        :class="{ 'scale-effect': showScale }" />
+      <UIcon name="svg-spinners:ring-resize" :size="iconSize" class="text-neutral-500" v-if="isProcessing" />
+      <UIcon v-else :name="getIconName || ''" :size="iconSize" :class="{ 'scale-effect': showScale }" />
       <SharedAnimateNumber :value="likesCount" />
     </button>
   </div>
@@ -155,9 +145,11 @@ watch(isAuthenticated, (newValue) => {
   0% {
     transform: scale(1);
   }
+
   50% {
     transform: scale(1.3);
   }
+
   100% {
     transform: scale(1);
   }

@@ -1,7 +1,5 @@
 <template>
-  <UApp
-    :toaster="appConfig.toaster"
-    :tooltip="appConfig.tooltip">
+  <UApp :toaster="appConfig.toaster" :tooltip="appConfig.tooltip">
     <NuxtLayout>
       <NuxtPage />
 

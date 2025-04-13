@@ -1,14 +1,9 @@
 <template>
-  <UModal
-    :dismissible="false"
-    :open="modelValue"
-    @update:open="$emit('update:modelValue', $event)">
+  <UModal :dismissible="false" :open="modelValue" @update:open="$emit('update:modelValue', $event)">
     <template #content>
       <UCard>
         <div class="flex items-center gap-3">
-          <UIcon
-            name="hugeicons:refresh"
-            class="size-5" />
+          <UIcon name="hugeicons:refresh" class="size-5" />
           <div class="text-base font-bold">发现新版本</div>
         </div>
 
@@ -18,10 +13,7 @@
 
         <template #footer>
           <div class="flex justify-center">
-            <UButton
-              color="primary"
-              variant="soft"
-              @click="refreshPage">
+            <UButton color="primary" variant="soft" @click="refreshPage">
               立即刷新
             </UButton>
           </div>

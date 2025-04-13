@@ -1,18 +1,11 @@
 <template>
   <div>
     <div class="space-y-6">
-      <CommentReplyItem
-        v-for="(reply, index) in displayReplies"
-        :key="reply.id"
-        :reply="reply"
+      <CommentReplyItem v-for="(reply, index) in displayReplies" :key="reply.id" :reply="reply"
         :show-arrow="index === 0" />
 
-      <div
-        v-if="replies.length > 1"
-        class="text-[13px] ml-10">
-        <button
-          class="text-neutral-500 nums tabular-nums cursor-pointer"
-          @click="toggleExpand">
+      <div v-if="replies.length > 1" class="text-[13px] ml-10">
+        <button class="text-neutral-500 nums tabular-nums cursor-pointer" @click="toggleExpand">
           {{ isExpanded ? "收起回复" : `查看全部回复` }}
         </button>
       </div>

@@ -140,12 +140,12 @@ export namespace Bookmarks {
     user_created: User.Profile; // 创建书签的用户
     date_created: string; // 创建时间
     content_id:
-      | string
-      | {
-          // 关联的内容ID或内容对象
-          id: string;
-          title: string;
-        };
+    | string
+    | {
+      // 关联的内容ID或内容对象
+      id: string;
+      title: string;
+    };
   }
 
   /**

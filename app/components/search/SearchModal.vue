@@ -1,38 +1,18 @@
 <template>
-  <UModal
-    v-model:open="isOpen"
-    title="Search"
-    description="站内搜索">
-    <UIcon
-      name="hugeicons:search-01"
-      class="size-5 text-neutral-600 dark:text-neutral-400 cursor-pointer" />
-
+  <UModal v-model:open="isOpen" title="Search" description="站内搜索">
+    <UIcon name="hugeicons:search-01" class="size-5 text-neutral-600 dark:text-neutral-400 cursor-pointer" />
     <template #content>
-      <UCommandPalette
-        v-model:search-term="searchQuery"
-        :loading="isLoading"
-        :groups="groups"
-        icon="hugeicons:search-01"
-        :placeholder="'请输入至少 ' + MIN_SEARCH_LENGTH + ' 个字符'"
-        class="h-[30vh]"
-        close
-        @update:open="isOpen = $event"
-        @update:model-value="onSelect">
+      <UCommandPalette v-model:search-term="searchQuery" :loading="isLoading" :groups="groups"
+        icon="hugeicons:search-01" :placeholder="'请输入至少 ' + MIN_SEARCH_LENGTH + ' 个字符'" class="h-[30vh]" close
+        @update:open="isOpen = $event" @update:model-value="onSelect">
         <template #item="{ item }">
           <div class="flex items-center justify-between mr-2 rounded-lg w-full">
             <div class="flex items-center gap-3 flex-1 min-w-0">
               <div
                 class="w-8 h-8 shrink-0 rounded-lg overflow-hidden bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center">
-                <NuxtImg
-                  provider="directus"
-                  v-if="item.avatar"
-                  :src="item.avatar.src"
-                  :alt="item.label"
+                <NuxtImg provider="directus" v-if="item.avatar" :src="item.avatar.src" :alt="item.label"
                   class="w-full h-full object-cover" />
-                <UIcon
-                  v-else
-                  name="hugeicons:file-01"
-                  class="size-5 text-neutral-400 dark:text-neutral-600" />
+                <UIcon v-else name="hugeicons:file-01" class="size-5 text-neutral-400 dark:text-neutral-600" />
               </div>
               <div class="flex flex-col min-w-0">
                 <span class="text-sm font-medium line-clamp-1">{{ item.label }}</span>
@@ -44,8 +24,7 @@
           </div>
         </template>
         <template #empty>
-          <div
-            class="flex flex-col items-center justify-center py-4 gap-2 text-neutral-400 dark:text-neutral-600">
+          <div class="flex flex-col items-center justify-center py-4 gap-2 text-neutral-400 dark:text-neutral-600">
             <p v-if="error">{{ error }}</p>
             <p v-else-if="searchQuery && searchQuery.length < MIN_SEARCH_LENGTH">请继续输入...</p>
             <p v-else-if="searchQuery && !isLoading && !searchResults.length">未找到相关内容</p>
@@ -124,8 +103,8 @@ const groups = computed(() => [
       to: `/article/${article.id}`,
       avatar: article.images?.[0]?.directus_files_id
         ? {
-            src: article.images[0].directus_files_id,
-          }
+          src: article.images[0].directus_files_id,
+        }
         : undefined,
     })),
     ignoreFilter: true,

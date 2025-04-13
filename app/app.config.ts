@@ -8,7 +8,7 @@ export default defineAppConfig({
   ui: {
     // 颜色主题配置
     colors: {
-      primary: "emerald", // 主要颜色：翠绿色
+      primary: "amber", // 主色调：橙色
       neutral: "zinc", // 中性色：石灰色
     },
     // 图标配置

@@ -1,3 +1,9 @@
+<template>
+  <div ref="element" :class="{ 'fade-in': true, 'is-visible': isVisible }">
+    <slot />
+  </div>
+</template>
+
 <script setup>
 const props = defineProps({
   delay: {
@@ -24,14 +30,6 @@ onMounted(() => {
   observer.observe(element.value);
 });
 </script>
-
-<template>
-  <div
-    ref="element"
-    :class="{ 'fade-in': true, 'is-visible': isVisible }">
-    <slot />
-  </div>
-</template>
 
 <style scoped>
 .fade-in {

@@ -148,14 +148,14 @@ export const useAuth = () => {
     const interval = 30 * 60 * 1000;
     const checkInterval = setInterval(() => {
       if (isAuthenticated.value) {
-        refreshUser().catch(() => {});
+        refreshUser().catch(() => { });
       }
     }, interval);
 
     // 页面可见性变化时也检查
     const visibilityHandler = () => {
       if (document.visibilityState === "visible" && isAuthenticated.value) {
-        refreshUser().catch(() => {});
+        refreshUser().catch(() => { });
       }
     };
 

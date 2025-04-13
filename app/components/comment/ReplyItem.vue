@@ -1,24 +1,14 @@
 <template>
   <div class="relative">
-    <div
-      v-if="showArrow"
-      class="absolute top-0 left-2">
-      <UIcon
-        name="hugeicons:arrow-move-down-right"
-        class="size-5 text-neutral-300/80 dark:text-neutral-700/80" />
+    <div v-if="showArrow" class="absolute top-0 left-2">
+      <UIcon name="hugeicons:arrow-move-down-right" class="size-5 text-neutral-300/80 dark:text-neutral-700/80" />
     </div>
     <div class="flex items-center ml-10">
       <div class="mr-3">
-        <UChip
-          inset
-          size="xs"
-          position="bottom-right"
+        <UChip inset size="xs" position="bottom-right"
           :color="usersStatus[reply.user_created.id] ? 'primary' : 'neutral'">
-          <SharedAvatar
-            :src="userAvatarUrl || undefined"
-            :alt="!reply.user_created.avatar ? reply.user_created.first_name : undefined"
-            size="xs"
-            class="uppercase" />
+          <SharedAvatar :src="userAvatarUrl || undefined"
+            :alt="!reply.user_created.avatar ? reply.user_created.first_name : undefined" size="xs" class="uppercase" />
         </UChip>
       </div>
 
@@ -29,18 +19,13 @@
             <div class="text-neutral-400 dark:text-neutral-600">
               {{ useDateFormatter(reply.date_created) }}
             </div>
-            <UIcon
-              name="hugeicons:arrow-right-01"
-              class="size-3 text-neutral-400 dark:text-neutral-600" />
+            <UIcon name="hugeicons:arrow-right-01" class="size-3 text-neutral-400 dark:text-neutral-600" />
             <div class="text-neutral-400 dark:text-neutral-600">
               {{ userLocation }}
             </div>
           </div>
 
-          <SharedLikeButton
-            :comment-id="reply.id"
-            :icon-size="18"
-            likeType="heart" />
+          <SharedLikeButton :comment-id="reply.id" :icon-size="18" likeType="heart" />
         </div>
       </div>
     </div>

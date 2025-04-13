@@ -1,14 +1,10 @@
 <template>
   <article class="py-5 space-y-5">
     <div class="text-2xl font-bold">{{ content.title }}</div>
-    <div
-      class="flex justify-between items-end text-sm text-neutral-500 nums tabular-nums select-none">
+    <div class="flex justify-between items-end text-sm text-neutral-500 nums tabular-nums select-none">
       <div class="flex items-center space-x-3">
         <div>
-          <SharedAvatar
-            :src="content.user_created.avatar"
-            size="md"
-            :alt="content.user_created.first_name" />
+          <SharedAvatar :src="content.user_created.avatar" size="md" :alt="content.user_created.first_name" />
         </div>
         <div class="flex flex-col">
           <div class="text-base text-neutral-900 dark:text-neutral-50 font-medium">
@@ -16,12 +12,8 @@
           </div>
           <div class="flex items-center text-[13px] space-x-2">
             <div>{{ useDateFormatter(content.date_created) }}发布</div>
-            <div
-              class="flex items-center space-x-2"
-              v-if="content.date_updated">
-              <UIcon
-                name="hugeicons:arrow-right-01"
-                class="size-3 text-neutral-500" />
+            <div class="flex items-center space-x-2" v-if="content.date_updated">
+              <UIcon name="hugeicons:arrow-right-01" class="size-3 text-neutral-500" />
               <div>{{ useDateFormatter(content.date_updated) }}更新</div>
             </div>
           </div>
@@ -32,28 +24,20 @@
 
     <Suspense>
       <template #default>
-        <MDC
-          :value="content.body"
-          class="prose dark:prose-invert mdc-prose" />
+        <MDC :value="content.body" class="prose dark:prose-invert mdc-prose" />
       </template>
       <template #fallback>
         <div class="flex justify-center items-center text-neutral-500 space-x-2 h-42 animate-pulse">
-          <UIcon
-            name="hugeicons:ai-content-generator-01"
-            class="size-6" />
+          <UIcon name="hugeicons:ai-content-generator-01" class="size-6" />
           <div class="text-sm">正在渲染，请稍等。</div>
         </div>
       </template>
     </Suspense>
 
     <div class="flex justify-between items-center select-none">
-      <UIcon
-        name="hugeicons:share-05"
-        class="size-5 text-neutral-400 dark:text-neutral-500 cursor-pointer"
+      <UIcon name="hugeicons:share-05" class="size-5 text-neutral-400 dark:text-neutral-500 cursor-pointer"
         @click="shareButton(content.title, getPreviewText(content.body))" />
-      <SharedBookmarkButton
-        :content-id="content.id"
-        :icon-size="20" />
+      <SharedBookmarkButton :content-id="content.id" :icon-size="20" />
     </div>
   </article>
 </template>

@@ -5,24 +5,11 @@
       <div class="text-xs text-neutral-300 dark:text-neutral-700 select-none uppercase truncate">
         {{ $props.language }}
       </div>
-      <div
-        @click="copyWithFeedback(source)"
-        class="text-xs text-neutral-500 shrink-0">
-        <span
-          v-if="!copied"
-          class="cursor-pointer">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
-            viewBox="0 0 24 24">
-            <g
-              fill="none"
-              class="stroke-neutral-300 dark:stroke-neutral-700"
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="1.5">
+      <div @click="copyWithFeedback(source)" class="text-xs text-neutral-500 shrink-0">
+        <span v-if="!copied" class="cursor-pointer">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+            <g fill="none" class="stroke-neutral-300 dark:stroke-neutral-700" stroke="currentColor"
+              stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
               <path
                 d="M9 15c0-2.828 0-4.243.879-5.121C10.757 9 12.172 9 15 9h1c2.828 0 4.243 0 5.121.879C22 10.757 22 12.172 22 15v1c0 2.828 0 4.243-.879 5.121C20.243 22 18.828 22 16 22h-1c-2.828 0-4.243 0-5.121-.879C9 20.243 9 18.828 9 16z" />
               <path
@@ -31,18 +18,9 @@
           </svg>
         </span>
         <span v-else>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
-            viewBox="0 0 24 24">
-            <g
-              fill="none"
-              class="stroke-neutral-700"
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="1.5">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+            <g fill="none" class="stroke-neutral-700" stroke="currentColor" stroke-linecap="round"
+              stroke-linejoin="round" stroke-width="1.5">
               <path
                 d="M21.448 8.2c.052 1.05.052 2.3.052 3.8c0 4.478 0 6.718-1.391 8.109S16.479 21.5 12 21.5c-4.478 0-6.718 0-8.109-1.391S2.5 16.479 2.5 12c0-4.478 0-6.718 1.391-8.109S7.521 2.5 12 2.5c1.072 0 2.016 0 2.85.02" />
               <path d="M8 11.5s1.5 0 3.5 3.5c0 0 5.059-9.167 10-11" />
@@ -53,9 +31,7 @@
     </div>
 
     <!-- 代码块区域 -->
-    <pre
-      :class="$props.class"
-      class="mt-8 overflow-x-auto p-3">
+    <pre :class="$props.class" class="mt-8 overflow-x-auto p-3">
       <slot /></pre>
   </div>
 </template>

@@ -3,81 +3,43 @@
     <div class="fixed bottom-17 z-30 left-1/2 -translate-x-1/2">
       <UButtonGroup
         class="shadow-lg rounded-2xl hover:shadow-xl transition-shadow duration-300 backdrop-blur-sm bg-white/90 dark:bg-neutral-800/90">
-        <UButton
-          :ui="{
-            base: 'rounded-[calc(var(--ui-radius)*2)] transition-transform duration-200 hover:bg-white dark:hover:bg-neutral-800',
-          }"
-          color="neutral"
-          variant="ghost"
-          size="lg">
-          <SharedLikeButton
-            :content-id="contentId"
-            :icon-size="21"
-            likeType="clap" />
+        <UButton :ui="{
+          base: 'rounded-[calc(var(--ui-radius)*2)] transition-transform duration-200 hover:bg-white dark:hover:bg-neutral-800',
+        }" color="neutral" variant="ghost" size="lg">
+          <SharedLikeButton :content-id="contentId" :icon-size="21" likeType="clap" />
         </UButton>
-        <USeparator
-          :ui="{ border: 'border-neutral-300 dark:border-neutral-600' }"
-          class="h-4 w-2 my-auto"
+        <USeparator :ui="{ border: 'border-neutral-300 dark:border-neutral-600' }" class="h-4 w-2 my-auto"
           orientation="vertical" />
-        <UButton
-          :ui="{
-            base: 'rounded-[calc(var(--ui-radius)*2)] transition-transform duration-200 hover:bg-white dark:hover:bg-neutral-800',
-          }"
-          color="neutral"
-          variant="ghost"
-          size="lg"
-          class="cursor-pointer">
-          <SharedCommentCounter
-            :content-id="contentId"
-            :allow-comments="allowComments"
-            :icon-size="18"
+        <UButton :ui="{
+          base: 'rounded-[calc(var(--ui-radius)*2)] transition-transform duration-200 hover:bg-white dark:hover:bg-neutral-800',
+        }" color="neutral" variant="ghost" size="lg" class="cursor-pointer">
+          <SharedCommentCounter :content-id="contentId" :allow-comments="allowComments" :icon-size="18"
             @click="scrollToComments" />
         </UButton>
       </UButtonGroup>
     </div>
 
     <!-- 1. 首先判断评论功能是否关闭 -->
-    <UAlert
-      v-if="!allowComments"
-      :ui="{ wrapper: 'flex items-center' }"
-      color="warning"
-      variant="soft"
-      description="本页面评论功能已关闭。"
-      class="mb-8">
+    <UAlert v-if="!allowComments" :ui="{ wrapper: 'flex items-center' }" color="warning" variant="soft"
+      description="本页面评论功能已关闭。" class="mb-8">
     </UAlert>
 
     <template v-else>
       <!-- 2. 评论加载出错显示错误信息 -->
-      <UAlert
-        v-if="error"
-        :ui="{ wrapper: 'flex items-center' }"
-        color="error"
-        variant="soft"
-        :description="error?.message || '加载评论失败，请稍后重试。'"
-        class="mb-8">
+      <UAlert v-if="error" :ui="{ wrapper: 'flex items-center' }" color="error" variant="soft"
+        :description="error?.message || '加载评论失败，请稍后重试。'" class="mb-8">
       </UAlert>
 
       <!-- 3. 评论加载中显示加载动画 -->
-      <div
-        v-else-if="isLoading && !comments"
-        class="flex flex-col justify-center items-center space-y-3 mb-8">
-        <UProgress
-          animation="swing"
-          color="neutral"
-          size="sm"
-          class="max-w-[80px]" />
+      <div v-else-if="isLoading && !comments" class="flex flex-col justify-center items-center space-y-3 mb-8">
+        <UProgress animation="swing" color="neutral" size="sm" class="max-w-[80px]" />
         <div class="text-sm text-neutral-400 dark:text-neutral-600">正在加载评论</div>
       </div>
 
       <!-- 4. 没有评论时显示提示 -->
       <template v-else>
-        <UAlert
-          v-if="!totalComments"
-          :ui="{ wrapper: 'flex items-center' }"
-          color="neutral"
-          variant="soft"
-          description="暂无评论，快来发表你的观点吧！"
-          class="mb-8 text-neutral-500">
+        <UAlert v-if="!totalComments" :ui="{ wrapper: 'flex items-center' }" color="neutral" variant="soft"
+          description="暂无评论，快来发表你的观点吧！" class="mb-8 text-neutral-500">
         </UAlert>
 
         <!-- 5. 有评论时显示评论数量 -->
@@ -91,34 +53,20 @@
 
         <!-- 评论编辑器和评论列表保持不变 -->
         <div id="comments">
-          <div
-            class="transform transition-all duration-300 ease-in-out"
-            :class="
-              showMainCommentForm
-                ? 'translate-y-0 opacity-100 max-h-[200px]'
-                : '-translate-y-3 opacity-0 max-h-0 overflow-hidden'
+          <div class="transform transition-all duration-300 ease-in-out" :class="showMainCommentForm
+              ? 'translate-y-0 opacity-100 max-h-[200px]'
+              : '-translate-y-3 opacity-0 max-h-0 overflow-hidden'
             ">
             <div :class="!totalComments ? 'mb-8' : ''">
-              <CommentEditor
-                :is-submitting="isSubmitting"
-                :placeholder="randomPlaceholder"
-                @submit="handleSubmit" />
+              <CommentEditor :is-submitting="isSubmitting" :placeholder="randomPlaceholder" @submit="handleSubmit" />
             </div>
           </div>
         </div>
 
-        <div
-          v-if="rootComments.length"
-          class="mb-8">
-          <CommentThreadItem
-            v-for="comment in rootComments"
-            :key="comment.id"
-            :comment="comment"
-            :is-replying="activeReplyId === comment.id"
-            @reply="handleReply"
-            @reply-start="handleReplyStart(comment.id)"
-            @reply-end="handleReplyEnd"
-            :ref="(el) => setCommentRef(comment.id, el)" />
+        <div v-if="rootComments.length" class="mb-8">
+          <CommentThreadItem v-for="comment in rootComments" :key="comment.id" :comment="comment"
+            :is-replying="activeReplyId === comment.id" @reply="handleReply" @reply-start="handleReplyStart(comment.id)"
+            @reply-end="handleReplyEnd" :ref="(el) => setCommentRef(comment.id, el)" />
         </div>
       </template>
     </template>

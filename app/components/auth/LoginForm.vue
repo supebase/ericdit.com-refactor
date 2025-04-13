@@ -1,52 +1,25 @@
 <template>
-  <form
-    @submit.prevent="handleSubmit"
-    class="space-y-6">
+  <form @submit.prevent="handleSubmit" class="space-y-6">
     <div class="form-group">
-      <UInput
-        v-model="email"
-        variant="soft"
-        size="xl"
-        icon="hugeicons:at"
-        class="w-full"
-        placeholder="电子邮件"
-        @keydown.space.prevent
-        :disabled="isSubmitting" />
+      <UInput v-model="email" variant="soft" size="xl" icon="hugeicons:at" class="w-full" placeholder="电子邮件"
+        @keydown.space.prevent :disabled="isSubmitting" />
     </div>
 
     <div class="form-group">
-      <AuthSecurityInput
-        v-model="password"
-        placeholder="登录密码"
-        icon="hugeicons:lock-key"
-        :disabled="isSubmitting" />
+      <AuthSecurityInput v-model="password" placeholder="登录密码" icon="hugeicons:lock-key" :disabled="isSubmitting" />
     </div>
 
-    <div
-      v-if="error"
-      class="text-red-500 text-sm">
+    <div v-if="error" class="text-red-500 text-sm">
       {{ error }}
     </div>
 
-    <UButton
-      type="submit"
-      size="xl"
-      color="primary"
-      block
-      :disabled="isSubmitting"
-      :loading="isSubmitting">
+    <UButton type="submit" size="xl" color="primary" block :disabled="isSubmitting" :loading="isSubmitting">
       {{ isSubmitting ? "正在处理" : "登录" }}
     </UButton>
 
     <USeparator><span class="text-neutral-400 dark:text-neutral-600 text-sm">或者</span></USeparator>
 
-    <UButton
-      variant="soft"
-      color="neutral"
-      size="xl"
-      block
-      :disabled="isSubmitting"
-      to="/register">
+    <UButton variant="soft" color="neutral" size="xl" block :disabled="isSubmitting" to="/register">
       注册新用户
     </UButton>
   </form>

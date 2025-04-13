@@ -1,18 +1,9 @@
 <template>
   <div class="flex justify-end items-center">
-    <button
-      @click="handleBookmark"
-      :disabled="isProcessing"
+    <button @click="handleBookmark" :disabled="isProcessing"
       class="text-sm flex items-center space-x-2 text-neutral-400 dark:text-neutral-500 cursor-pointer disabled:cursor-not-allowed">
-      <UIcon
-        name="svg-spinners:ring-resize"
-        :size="iconSize"
-        class="text-neutral-500"
-        v-if="isProcessing" />
-      <UIcon
-        v-else
-        :name="isBookmarked ? 'hugeicons:bookmark-minus-02' : 'hugeicons:bookmark-add-02'"
-        :size="iconSize"
+      <UIcon name="svg-spinners:ring-resize" :size="iconSize" class="text-neutral-500" v-if="isProcessing" />
+      <UIcon v-else :name="isBookmarked ? 'hugeicons:bookmark-minus-02' : 'hugeicons:bookmark-add-02'" :size="iconSize"
         :class="{ 'bookmark-animation': showAnimation }" />
     </button>
   </div>
@@ -124,15 +115,19 @@ watch(isAuthenticated, (newValue) => {
   0% {
     transform: translateY(0) scale(1) rotate(0);
   }
+
   25% {
     transform: translateY(-4px) scale(1.1) rotate(-15deg);
   }
+
   50% {
     transform: translateY(-2px) scale(1.2) rotate(10deg);
   }
+
   75% {
     transform: translateY(-1px) scale(1.1) rotate(-5deg);
   }
+
   100% {
     transform: translateY(0) scale(1) rotate(0);
   }

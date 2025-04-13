@@ -8,9 +8,7 @@
           <div class="text-sm text-neutral-500 flex justify-between items-center">
             <div>{{ user?.email }}</div>
             <div class="text-sm text-neutral-500 flex items-center space-x-2">
-              <UIcon
-                name="hugeicons:location-04"
-                class="size-4" />
+              <UIcon name="hugeicons:location-04" class="size-4" />
               <div>{{ user?.location }}</div>
             </div>
           </div>
@@ -20,29 +18,19 @@
       <div class="grid grid-cols-2 gap-8">
         <div class="p-4 rounded-lg bg-neutral-200/40 dark:bg-neutral-950/40">
           <div class="text-2xl font-bold text-center">
-            <SharedAnimateNumber
-              :value="commentsCount"
-              class="justify-center text-2xl" />
+            <SharedAnimateNumber :value="commentsCount" class="justify-center text-2xl" />
           </div>
           <div class="text-neutral-500 text-sm text-center">评论数</div>
         </div>
         <div class="p-4 rounded-lg bg-neutral-200/40 dark:bg-neutral-950/40">
           <div class="text-2xl font-bold text-center">
-            <SharedAnimateNumber
-              :value="likesCount"
-              class="justify-center text-2xl" />
+            <SharedAnimateNumber :value="likesCount" class="justify-center text-2xl" />
           </div>
           <div class="text-neutral-500 text-sm text-center">点赞数</div>
         </div>
       </div>
 
-      <UButton
-        @click="handleLogout"
-        size="xl"
-        color="error"
-        block
-        :disabled="isLoading"
-        :loading="isLoading">
+      <UButton @click="handleLogout" size="xl" color="error" block :disabled="isLoading" :loading="isLoading">
         {{ isLoading ? "正在处理" : "退出登录" }}
       </UButton>
     </div>
