@@ -1,4 +1,5 @@
 import type { User } from "~/types";
+import { debounce } from "~/utils/debounce";
 
 // 添加返回类型接口
 interface UserStatusComposable {
@@ -24,8 +25,6 @@ export const usePresence = (): UserStatusComposable => {
 
   // 状态更新锁，防止并发更新
   let isUpdating = false;
-  // 用户活动防抖定时器
-  let activityTimeout: ReturnType<typeof setTimeout>;
   // 存储所有活跃的订阅
   let activeSubscriptions: Array<() => void> = [];
 
@@ -151,25 +150,17 @@ export const usePresence = (): UserStatusComposable => {
     }
   };
 
-  /**
-   * 用户活动更新处理（防抖）
-   */
-  const debouncedUpdateActivity = () => {
-    clearTimeout(activityTimeout);
-    activityTimeout = setTimeout(() => {
-      if (user.value?.id) {
-        updateUserStatus();
-      }
-    }, ACTIVITY_TIMEOUT_MS);
-  };
+  // 使用工具函数创建防抖的活动更新处理器
+  const updateLastActivity = debounce(() => {
+    if (user.value?.id) {
+      updateUserStatus();
+    }
+  }, ACTIVITY_TIMEOUT_MS);
 
   /**
    * 清理所有定时器和订阅
    */
   const cleanup = () => {
-    if (activityTimeout) {
-      clearTimeout(activityTimeout);
-    }
     // 清理所有活跃的订阅
     while (activeSubscriptions.length) {
       const cleanup = activeSubscriptions.pop();
@@ -181,7 +172,7 @@ export const usePresence = (): UserStatusComposable => {
     usersStatus,
     updateUserStatus,
     checkUserStatus,
-    updateLastActivity: debouncedUpdateActivity,
+    updateLastActivity,
     subscribeUserStatus,
     cleanup,
   };

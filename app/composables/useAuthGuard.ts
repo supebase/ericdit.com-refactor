@@ -10,8 +10,12 @@ export const useAuthGuard = () => {
         color: "warning",
       });
 
-      if (import.meta.client) {
-        localStorage.setItem("originalPath", window.location.pathname);
+      try {
+        if (import.meta.client) {
+          localStorage.setItem("originalPath", window.location.pathname);
+        }
+      } catch (error) {
+        console.warn('无法访问本地存储，可能处于隐私模式');
       }
 
       navigateTo("/login");

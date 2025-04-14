@@ -75,49 +75,68 @@ export const useComments = () => {
     contentId: string,
     callback: (item: any) => void
   ): Promise<() => void> => {
-    // 订阅评论更新
-    const { subscription: commentSubscription } = await $realtimeClient.subscribe("comments", {
-      query: {
-        filter: {
-          content_id: { _eq: contentId },
+    let commentSubscription: any;
+    let userSubscription: any;
+
+    try {
+      // 订阅评论更新
+      const commentSub = await $realtimeClient.subscribe("comments", {
+        query: {
+          filter: {
+            content_id: { _eq: contentId },
+          },
         },
-      },
-    });
+      });
+      commentSubscription = commentSub.subscription;
 
-    // 订阅用户头像、地理位置更新
-    const { subscription: userSubscription } = await $realtimeClient.subscribe("directus_users", {
-      query: {
-        fields: ["id", "avatar", "location"],
-      },
-    });
+      // 订阅用户头像、地理位置更新
+      const userSub = await $realtimeClient.subscribe("directus_users", {
+        query: {
+          fields: ["id", "avatar", "location"],
+        },
+      });
+      userSubscription = userSub.subscription;
 
-    // 处理评论更新
-    (async () => {
-      for await (const item of commentSubscription) {
-        callback(item);
-      }
-    })();
-
-    // 处理用户头像、地理位置更新
-    (async () => {
-      for await (const item of userSubscription) {
-        if (item.event === "update") {
-          const userData = item.data[0];
-          if (userData?.avatar) {
-            userAvatars.value[userData.id] = userData.avatar;
+      // 处理评论更新
+      (async () => {
+        try {
+          for await (const item of commentSubscription) {
+            callback(item);
           }
-          if (userData?.location) {
-            userLocations.value[userData.id] = userData.location;
-          }
+        } catch (error) {
+          console.error('Error in comment subscription:', error);
         }
-      }
-    })();
+      })();
 
-    // 返回清理函数
-    return () => {
-      commentSubscription.return();
-      userSubscription.return();
-    };
+      // 处理用户头像、地理位置更新
+      (async () => {
+        try {
+          for await (const item of userSubscription) {
+            if (item.event === "update") {
+              const userData = item.data[0];
+              if (userData?.avatar) {
+                userAvatars.value[userData.id] = userData.avatar;
+              }
+              if (userData?.location) {
+                userLocations.value[userData.id] = userData.location;
+              }
+            }
+          }
+        } catch (error) {
+          console.error('Error in user subscription:', error);
+        }
+      })();
+
+      return () => {
+        if (commentSubscription) commentSubscription.return();
+        if (userSubscription) userSubscription.return();
+      };
+    } catch (error) {
+      // 确保在发生错误时清理订阅
+      if (commentSubscription) commentSubscription.return();
+      if (userSubscription) userSubscription.return();
+      throw error;
+    }
   };
 
   /**

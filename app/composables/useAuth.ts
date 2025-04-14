@@ -1,5 +1,6 @@
 import type { User } from "~/types";
 import { validateEmail } from "~/utils/validation";
+import { useVisibilityChange } from "./useVisibilityChange";
 
 /**
  * 用户认证管理组合式函数
@@ -144,6 +145,8 @@ export const useAuth = () => {
   const startSessionCheck = () => {
     if (typeof window === "undefined") return;
 
+    const { isVisible, setup, cleanup } = useVisibilityChange();
+
     // 每 30 分钟检查一次
     const interval = 30 * 60 * 1000;
     const checkInterval = setInterval(() => {
@@ -152,19 +155,20 @@ export const useAuth = () => {
       }
     }, interval);
 
-    // 页面可见性变化时也检查
-    const visibilityHandler = () => {
-      if (document.visibilityState === "visible" && isAuthenticated.value) {
+    // 监听可见性变化
+    watch(isVisible, (visible) => {
+      if (visible && isAuthenticated.value) {
         refreshUser().catch(() => { });
       }
-    };
+    });
 
-    document.addEventListener("visibilitychange", visibilityHandler);
+    // 设置可见性监听
+    setup();
 
     // 返回清理函数
     return () => {
       clearInterval(checkInterval);
-      document.removeEventListener("visibilitychange", visibilityHandler);
+      cleanup();
     };
   };
 

@@ -1,4 +1,4 @@
-<template>
+=<template>
   <UApp :toaster="appConfig.toaster" :tooltip="appConfig.tooltip">
     <NuxtLayout>
       <NuxtPage />
@@ -19,27 +19,12 @@ const UpdateNotification = defineAsyncComponent(
 // 导入认证和用户状态相关的组合式函数
 const { refreshUser, startSessionCheck, isAuthenticated } = useAuth();
 const { updateLastActivity, updateUserStatus, cleanup: cleanupPresence } = usePresence();
-const { needsUpdate, startVersionCheck, cleanup: cleanupVersionCheck } = useVersionCheck();
+const { needsUpdate } = useVersionCheck();
 
 // 用户活动监听相关配置
 const USER_ACTIVITY_EVENTS = ["mousedown", "keydown", "scroll", "touchstart"] as const;
 let isActivityTrackingEnabled = false;
-let activityDebounceTimer: ReturnType<typeof setTimeout> | null = null;
 let cleanupSession: (() => void) | undefined;
-
-/**
- * 防抖处理用户活动更新
- * 避免频繁触发活动更新，提高性能
- */
-const debouncedUpdateActivity = () => {
-  if (activityDebounceTimer) {
-    clearTimeout(activityDebounceTimer);
-  }
-
-  activityDebounceTimer = setTimeout(() => {
-    updateLastActivity();
-  }, 2000); // 2秒防抖
-};
 
 /**
  * 启用用户活动追踪
@@ -47,7 +32,7 @@ const debouncedUpdateActivity = () => {
  */
 const enableActivityTracking = async () => {
   USER_ACTIVITY_EVENTS.forEach((event) => {
-    window.addEventListener(event, debouncedUpdateActivity);
+    window.addEventListener(event, updateLastActivity);
   });
   isActivityTrackingEnabled = true;
   await updateUserStatus();
@@ -59,12 +44,8 @@ const enableActivityTracking = async () => {
  */
 const disableActivityTracking = async () => {
   USER_ACTIVITY_EVENTS.forEach((event) => {
-    window.removeEventListener(event, debouncedUpdateActivity);
+    window.removeEventListener(event, updateLastActivity);
   });
-  if (activityDebounceTimer) {
-    clearTimeout(activityDebounceTimer);
-    activityDebounceTimer = null;
-  }
   isActivityTrackingEnabled = false;
 };
 
@@ -80,7 +61,6 @@ onMounted(async () => {
   }
 
   if (import.meta.client) {
-    startVersionCheck();
     cleanupSession = startSessionCheck();
   }
 });
@@ -106,7 +86,6 @@ if (import.meta.client) {
   // 组件卸载时清理资源
   onUnmounted(() => {
     cleanupPresence();
-    cleanupVersionCheck();
     if (isActivityTrackingEnabled) {
       disableActivityTracking();
     }
