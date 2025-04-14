@@ -201,9 +201,9 @@ hr {
   height: 1px;
   background-image: linear-gradient(
     to right,
-    rgba(113, 113, 122, 0),
-    rgba(113, 113, 122, 0.25),
-    rgba(113, 113, 122, 0)
+    rgba(113, 113, 122, 0.03),
+    rgba(113, 113, 122, 0.3),
+    rgba(113, 113, 122, 0.03)
   );
 }
 

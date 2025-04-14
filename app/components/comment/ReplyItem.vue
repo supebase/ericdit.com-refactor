@@ -6,7 +6,7 @@
     <div class="flex items-center ml-10">
       <div class="mr-3">
         <UChip inset size="xs" position="bottom-right"
-          :color="usersStatus[reply.user_created.id] ? 'primary' : 'neutral'">
+          :color="usersStatus[reply.user_created.id] ? 'success' : 'neutral'">
           <SharedAvatar :src="userAvatarUrl || undefined"
             :alt="!reply.user_created.avatar ? reply.user_created.first_name : undefined" size="xs" class="uppercase" />
         </UChip>
@@ -29,7 +29,7 @@
         </div>
       </div>
     </div>
-    <div class="ml-10 mt-2 text-[15px] text-neutral-600 dark:text-neutral-400">
+    <div class="ml-10 mt-1 text-[15px] text-neutral-600 dark:text-neutral-400">
       {{ safeComment }}
     </div>
   </div>

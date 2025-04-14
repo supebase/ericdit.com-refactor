@@ -13,7 +13,7 @@
 
         <template #footer>
           <div class="flex justify-center">
-            <UButton color="primary" variant="soft" @click="refreshPage">
+            <UButton color="success" variant="soft" @click="refreshPage">
               立即刷新
             </UButton>
           </div>

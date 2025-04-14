@@ -39,12 +39,12 @@
 
       <!-- 文本内容显示 -->
       <div v-else-if="displayType === 'text'" class="group">
-        <div class="flex items-center space-x-3 text-sm mb-2">
+        <div class="flex justify-between items-center space-x-3 text-sm mb-2">
           <UBadge variant="soft" color="neutral" class="nums tabular-nums">
             {{ useDateFormatter(content.date_created) }}
           </UBadge>
-          <div class="text-neutral-500 dark:text-neutral-400">
-            {{ useArticleMetrics(content.body) }}
+          <div class="text-neutral-500">
+            阅读约 {{ useArticleMetrics(content.body) }}
           </div>
         </div>
         <div class="prose prose-neutral dark:prose-invert max-w-none">

@@ -20,8 +20,8 @@
       </UAlert>
     </div>
     <template v-else>
-      <div class="divide-y divide-neutral-200 dark:divide-neutral-800" ref="el">
-        <SharedFadeIn v-for="(content, index) in contents" :key="content.id" :delay="index * 50" class="py-5">
+      <div ref="el">
+        <SharedFadeIn v-for="(content, index) in contents" :key="content.id" :delay="index * 50" class="py-3">
           <ContentCard :content="content" />
         </SharedFadeIn>
       </div>
@@ -29,7 +29,8 @@
 
       <!-- 加载更多按钮 -->
       <div class="flex justify-center py-4" v-if="hasMore && isNearBottom">
-        <UButton @click="loadMore" color="neutral" variant="soft" :loading="isFetchingNextPage">
+        <UButton @click="loadMore" color="neutral" variant="link" :disabled="isFetchingNextPage"
+          :loading="isFetchingNextPage">
           加载更多
         </UButton>
       </div>

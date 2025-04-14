@@ -18,12 +18,12 @@
     <div v-else class="space-y-6">
       <UCard v-for="bookmark in bookmarks" :key="bookmark.id" variant="soft" class="relative">
         <div class="flex items-center space-x-3">
-          <SharedAvatar :src="bookmark.user_created.avatar" :alt="bookmark.user_created.first_name" size="sm" />
+          <SharedAvatar :src="bookmark.user_created.avatar" :alt="bookmark.user_created.first_name" size="md" />
           <NuxtLink :to="{ name: 'article-id', params: { id: getContentId(bookmark.content_id) } }">
             <div class="text-base font-medium line-clamp-1">
               {{ getContentTitle(bookmark.content_id) }}
             </div>
-            <div class="text-sm text-neutral-500">
+            <div class="text-xs text-neutral-500">
               {{ useDateFormatter(bookmark.date_created) }}收藏
             </div>
           </NuxtLink>

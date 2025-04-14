@@ -6,7 +6,7 @@
     <template #header>
       <div class="flex items-center">
         <div class="mr-3">
-          <UChip inset size="xs" position="bottom-right" :color="userStatus ? 'primary' : 'neutral'">
+          <UChip inset size="xs" position="bottom-right" :color="userStatus ? 'success' : 'neutral'">
             <SharedAvatar :src="userAvatarUrl || undefined"
               :alt="!comment.user_created.avatar ? comment.user_created.first_name : undefined" size="xs"
               class="uppercase" />
@@ -31,7 +31,7 @@
         </div>
       </div>
 
-      <div class="mt-2 cursor-pointer text-[15px] text-neutral-600 dark:text-neutral-400" @click="toggleReplyInput">
+      <div class="mt-1 cursor-pointer text-[15px] text-neutral-600 dark:text-neutral-400" @click="toggleReplyInput">
         {{ safeComment }}
       </div>
       <div class="mt-1" :class="isReplying ? 'hidden' : ''">

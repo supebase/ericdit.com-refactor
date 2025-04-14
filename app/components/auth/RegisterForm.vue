@@ -6,12 +6,12 @@
     </div>
 
     <div class="form-group">
-      <UInput v-model="firstName" type="text" id="firstName" variant="soft" size="xl" icon="hugeicons:user-square"
+      <UInput v-model="firstName" type="text" id="firstName" variant="soft" size="xl" icon="hugeicons:user-circle"
         class="w-full" placeholder="你的名字" :disabled="isSubmitting" />
     </div>
 
     <div class="form-group">
-      <AuthSecurityInput v-model="password" placeholder="输入密码" icon="hugeicons:square-lock-add-02"
+      <AuthSecurityInput v-model="password" placeholder="输入密码" icon="hugeicons:square-lock-password"
         :disabled="isSubmitting" />
     </div>
 

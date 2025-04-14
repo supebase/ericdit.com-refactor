@@ -6,9 +6,9 @@
         <SharedNavigationBack v-else key="icon" @click="safeBack()" class="cursor-pointer" />
       </Transition>
 
-      <div class="flex items-center space-x-9">
-        <SearchModal />
+      <div class="flex items-center space-x-8">
         <SharedBookmarkCounter v-if="isAuthenticated" class="translate-y-[3px]" />
+        <SearchModal />
         <AuthUserStatus />
       </div>
     </div>
