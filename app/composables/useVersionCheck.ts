@@ -18,6 +18,8 @@ export const useVersionCheck = () => {
       const { buildHash, version } = await response.json();
       const currentHash = localStorage.getItem('app-version-hash');
 
+      needsUpdate.value = false;
+
       // 首次加载时应该设置初始值
       if (!currentHash) {
         localStorage.setItem('app-version-hash', buildHash);

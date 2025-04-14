@@ -7,7 +7,8 @@
 
     <!-- 图片组件 -->
     <NuxtImg :src="props.src" :alt="props.alt" :width="props.width" :height="props.height" placeholder loading="lazy"
-      @error="onImageError" class="rounded-lg [&.placeholder]:blur-sm" />
+      preload format="webp" quality="80" sizes="(max-width: 768px) 100vw, 768px" @error="onImageError"
+      class="rounded-lg w-full [&.placeholder]:blur-sm hover:scale-105 transition-transform duration-500" />
   </div>
 </template>
 

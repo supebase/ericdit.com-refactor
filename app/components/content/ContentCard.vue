@@ -3,7 +3,7 @@
     root: 'bg-white dark:bg-neutral-900 divide-none',
     body: '!p-0',
     footer: '!p-0',
-  }" variant="soft" class="select-none first:pt-0 last:pb-0">
+  }" variant="soft" class="select-none py-2">
     <NuxtLink :to="{ name: 'article-id', params: { id: content.id } }">
       <!-- 非单图模式的标题显示 -->
       <div v-if="displayType !== 'single' && displayType === 'text'" class="flex items-center space-x-2 mb-3">
@@ -17,11 +17,6 @@
         <NuxtImg provider="directus" :src="content.images[0].directus_files_id" loading="eager" fetchpriority="high"
           preload placeholder format="webp" quality="80" sizes="(max-width: 768px) 100vw, 768px"
           class="aspect-[16/9] object-cover w-full transform group-hover:scale-105 transition-transform duration-500" />
-        <div class="absolute top-4 right-4">
-          <UBadge variant="soft" color="neutral" class="nums tabular-nums shadow-lg">
-            {{ useDateFormatter(content.date_created) }}
-          </UBadge>
-        </div>
         <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 to-black/10 backdrop-blur-sm">
           <div class="text-base text-white font-bold mb-2">
             {{ content.title }}
@@ -34,14 +29,6 @@
 
       <!-- 文本内容显示 -->
       <div v-else-if="displayType === 'text'" class="group">
-        <div class="flex justify-between items-center space-x-3 text-sm mb-2">
-          <UBadge variant="soft" color="neutral" class="nums tabular-nums">
-            {{ useDateFormatter(content.date_created) }}
-          </UBadge>
-          <div class="text-neutral-500">
-            阅读约 {{ useArticleMetrics(content.body) }}
-          </div>
-        </div>
         <div class="prose prose-neutral dark:prose-invert max-w-none">
           <div class="line-clamp-3 text-base leading-relaxed">
             {{ cleanBody }}
@@ -65,6 +52,12 @@
 
     <template #footer>
       <div class="flex justify-between items-center mt-4 px-1">
+        <div class="flex items-center space-x-3">
+          <SharedAvatar :src="content.user_created.avatar" size="xs" :alt="content.user_created.first_name" />
+          <UBadge variant="soft" color="neutral" class="nums tabular-nums">
+            {{ useDateFormatter(content.date_created) }}
+          </UBadge>
+        </div>
         <SharedCommentCounter :content-id="content.id" :allow-comments="content.allow_comments" :icon-size="18" />
         <SharedLikeButton :content-id="content.id" :icon-size="20" likeType="clap" />
         <SharedBookmarkButton :content-id="content.id" :icon-size="18" />
