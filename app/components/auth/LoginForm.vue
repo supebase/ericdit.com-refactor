@@ -13,8 +13,8 @@
       {{ error }}
     </div>
 
-    <UButton type="submit" size="xl" color="primary" block :disabled="isSubmitting" :loading="isSubmitting">
-      {{ isSubmitting ? "正在处理" : "登录" }}
+    <UButton type="submit" size="xl" color="success" block :disabled="isSubmitting" :loading="isSubmitting">
+      {{ isSubmitting ? "正在处理" : "立即登录" }}
     </UButton>
 
     <USeparator><span class="text-neutral-400 dark:text-neutral-600 text-sm">或者</span></USeparator>

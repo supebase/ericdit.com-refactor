@@ -20,8 +20,8 @@
       </UAlert>
     </div>
     <template v-else>
-      <div ref="el">
-        <SharedFadeIn v-for="(content, index) in contents" :key="content.id" :delay="index * 50" class="py-3">
+      <div ref="el" class="cards">
+        <SharedFadeIn v-for="(content, index) in contents" :key="content.id" :delay="index * 50" class="py-3 card">
           <ContentCard :content="content" />
         </SharedFadeIn>
       </div>

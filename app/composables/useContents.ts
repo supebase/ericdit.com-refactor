@@ -56,7 +56,7 @@ export const useContents = () => {
   const cleanMarkdown = (text: string): string => {
     if (!text) return "";
 
-    return text
+    const cleaned = text
       .replace(/#{1,6}\s/g, "")
       .replace(/\*\*(.+?)\*\*/g, "$1")
       .replace(/\*(.+?)\*/g, "$1")
@@ -66,6 +66,8 @@ export const useContents = () => {
       .replace(/>\s(.+)/g, "$1")
       .replace(/\n\s*[-*+]\s/g, "\n")
       .replace(/\n\s*\d+\.\s/g, "\n");
+
+    return escapeHtml(cleaned);
   };
 
   /**

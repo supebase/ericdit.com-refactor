@@ -6,7 +6,7 @@
     <template #header>
       <div class="flex items-center">
         <div class="mr-3">
-          <UChip inset size="xs" position="bottom-right" :color="userStatus ? 'success' : 'neutral'">
+          <UChip inset size="sm" position="bottom-right" :color="userStatus ? 'success' : 'neutral'">
             <SharedAvatar :src="userAvatarUrl || undefined"
               :alt="!comment.user_created.avatar ? comment.user_created.first_name : undefined" size="xs"
               class="uppercase" />

@@ -12,7 +12,10 @@
 
     <div class="form-group">
       <AuthSecurityInput v-model="password" placeholder="输入密码" icon="hugeicons:square-lock-password"
-        :disabled="isSubmitting" />
+        :disabled="isSubmitting">
+        <UChip :color="color" size="lg" class=" transform duration-300"
+          :class="score > 0 ? 'opacity-100 scale-100' : 'opacity-0 scale-0'" />
+      </AuthSecurityInput>
     </div>
 
     <div class="form-group">
@@ -25,7 +28,7 @@
     </div>
 
     <UButton type="submit" size="xl" color="primary" block :disabled="isSubmitting" :loading="isSubmitting">
-      {{ isSubmitting ? "正在处理" : "注册" }}
+      {{ isSubmitting ? "正在处理" : "完成注册" }}
     </UButton>
 
     <USeparator><span class="text-neutral-400 dark:text-neutral-600 text-sm">或者</span></USeparator>
@@ -168,6 +171,28 @@ const handleSubmit = async () => {
     isSubmitting.value = false;
   }
 };
+
+function checkStrength(str: string) {
+  const requirements = [
+    { regex: /.{8,}/ },
+    { regex: /\d/ },
+    { regex: /[a-z]/ },
+    { regex: /[A-Z]/ }
+  ]
+
+  return requirements.map(req => ({ met: req.regex.test(str) }))
+}
+
+const strength = computed(() => checkStrength(password.value))
+const score = computed(() => strength.value.filter(req => req.met).length)
+
+const color = computed(() => {
+  if (score.value === 0) return 'neutral'
+  if (score.value <= 1) return 'neutral'
+  if (score.value <= 2) return 'error'
+  if (score.value === 3) return 'warning'
+  return 'success'
+})
 
 onDeactivated(() => {
   firstName.value = "";

@@ -192,6 +192,20 @@ body {
          prose-a:decoration-[1px];
 }
 
+/* .cards .card {
+  cursor: pointer;
+  transition: 300ms;
+}
+
+.cards .card:hover {
+  transform: scale(1, 1);
+}
+
+.cards:hover > .card:not(:hover) {
+  filter: grayscale(1);
+  transform: scale(0.96, 0.96);
+} */
+
 textarea {
   resize: none;
 }

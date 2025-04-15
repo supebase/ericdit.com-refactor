@@ -5,7 +5,7 @@
     </div>
     <div class="flex items-center ml-10">
       <div class="mr-3">
-        <UChip inset size="xs" position="bottom-right"
+        <UChip inset size="sm" position="bottom-right"
           :color="usersStatus[reply.user_created.id] ? 'success' : 'neutral'">
           <SharedAvatar :src="userAvatarUrl || undefined"
             :alt="!reply.user_created.avatar ? reply.user_created.first_name : undefined" size="xs" class="uppercase" />

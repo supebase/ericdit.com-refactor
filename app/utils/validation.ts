@@ -191,8 +191,23 @@ export const validateUsername = (name: string): ValidationResult => {
 
 export const validatePassword = (password: string): ValidationResult => {
   if (!password) return { valid: false, message: "请输入密码" };
+
+  // 增加密码复杂度要求
+  const hasUpperCase = /[A-Z]/.test(password);
+  const hasLowerCase = /[a-z]/.test(password);
+  const hasNumbers = /\d/.test(password);
+  const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
   if (password.length < AUTH_VALIDATION_RULES.PASSWORD_MIN_LENGTH) {
-    return { valid: false, message: "密码长度不能少于 8 个字符。" };
+    return { valid: false, message: "密码长度不能少于 8 个字符" };
   }
+
+  if (!(hasUpperCase && hasLowerCase && hasNumbers && hasSpecialChar)) {
+    return {
+      valid: false,
+      message: "密码必须包含大小写字母、数字和特殊字符"
+    };
+  }
+
   return { valid: true, message: "" };
 };

@@ -6,7 +6,7 @@
   }" variant="soft" class="select-none py-2">
     <NuxtLink :to="{ name: 'article-id', params: { id: content.id } }">
       <!-- 非单图模式的标题显示 -->
-      <div v-if="displayType !== 'single' && displayType === 'text'" class="flex items-center space-x-2 mb-3">
+      <div v-if="displayType !== 'single' && displayType === 'text'" class="flex items-center space-x-2 mb-1">
         <div class="font-bold text-lg">
           {{ content.title }}
         </div>
@@ -18,7 +18,7 @@
           preload placeholder format="webp" quality="80" sizes="(max-width: 768px) 100vw, 768px"
           class="aspect-[16/9] object-cover w-full transform group-hover:scale-105 transition-transform duration-500" />
         <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 to-black/10 backdrop-blur-sm">
-          <div class="text-base text-white font-bold mb-2">
+          <div class="text-base text-white font-bold mb-1">
             {{ content.title }}
           </div>
           <div class="text-sm text-neutral-200 line-clamp-1">
