@@ -5,8 +5,7 @@
     </div>
 
     <div v-else-if="error" class="flex items-center justify-center min-h-[50vh]">
-      <UAlert color="error" variant="soft" icon="hugeicons:alert-02" :description="error?.message || '加载失败，请稍后重试'">
-      </UAlert>
+      <UAlert color="error" variant="soft" icon="hugeicons:alert-02" :description="error?.message || '加载失败，请稍后重试'" />
     </div>
 
     <div v-else-if="bookmarks?.length === 0"
@@ -16,25 +15,49 @@
     </div>
 
     <div v-else class="space-y-6">
-      <UCard v-for="bookmark in bookmarks" :key="bookmark.id" variant="soft" class="relative">
-        <div class="flex items-center space-x-3">
-          <SharedAvatar :src="bookmark.user_created.avatar" :alt="bookmark.user_created.first_name" size="md" />
-          <NuxtLink :to="{ name: 'article-id', params: { id: getContentId(bookmark.content_id) } }">
-            <div class="text-base font-medium line-clamp-1">
-              {{ getContentTitle(bookmark.content_id) }}
+      <div class="flex items-center justify-center gap-2 text-neutral-400 dark:text-neutral-600 animate-pulse">
+        <UIcon name="hugeicons:swipe-left-09" class="size-5" />
+        <span class="text-sm font-medium">向左滑动可删除收藏</span>
+      </div>
+
+      <div v-for="(bookmark, index) in bookmarks" :key="bookmark.id"
+        class="relative overflow-hidden touch-none select-none cursor-grab active:cursor-grabbing"
+        @touchstart.prevent="handleDragStart($event, index)" @touchmove.prevent="handleDragMove($event, index)"
+        @touchend="handleDragEnd(index)" @touchcancel="handleDragEnd(index)"
+        @mousedown.prevent="handleDragStart($event, index)" @mousemove.prevent="handleDragMove($event, index)"
+        @mouseup="handleDragEnd(index)" @mouseleave="handleDragEnd(index)">
+        <div class="relative transform transition-transform duration-200 ease-out"
+          :style="{ transform: `translateX(${offsets[index] || 0}px)` }">
+          <UCard variant="soft" class="relative">
+            <div class="flex items-center space-x-3">
+              <SharedAvatar :src="bookmark.user_created.avatar" :alt="bookmark.user_created.first_name" size="sm" />
+              <div class="flex-1 min-w-0">
+                <NuxtLink :to="{ name: 'article-id', params: { id: getContentId(bookmark.content_id) } }"
+                  @click="handleLinkClick(index, $event)">
+                  <div class="text-[15px] font-medium line-clamp-1">
+                    {{ getContentTitle(bookmark.content_id) }}
+                  </div>
+                </NuxtLink>
+                <div class="text-xs text-neutral-500 mt-0.5">
+                  {{ useDateFormatter(bookmark.date_created) }}收藏
+                </div>
+              </div>
             </div>
-            <div class="text-xs text-neutral-500">
-              {{ useDateFormatter(bookmark.date_created) }}收藏
-            </div>
-          </NuxtLink>
+          </UCard>
         </div>
 
-        <div class="absolute -top-2 -right-2">
-          <UButton :ui="{ leadingIcon: 'size-4' }" icon="hugeicons:cancel-circle" color="error" variant="soft" size="xs"
-            class="cursor-pointer rounded-full" :loading="processingIds.includes(bookmark.id)"
-            :disabled="processingIds.includes(bookmark.id)" @click="() => removeBookmark(bookmark)" />
+        <div class="absolute top-0 right-0 h-full">
+          <button
+            class="bg-red-500 h-full px-6 rounded-lg flex items-center justify-center cursor-pointer text-white transition-all duration-200 ease-out origin-right"
+            :style="{
+              opacity: Math.min(Math.abs(offsets[index] || 0) / 75, 1),
+              transform: `translateX(${75 - Math.abs(offsets[index] || 0)}px)`
+            }" @click="() => handleDelete(bookmark, index)">
+            <UIcon v-if="!processingIds.includes(bookmark.id)" name="hugeicons:bookmark-minus-02" class="size-5" />
+            <UIcon v-else name="svg-spinners:ring-resize" class="size-5" />
+          </button>
         </div>
-      </UCard>
+      </div>
     </div>
   </div>
 </template>
@@ -49,6 +72,10 @@ definePageMeta({
 const { getBookmarks, deleteBookmark, subscribeBookmarks } = useBookmarks();
 const { user } = useAuth();
 const processingIds = ref<string[]>([]);
+const offsets = ref<number[]>([]);
+const dragStartX = ref<number[]>([]);
+const isDragging = ref<boolean[]>([]);
+const currentOpenIndex = ref<number | null>(null);
 
 const {
   data: bookmarks,
@@ -77,19 +104,101 @@ const getContentTitle = (contentId: string | { id: string; title: string }): str
   return typeof contentId === "string" ? "未知标题" : contentId.title;
 };
 
-const removeBookmark = async (bookmark: Bookmarks.Item) => {
+const getEventX = (event: MouseEvent | TouchEvent): number => {
+  if (event instanceof MouseEvent) {
+    return event.clientX;
+  }
+  return event.touches?.[0]?.clientX ?? 0;
+};
+
+const handleDragStart = (event: MouseEvent | TouchEvent, index: number) => {
+  // 如果有其他项打开，先关闭它
+  if (currentOpenIndex.value !== null && currentOpenIndex.value !== index) {
+    offsets.value[currentOpenIndex.value] = 0;
+  }
+
+  isDragging.value[index] = true;
+  dragStartX.value[index] = getEventX(event);
+  offsets.value[index] = offsets.value[index] || 0;
+};
+
+const handleDragMove = (event: MouseEvent | TouchEvent, index: number) => {
+  if (!isDragging.value[index]) return;
+
+  const currentX = getEventX(event);
+  const diff = currentX - (dragStartX.value[index] ?? 0);
+  // 修改这里：允许在已经打开状态下向右滑动到0位置
+  let newOffset = diff;
+  if (currentOpenIndex.value === index) {
+    // 如果当前项已经打开，则限制在 -75 到 0 之间
+    newOffset = Math.max(Math.min(diff - 75, 0), -75);
+  } else {
+    // 如果当前项未打开，则限制在 -75 到 0 之间
+    newOffset = Math.max(Math.min(diff, 0), -75);
+  }
+  offsets.value[index] = newOffset;
+};
+
+const handleDragEnd = (index: number) => {
+  if (!isDragging.value[index]) return;
+
+  const offset = offsets.value[index];
+  const isOpen = Math.abs(offset || 0) > 35;
+  offsets.value[index] = isOpen ? -75 : 0;
+  currentOpenIndex.value = isOpen ? index : null;
+  isDragging.value[index] = false;
+};
+
+const handleDelete = async (bookmark: Bookmarks.Item, index: number) => {
+  if (Math.abs(offsets.value[index] || 0) < 35) return;
   if (processingIds.value.includes(bookmark.id)) return;
 
   try {
     processingIds.value.push(bookmark.id);
     await deleteBookmark(bookmark.id);
     await refresh();
+    offsets.value[index] = 0;
+    currentOpenIndex.value = null;
   } catch (error) {
     console.error("Failed to remove bookmark:", error);
   } finally {
     processingIds.value = processingIds.value.filter((id) => id !== bookmark.id);
   }
 };
+
+const handleLinkClick = (index: number, event: MouseEvent) => {
+  // 如果正在拖动或有明显偏移，阻止链接跳转
+  if (isDragging.value[index] || Math.abs(offsets.value[index] || 0) > 5) {
+    event.preventDefault();
+    return;
+  }
+
+  // 否则允许正常跳转
+  navigateTo({
+    name: 'article-id',
+    params: {
+      id: getContentId(bookmarks.value?.[index]?.content_id ?? '')
+    }
+  });
+};
+
+onBeforeRouteLeave(() => {
+  // 重置所有偏移量和状态
+  if (bookmarks.value) {
+    offsets.value = new Array(bookmarks.value.length).fill(0);
+    currentOpenIndex.value = null;
+  }
+});
+
+watch(bookmarks, () => {
+  if (bookmarks.value) {
+    const length = bookmarks.value.length;
+    offsets.value = new Array(length).fill(0);
+    dragStartX.value = new Array(length).fill(0);
+    isDragging.value = new Array(length).fill(false);
+    currentOpenIndex.value = null;
+  }
+}, { immediate: true });
 
 onMounted(() => {
   subscribeBookmarks(
@@ -120,3 +229,9 @@ useSeo({
   noindex: true,
 });
 </script>
+
+<style scoped>
+.touch-none {
+  touch-action: none;
+}
+</style>

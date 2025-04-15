@@ -1,39 +1,46 @@
 <template>
   <div class="container mx-auto py-8 select-none">
-    <div class="space-y-8">
-      <div class="flex items-center gap-4">
-        <ProfileAvatarUpload />
-        <div class="w-full">
-          <div class="text-2xl font-bold">{{ user?.first_name }}</div>
-          <div class="text-sm text-neutral-500 flex justify-between items-center">
-            <div>{{ user?.email }}</div>
-            <div class="text-sm text-neutral-500 flex items-center space-x-2">
-              <UIcon name="hugeicons:location-04" class="size-4" />
-              <div>{{ user?.location }}</div>
-            </div>
+    <!-- 个人信息区域 -->
+    <div class="flex flex-col items-center gap-3">
+      <ProfileAvatarUpload />
+
+      <div class="flex-1 text-center">
+        <div class="text-2xl font-bold mb-3">{{ user?.first_name }}</div>
+        <div class="text-neutral-500 space-y-4 text-sm">
+          <div class="flex items-center justify-center gap-2">
+            <UBadge variant="soft" color="neutral" size="lg">{{ user?.email }}</UBadge>
+          </div>
+          <div class="flex items-center justify-center gap-2">
+            <UIcon name="hugeicons:location-04" class="size-4" />
+            <span>最近在 <{{ user?.location }}> 登录</span>
           </div>
         </div>
       </div>
-
-      <div class="grid grid-cols-2 gap-8">
-        <div class="p-4 rounded-lg bg-neutral-200/40 dark:bg-neutral-950/40">
-          <div class="text-2xl font-bold text-center">
-            <SharedAnimateNumber :value="commentsCount" class="justify-center text-2xl" />
-          </div>
-          <div class="text-neutral-500 text-sm text-center">评论数</div>
-        </div>
-        <div class="p-4 rounded-lg bg-neutral-200/40 dark:bg-neutral-950/40">
-          <div class="text-2xl font-bold text-center">
-            <SharedAnimateNumber :value="likesCount" class="justify-center text-2xl" />
-          </div>
-          <div class="text-neutral-500 text-sm text-center">点赞数</div>
-        </div>
-      </div>
-
-      <UButton @click="handleLogout" size="xl" color="error" block :disabled="isLoading" :loading="isLoading">
-        {{ isLoading ? "正在处理" : "退出登录" }}
-      </UButton>
     </div>
+
+    <!-- 数据统计卡片 -->
+    <div class="grid grid-cols-2 gap-4 mt-8">
+      <div
+        class="p-6 rounded-xl bg-gradient-to-br from-purple-500/10 to-pink-500/10 hover:from-purple-500/20 hover:to-pink-500/20 transition-all duration-300">
+        <div class="flex justify-center">
+          <SharedAnimateNumber :value="commentsCount" class="text-3xl font-bold" />
+        </div>
+        <div class="text-neutral-500 font-medium text-center mt-2">评论数</div>
+      </div>
+      <div
+        class="p-6 rounded-xl bg-gradient-to-br from-amber-500/10 to-orange-500/10 hover:from-amber-500/20 hover:to-orange-500/20 transition-all duration-300">
+        <div class="flex justify-center">
+          <SharedAnimateNumber :value="likesCount" class="text-3xl font-bold" />
+        </div>
+        <div class="text-neutral-500 font-medium text-center mt-2">点赞数</div>
+      </div>
+    </div>
+
+    <!-- 退出按钮 -->
+    <UButton @click="handleLogout" size="xl" color="error" variant="soft" block :disabled="isLoading"
+      :loading="isLoading" class="mt-10">
+      <span>{{ isLoading ? "正在处理" : "退出登录" }}</span>
+    </UButton>
   </div>
 </template>
 

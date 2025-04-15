@@ -158,3 +158,9 @@ export namespace Bookmarks {
     filter?: Record<string, any>; // 过滤条件
   }
 }
+
+export interface UserStatsReturn {
+  totalUsers: Ref<number>;
+  fetchTotalUsers: () => Promise<void>;
+  isLoading: Ref<boolean>;
+}

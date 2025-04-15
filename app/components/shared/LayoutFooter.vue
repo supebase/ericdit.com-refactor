@@ -3,12 +3,26 @@
     <hr />
     <div class="py-4 select-none flex justify-center items-center gap-3 min-h-[3rem]">
       <div class="text-center text-sm text-neutral-400 dark:text-neutral-500 space-x-2">
-        <span>2001-{{ new Date().getFullYear() }} &copy; Eric</span>
+        <span>{{ new Date().getFullYear() }} &copy; Eric</span>
         <span class="text-neutral-300 dark:text-neutral-700 text-xs">&bull;</span>
         <span>{{ version }}（{{ useDateFormatter(buildTime) }}构建）</span>
       </div>
 
       <SharedColorMode />
+
+      <UPopover mode="click" arrow :open-delay="0" :close-delay="0">
+        <UButton
+          variant="ghost"
+          class="!p-0 !h-auto"
+          @click="() => { if (!totalUsers.value) fetchTotalUsers() }"
+        >
+          <UIcon name="hugeicons:user-status"
+            class="size-4 text-neutral-500 hover:text-neutral-800 dark:hover:text-neutral-200 transform duration-500" />
+        </UButton>
+        <template #content>
+          <UserStats />
+        </template>
+      </UPopover>
     </div>
   </footer>
 </template>
@@ -16,6 +30,7 @@
 <script setup>
 const version = ref("正在加载");
 const buildTime = ref();
+const { totalUsers, fetchTotalUsers } = useUserStats();
 
 onMounted(async () => {
   try {

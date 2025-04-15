@@ -47,6 +47,11 @@ export default defineAppConfig({
         },
       ],
     },
+    popover: {
+      slots: {
+        content: "rounded-[calc(var(--ui-radius)*1)]", // 弹出框内容圆角大小
+      },
+    },
   },
 
   // 消息提示配置
