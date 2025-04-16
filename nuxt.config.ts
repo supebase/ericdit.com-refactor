@@ -74,7 +74,7 @@ export default defineNuxtConfig({
       chunkSizeWarningLimit: 1000,
     },
     optimizeDeps: {
-      include: ["vue", "vue-router", "@vueuse/core", "@directus/sdk", "@nuxtjs/mdc"],
+      include: ["vue", "vue-router", "@vueuse/core", "@directus/sdk"],
     },
   },
 
@@ -90,7 +90,7 @@ export default defineNuxtConfig({
     publicAssets: [
       {
         dir: resolve("./public"),
-        maxAge: 24 * 60 * 60 * 90,
+        maxAge: 60 * 60 * 24 * 90,
       },
     ],
     routeRules: {

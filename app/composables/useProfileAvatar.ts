@@ -42,6 +42,16 @@ export const useProfileAvatar = (): ProfileAvatarReturn => {
    */
   const uploadAvatar = async (file: File): Promise<void> => {
     if (!file) return;
+    // 拒绝 SVG 文件
+    if (file.type === "image/svg+xml" || file.name.toLowerCase().endsWith(".svg")) {
+      toast.add({
+        title: "上传通知",
+        description: "不支持 SVG 格式的图片上传",
+        icon: "hugeicons:alert-02",
+        color: "warning",
+      });
+      return;
+    }
     isLoading.value = true;
 
     const formData = new FormData();

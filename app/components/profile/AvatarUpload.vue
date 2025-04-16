@@ -26,6 +26,17 @@ const UPLOAD_CONFIG = {
 
 // 验证文件
 const validateFile = (file: File): boolean => {
+  // 拒绝 SVG 文件
+  if (file.type === "image/svg+xml" || file.name.toLowerCase().endsWith(".svg")) {
+    toast.add({
+      title: "上传通知",
+      description: "不支持 SVG 格式的图片上传",
+      icon: "hugeicons:alert-02",
+      color: "warning",
+    });
+    return false;
+  }
+
   if (
     !UPLOAD_CONFIG.allowedTypes.includes(file.type as (typeof UPLOAD_CONFIG.allowedTypes)[number])
   ) {

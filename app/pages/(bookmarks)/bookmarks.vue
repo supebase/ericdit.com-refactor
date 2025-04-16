@@ -23,7 +23,7 @@
       <div v-for="(bookmark, index) in bookmarks" :key="bookmark.id"
         class="relative overflow-hidden touch-none select-none cursor-grab active:cursor-grabbing"
         @touchstart="handleDragStart($event, index)" @touchmove="handleDragMove($event, index)"
-        @touchend.prevent="handleDragEnd(index)" @touchcancel.prevent="handleDragEnd(index)"
+        @touchend="handleDragEnd(index)" @touchcancel="handleDragEnd(index)"
         @mousedown.prevent="handleDragStart($event, index)" @mousemove.prevent="handleDragMove($event, index)"
         @mouseup="handleDragEnd(index)" @mouseleave="handleDragEnd(index)">
         <div class="relative transform transition-transform duration-200 ease-out"
@@ -76,6 +76,8 @@ const offsets = ref<number[]>([]);
 const dragStartX = ref<number[]>([]);
 const isDragging = ref<boolean[]>([]);
 const currentOpenIndex = ref<number | null>(null);
+const dragThreshold = 10; // 新增：滑动阈值，单位 px
+const hasMoved = ref<boolean[]>([]); // 新增：记录每个 item 是否发生过滑动
 
 const {
   data: bookmarks,
@@ -112,28 +114,28 @@ const getEventX = (event: MouseEvent | TouchEvent): number => {
 };
 
 const handleDragStart = (event: MouseEvent | TouchEvent, index: number) => {
-  if (event.type === 'touchstart') {
-    event.preventDefault();
-  }
-
+  // 不再在这里 preventDefault
   if (currentOpenIndex.value !== null && currentOpenIndex.value !== index) {
     offsets.value[currentOpenIndex.value] = 0;
   }
-
   isDragging.value[index] = true;
   dragStartX.value[index] = getEventX(event);
   offsets.value[index] = offsets.value[index] || 0;
+  hasMoved.value[index] = false; // 新增
 };
 
 const handleDragMove = (event: MouseEvent | TouchEvent, index: number) => {
   if (!isDragging.value[index]) return;
 
-  if (event.type === 'touchmove') {
-    event.preventDefault();
-  }
-
   const currentX = getEventX(event);
   const diff = currentX - (dragStartX.value[index] ?? 0);
+
+  // 新增：只有横向滑动超过阈值才 preventDefault
+  if (event.type === 'touchmove' && Math.abs(diff) > dragThreshold) {
+    event.preventDefault();
+    hasMoved.value[index] = true;
+  }
+
   let newOffset = diff;
   if (currentOpenIndex.value === index) {
     newOffset = Math.max(Math.min(diff - 75, 0), -75);
@@ -170,12 +172,12 @@ const handleDelete = async (bookmark: Bookmarks.Item, index: number) => {
   }
 };
 
-const handleLinkClick = (index: number, event: MouseEvent) => {
-  if (isDragging.value[index] || Math.abs(offsets.value[index] || 0) > 5) {
+const handleLinkClick = (index: number, event: MouseEvent | TouchEvent) => {
+  // 新增：判断 hasMoved，只有未滑动才允许点击
+  if (isDragging.value[index] || hasMoved.value[index] || Math.abs(offsets.value[index] || 0) > 5) {
     event.preventDefault();
     return;
   }
-
   event.stopPropagation();
   navigateTo({
     name: 'article-id',
@@ -198,6 +200,7 @@ watch(bookmarks, () => {
     offsets.value = new Array(length).fill(0);
     dragStartX.value = new Array(length).fill(0);
     isDragging.value = new Array(length).fill(false);
+    hasMoved.value = new Array(length).fill(false); // 新增
     currentOpenIndex.value = null;
   }
 }, { immediate: true });
