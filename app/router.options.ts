@@ -6,14 +6,14 @@ export const safeBack = () => {
 
   // 使用 try-catch 包裹本地存储操作，避免隐私模式下的异常
   try {
-    const history = JSON.parse(localStorage.getItem("routeHistory") || "[]");
-    const originalPath = localStorage.getItem("originalPath");
+    const history = JSON.parse(safeGetItem("routeHistory") || "[]");
+    const originalPath = safeGetItem("originalPath");
 
     // 如果是从登录/注册页面返回
     if (route.path.includes("/login") || route.path.includes("/register")) {
       // 如果有登录前的页面记录，优先返回该页面
       if (originalPath && !originalPath.includes("/login") && !originalPath.includes("/register")) {
-        localStorage.removeItem("originalPath");
+        safeRemoveItem("originalPath");
         return navigateTo(originalPath);
       }
       return navigateTo("/");
@@ -38,7 +38,7 @@ export const safeBack = () => {
       previousPath = "/";
     }
 
-    localStorage.setItem("routeHistory", JSON.stringify(uniqueHistory));
+    safeSetItem("routeHistory", JSON.stringify(uniqueHistory));
     return navigateTo(previousPath as string);
   } catch (error) {
     console.warn("无法访问本地存储，可能处于隐私模式:", error);

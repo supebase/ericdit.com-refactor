@@ -22,8 +22,8 @@
 
       <div v-for="(bookmark, index) in bookmarks" :key="bookmark.id"
         class="relative overflow-hidden touch-none select-none cursor-grab active:cursor-grabbing"
-        @touchstart.prevent="handleDragStart($event, index)" @touchmove.prevent="handleDragMove($event, index)"
-        @touchend="handleDragEnd(index)" @touchcancel="handleDragEnd(index)"
+        @touchstart="handleDragStart($event, index)" @touchmove="handleDragMove($event, index)"
+        @touchend.prevent="handleDragEnd(index)" @touchcancel.prevent="handleDragEnd(index)"
         @mousedown.prevent="handleDragStart($event, index)" @mousemove.prevent="handleDragMove($event, index)"
         @mouseup="handleDragEnd(index)" @mouseleave="handleDragEnd(index)">
         <div class="relative transform transition-transform duration-200 ease-out"
@@ -33,7 +33,7 @@
               <SharedAvatar :src="bookmark.user_created.avatar" :alt="bookmark.user_created.first_name" size="sm" />
               <div class="flex-1 min-w-0">
                 <NuxtLink :to="{ name: 'article-id', params: { id: getContentId(bookmark.content_id) } }"
-                  @click="handleLinkClick(index, $event)">
+                  @click.stop="handleLinkClick(index, $event)">
                   <div class="text-[15px] font-medium line-clamp-1">
                     {{ getContentTitle(bookmark.content_id) }}
                   </div>
@@ -52,7 +52,7 @@
             :style="{
               opacity: Math.min(Math.abs(offsets[index] || 0) / 75, 1),
               transform: `translateX(${75 - Math.abs(offsets[index] || 0)}px)`
-            }" @click="() => handleDelete(bookmark, index)">
+            }" @click.stop="() => handleDelete(bookmark, index)">
             <UIcon v-if="!processingIds.includes(bookmark.id)" name="hugeicons:bookmark-minus-02" class="size-5" />
             <UIcon v-else name="svg-spinners:ring-resize" class="size-5" />
           </button>
@@ -112,7 +112,10 @@ const getEventX = (event: MouseEvent | TouchEvent): number => {
 };
 
 const handleDragStart = (event: MouseEvent | TouchEvent, index: number) => {
-  // 如果有其他项打开，先关闭它
+  if (event.type === 'touchstart') {
+    event.preventDefault();
+  }
+
   if (currentOpenIndex.value !== null && currentOpenIndex.value !== index) {
     offsets.value[currentOpenIndex.value] = 0;
   }
@@ -125,15 +128,16 @@ const handleDragStart = (event: MouseEvent | TouchEvent, index: number) => {
 const handleDragMove = (event: MouseEvent | TouchEvent, index: number) => {
   if (!isDragging.value[index]) return;
 
+  if (event.type === 'touchmove') {
+    event.preventDefault();
+  }
+
   const currentX = getEventX(event);
   const diff = currentX - (dragStartX.value[index] ?? 0);
-  // 修改这里：允许在已经打开状态下向右滑动到0位置
   let newOffset = diff;
   if (currentOpenIndex.value === index) {
-    // 如果当前项已经打开，则限制在 -75 到 0 之间
     newOffset = Math.max(Math.min(diff - 75, 0), -75);
   } else {
-    // 如果当前项未打开，则限制在 -75 到 0 之间
     newOffset = Math.max(Math.min(diff, 0), -75);
   }
   offsets.value[index] = newOffset;
@@ -167,13 +171,12 @@ const handleDelete = async (bookmark: Bookmarks.Item, index: number) => {
 };
 
 const handleLinkClick = (index: number, event: MouseEvent) => {
-  // 如果正在拖动或有明显偏移，阻止链接跳转
   if (isDragging.value[index] || Math.abs(offsets.value[index] || 0) > 5) {
     event.preventDefault();
     return;
   }
 
-  // 否则允许正常跳转
+  event.stopPropagation();
   navigateTo({
     name: 'article-id',
     params: {
@@ -183,7 +186,6 @@ const handleLinkClick = (index: number, event: MouseEvent) => {
 };
 
 onBeforeRouteLeave(() => {
-  // 重置所有偏移量和状态
   if (bookmarks.value) {
     offsets.value = new Array(bookmarks.value.length).fill(0);
     currentOpenIndex.value = null;

@@ -1,8 +1,7 @@
-import { useVisibilityChange } from './useVisibilityChange';
-
 export const useVersionCheck = () => {
   const needsUpdate = ref(false);
   const { isVisible } = useVisibilityChange();
+  const { addCleanup, runCleanup } = createCleanup();
 
   const checkVersion = async () => {
     try {
@@ -16,21 +15,21 @@ export const useVersionCheck = () => {
       if (!response.ok) return;
 
       const { buildHash, version } = await response.json();
-      const currentHash = localStorage.getItem('app-version-hash');
+      const currentHash = safeGetItem('app-version-hash');
 
       needsUpdate.value = false;
 
       // 首次加载时应该设置初始值
       if (!currentHash) {
-        localStorage.setItem('app-version-hash', buildHash);
-        localStorage.setItem('app-version', version);
+        safeSetItem('app-version-hash', buildHash);
+        safeSetItem('app-version', version);
         return;
       }
 
       if (currentHash && buildHash !== currentHash) {
         needsUpdate.value = true;
-        localStorage.setItem('app-version-hash', buildHash);
-        localStorage.setItem('app-version', version);
+        safeSetItem('app-version-hash', buildHash);
+        safeSetItem('app-version', version);
       }
     } catch (error) {
       console.error('Version check failed:', error);
@@ -43,8 +42,9 @@ export const useVersionCheck = () => {
 
   const interval = import.meta.dev ? 30 * 1000 : 2 * 60 * 1000;
   const intervalId = setInterval(checkVersion, interval);
+  addCleanup(() => clearInterval(intervalId));
 
-  onUnmounted(() => clearInterval(intervalId));
+  onUnmounted(() => runCleanup());
 
   return {
     needsUpdate,

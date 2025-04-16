@@ -1,31 +1,26 @@
 export const useVisibilityChange = () => {
-    const isVisible = ref(true);
+    const isVisible = ref(typeof document !== 'undefined' ? !document.hidden : true);
+    const { addCleanup, runCleanup } = createCleanup();
 
-    if (typeof document !== 'undefined') {
-        isVisible.value = document.visibilityState === 'visible';
+    const handler = () => {
+        isVisible.value = !document.hidden;
+    };
 
-        const handler = () => {
-            isVisible.value = document.visibilityState === 'visible';
-        };
+    const setup = () => {
+        document.addEventListener('visibilitychange', handler);
+        addCleanup(() => document.removeEventListener('visibilitychange', handler));
+    };
 
-        const setup = () => {
-            document.addEventListener('visibilitychange', handler);
-        };
+    const cleanup = () => {
+        runCleanup();
+    };
 
-        const cleanup = () => {
-            document.removeEventListener('visibilitychange', handler);
-        };
-
-        return {
-            isVisible,
-            setup,
-            cleanup,
-        };
-    }
+    onMounted(setup);
+    onUnmounted(cleanup);
 
     return {
         isVisible,
-        setup: () => { },
-        cleanup: () => { },
+        setup,
+        cleanup,
     };
 };

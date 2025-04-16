@@ -3,7 +3,7 @@
     <UIcon name="svg-spinners:3-dots-scale" class="size-5 text-neutral-400 dark:text-orange-200" />
   </div>
   <div v-else class="select-none">
-    <UChip :color="bookmarksCount ? 'primary' : 'neutral'" :ui="{ base: 'py-1.5 px-1 font-bold' }"
+    <UChip :color="bookmarksCount ? 'primary' : 'neutral'" :ui="{ base: 'py-[7px] px-[5px] font-bold' }"
       :show="bookmarksCount !== null && bookmarksCount > 0" :text="bookmarksCount ?? undefined">
       <NuxtLink to="/bookmarks">
         <UIcon name="hugeicons:bookmark-02" class="size-5 text-neutral-600 dark:text-neutral-400"

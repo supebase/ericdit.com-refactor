@@ -1,6 +1,4 @@
 import type { User } from "~/types";
-import { validateEmail } from "~/utils/validation";
-import { useVisibilityChange } from "./useVisibilityChange";
 
 /**
  * 用户认证管理组合式函数
@@ -50,7 +48,7 @@ export const useAuth = () => {
     try {
       await $authClient.logout();
       // 清除存储的原始路径
-      localStorage.removeItem("originalPath");
+      safeRemoveItem("originalPath");
       user.value = null;
     } catch (error: any) {
       throw new Error(error.errors?.[0]?.message || "登出失败");
@@ -146,6 +144,7 @@ export const useAuth = () => {
     if (typeof window === "undefined") return;
 
     const { isVisible, setup, cleanup } = useVisibilityChange();
+    const { addCleanup, runCleanup } = createCleanup();
 
     // 每 30 分钟检查一次
     const interval = 30 * 60 * 1000;
@@ -154,6 +153,7 @@ export const useAuth = () => {
         refreshUser().catch(() => { });
       }
     }, interval);
+    addCleanup(() => clearInterval(checkInterval));
 
     // 监听可见性变化
     watch(isVisible, (visible) => {
@@ -164,11 +164,11 @@ export const useAuth = () => {
 
     // 设置可见性监听
     setup();
+    addCleanup(() => cleanup());
 
     // 返回清理函数
     return () => {
-      clearInterval(checkInterval);
-      cleanup();
+      runCleanup();
     };
   };
 

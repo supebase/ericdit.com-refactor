@@ -1,5 +1,4 @@
 import type { User } from "~/types";
-import { debounce } from "~/utils/debounce";
 
 // 添加返回类型接口
 interface UserStatusComposable {
@@ -25,8 +24,9 @@ export const usePresence = (): UserStatusComposable => {
 
   // 状态更新锁，防止并发更新
   let isUpdating = false;
-  // 存储所有活跃的订阅
-  let activeSubscriptions: Array<() => void> = [];
+
+  // 使用 createCleanup 工具统一管理所有清理函数
+  const { addCleanup, runCleanup } = createCleanup();
 
   // 用户状态相关常量
   const ACTIVITY_TIMEOUT_MS = 1000; // 用户活动防抖时间
@@ -123,6 +123,7 @@ export const usePresence = (): UserStatusComposable => {
       const checkInterval = setInterval(async () => {
         await checkUserStatus(userId);
       }, STATUS_CHECK_INTERVAL_MS);
+      addCleanup(() => clearInterval(checkInterval));
 
       // 创建订阅处理器
       const subscriptionHandler = async () => {
@@ -137,14 +138,13 @@ export const usePresence = (): UserStatusComposable => {
       // 启动订阅处理
       subscriptionHandler();
 
-      // 保存清理函数
-      const cleanup = () => {
-        clearInterval(checkInterval);
-        subscription.return(); // 关闭订阅
-      };
-      activeSubscriptions.push(cleanup);
+      addCleanup(() => subscription.return());
 
-      return cleanup;
+      // 返回单个清理函数（可选）
+      return () => {
+        clearInterval(checkInterval);
+        subscription.return();
+      };
     } catch (error) {
       console.error("Failed to subscribe to user status:", error);
     }
@@ -161,11 +161,7 @@ export const usePresence = (): UserStatusComposable => {
    * 清理所有定时器和订阅
    */
   const cleanup = () => {
-    // 清理所有活跃的订阅
-    while (activeSubscriptions.length) {
-      const cleanup = activeSubscriptions.pop();
-      cleanup?.();
-    }
+    runCleanup();
   };
 
   return {

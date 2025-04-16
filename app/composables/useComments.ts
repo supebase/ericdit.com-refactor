@@ -77,6 +77,7 @@ export const useComments = () => {
   ): Promise<() => void> => {
     let commentSubscription: any;
     let userSubscription: any;
+    const { addCleanup, runCleanup } = createCleanup();
 
     try {
       // 订阅评论更新
@@ -88,6 +89,7 @@ export const useComments = () => {
         },
       });
       commentSubscription = commentSub.subscription;
+      addCleanup(() => commentSubscription?.return());
 
       // 订阅用户头像、地理位置更新
       const userSub = await $realtimeClient.subscribe("directus_users", {
@@ -96,6 +98,7 @@ export const useComments = () => {
         },
       });
       userSubscription = userSub.subscription;
+      addCleanup(() => userSubscription?.return());
 
       // 处理评论更新
       (async () => {
@@ -128,13 +131,11 @@ export const useComments = () => {
       })();
 
       return () => {
-        if (commentSubscription) commentSubscription.return();
-        if (userSubscription) userSubscription.return();
+        runCleanup();
       };
     } catch (error) {
       // 确保在发生错误时清理订阅
-      if (commentSubscription) commentSubscription.return();
-      if (userSubscription) userSubscription.return();
+      runCleanup();
       throw error;
     }
   };
