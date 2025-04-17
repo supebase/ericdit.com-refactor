@@ -9,7 +9,8 @@ interface IPResponse {
 
 export const useGeoLocation = async () => {
   try {
-    const data = await $fetch<IPResponse>("https://api.vore.top/api/IPdata", {
+    const config = useRuntimeConfig();
+    const data = await $fetch<IPResponse>(config.public.ipDataApiUrl, {
       timeout: 5000,
       retry: 2,
     });
