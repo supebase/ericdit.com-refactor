@@ -1,6 +1,6 @@
 export const useVersionCheck = () => {
   const needsUpdate = ref(false);
-  const { isVisible } = useVisibilityChange();
+  const { isVisible, setup, cleanup: cleanupVisibility } = useVisibilityChange();
   const { addCleanup, runCleanup } = createCleanup();
 
   const checkVersion = async () => {
@@ -44,9 +44,13 @@ export const useVersionCheck = () => {
   const intervalId = setInterval(checkVersion, interval);
   addCleanup(() => clearInterval(intervalId));
 
-  onUnmounted(() => runCleanup());
+  setup();
+  addCleanup(() => cleanupVisibility());
+
+  const cleanup = () => runCleanup();
 
   return {
     needsUpdate,
+    cleanup,
   };
 };

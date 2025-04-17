@@ -15,9 +15,6 @@ export const useVisibilityChange = () => {
         runCleanup();
     };
 
-    onMounted(setup);
-    onUnmounted(cleanup);
-
     return {
         isVisible,
         setup,

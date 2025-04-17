@@ -7,6 +7,7 @@ import {
   // 用户管理相关接口
   registerUser, // 用户注册
   updateUser, // 更新用户信息
+  updateMe, // 更新当前用户信息
   readMe, // 获取当前用户信息
   readUser, // 获取指定用户信息
   readUsers, // 获取用户列表
@@ -41,6 +42,7 @@ export default defineNuxtPlugin(() => {
       user: {
         registerUser,
         updateUser,
+        updateMe,
         readMe,
         readUser,
         readUsers,
