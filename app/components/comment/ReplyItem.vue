@@ -43,12 +43,13 @@ const props = defineProps<{
   showArrow?: boolean;
 }>();
 
-const { getUserAvatarUrl, getUserLocation } = useComments();
+const { getUserAvatarUrl, getUserLocation } = useUserMeta();
+
 const userAvatarUrl = computed(() =>
   getUserAvatarUrl(props.reply.user_created.id, props.reply.user_created.avatar)
 );
 const userLocation = computed(
-  () => getUserLocation(props.reply.user_created.id) || props.reply.user_created.location
+  () => getUserLocation(props.reply.user_created.id, props.reply.user_created.location)
 );
 
 const { usersStatus, subscribeUserStatus } = usePresence();

@@ -4,7 +4,7 @@
     <div class="flex justify-between items-end text-sm text-neutral-500 nums tabular-nums select-none">
       <div class="flex items-center space-x-3">
         <div>
-          <SharedAvatar :src="content.user_created.avatar" size="md" :alt="content.user_created.first_name" />
+          <SharedAvatar :src="userAvatarUrl || undefined" size="md" :alt="content.user_created.first_name" />
         </div>
         <div class="flex flex-col">
           <div class="text-base text-neutral-900 dark:text-neutral-50 font-medium">
@@ -48,9 +48,15 @@ import type { Contents } from "~/types";
 
 const toast = useToast();
 
-defineProps<{
+const props = defineProps<{
   content: Contents.Item;
 }>();
+
+const { getUserAvatarUrl } = useUserMeta();
+
+const userAvatarUrl = computed(() =>
+  getUserAvatarUrl(props.content.user_created.id, props.content.user_created.avatar)
+);
 
 const { share, isSupported } = useShare();
 

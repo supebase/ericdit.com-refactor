@@ -53,7 +53,7 @@
     <template #footer>
       <div class="flex justify-between items-center mt-4 px-1">
         <div class="flex items-center space-x-3">
-          <SharedAvatar :src="content.user_created.avatar" size="xs" :alt="content.user_created.first_name" />
+          <SharedAvatar :src="userAvatarUrl || undefined" size="xs" :alt="content.user_created.first_name" />
           <UBadge variant="soft" color="neutral" class="nums tabular-nums">
             {{ useDateFormatter(content.date_created) }}
           </UBadge>
@@ -74,6 +74,11 @@ const props = defineProps<{
 }>();
 
 const { cleanMarkdown } = useContents();
+const { getUserAvatarUrl } = useUserMeta();
+
+const userAvatarUrl = computed(() =>
+  getUserAvatarUrl(props.content.user_created.id, props.content.user_created.avatar)
+);
 
 // 处理后的文本内容
 const cleanBody = computed(() => cleanMarkdown(props.content.body));

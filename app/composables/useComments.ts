@@ -11,10 +11,7 @@ import type { Comments } from "~/types";
 export const useComments = () => {
   const { $directus, $content, $realtimeClient } = useNuxtApp();
 
-  // 用户头像缓存状态
-  const userAvatars = useState<Record<string, string>>("comments:userAvatars", () => ({}));
-  // 用户地理位置缓存状态
-  const userLocations = useState<Record<string, string>>("comments:userLocations", () => ({}));
+  const { setUserAvatar, setUserLocation, getUserAvatarUrl, getUserLocation } = useUserMeta();
 
   /**
    * 获取评论列表，可以是文章的评论或评论的回复
@@ -118,10 +115,10 @@ export const useComments = () => {
             if (item.event === "update") {
               const userData = item.data[0];
               if (userData?.avatar) {
-                userAvatars.value[userData.id] = userData.avatar;
+                setUserAvatar(userData.id, userData.avatar);
               }
               if (userData?.location) {
-                userLocations.value[userData.id] = userData.location;
+                setUserLocation(userData.id, userData.location);
               }
             }
           }
@@ -138,24 +135,6 @@ export const useComments = () => {
       runCleanup();
       throw error;
     }
-  };
-
-  /**
-   * 获取用户头像URL
-   * @param userId - 用户ID
-   * @param avatarId - 头像ID
-   */
-  const getUserAvatarUrl = (userId: string, avatarId: string | null): string | null => {
-    if (!avatarId) return null;
-    if (!userAvatars.value[userId]) {
-      userAvatars.value[userId] = avatarId;
-    }
-    return userAvatars.value[userId];
-  };
-
-  // 添加获取用户地理位置的方法
-  const getUserLocation = (userId: string): string | null => {
-    return userLocations.value[userId] || null;
   };
 
   return {

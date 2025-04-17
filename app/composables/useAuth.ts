@@ -129,7 +129,7 @@ export const useAuth = () => {
         // 其他情况只清除用户状态
         user.value = null;
       }
-      throw new Error(error.errors?.[0]?.message || "获取用户信息失败");
+      // throw new Error(error.errors?.[0]?.message || "获取用户信息失败");
     }
   };
 

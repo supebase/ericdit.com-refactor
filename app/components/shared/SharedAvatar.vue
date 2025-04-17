@@ -61,11 +61,11 @@ const iconSize = computed(() => {
 // 添加尺寸类计算属性
 const sizeClass = computed(() => {
   const sizes = {
-    xs: "w-7",
-    sm: "w-8",
-    md: "w-10",
-    lg: "w-12",
-    xl: "w-14",
+    xs: "w-7 h-7",
+    sm: "w-8 h-8",
+    md: "w-10 h-10",
+    lg: "w-12 h-12",
+    xl: "w-14 h-14",
   };
   return sizes[props.size] || sizes.md;
 });

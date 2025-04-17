@@ -41,8 +41,8 @@
       </div>
 
       <div class="transform transition-all duration-300 ease-in-out" :class="isReplying
-          ? 'translate-y-0 opacity-100 max-h-[200px]'
-          : '-translate-y-3 opacity-0 max-h-0 overflow-hidden'
+        ? 'translate-y-0 opacity-100 max-h-[200px]'
+        : '-translate-y-3 opacity-0 max-h-0 overflow-hidden'
         ">
         <div>
           <CommentEditor :placeholder="`回复：${comment.user_created.first_name}`" :is-submitting="isSubmitting"
@@ -68,12 +68,13 @@ const props = defineProps<{
   isReplying: boolean;
 }>();
 
-const { getUserAvatarUrl, getUserLocation } = useComments();
+const { getUserAvatarUrl, getUserLocation } = useUserMeta();
+
 const userAvatarUrl = computed(() =>
   getUserAvatarUrl(props.comment.user_created.id, props.comment.user_created.avatar)
 );
 const userLocation = computed(
-  () => getUserLocation(props.comment.user_created.id) || props.comment.user_created.location
+  () => getUserLocation(props.comment.user_created.id, props.comment.user_created.location)
 );
 
 const emit = defineEmits<{

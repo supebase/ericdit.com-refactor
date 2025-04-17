@@ -1,4 +1,9 @@
-export const createCleanup = () => {
+export interface CleanupController {
+    addCleanup: (fn: () => void) => void;
+    runCleanup: () => void;
+}
+
+export const createCleanup = (): CleanupController => {
     const cleanupFns: (() => void)[] = [];
 
     const addCleanup = (fn: () => void) => {

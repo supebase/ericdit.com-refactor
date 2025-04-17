@@ -3,8 +3,7 @@
     <template v-if="isAuthenticated">
       <div class="flex items-center">
         <NuxtLink to="/profile">
-          <SharedAvatar :src="user?.avatar" :alt="!user?.avatar ? user?.first_name : undefined" size="sm"
-            class="uppercase" />
+          <SharedAvatar :src="user?.avatar" :alt="!user?.avatar ? user?.first_name : undefined" size="sm" />
         </NuxtLink>
       </div>
     </template>

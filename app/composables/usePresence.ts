@@ -99,7 +99,7 @@ export const usePresence = (): UserStatusComposable => {
       usersStatus.value[userId] = isOnline;
       return isOnline;
     } catch (error) {
-      console.error("Failed to check user status:", error);
+      // console.error("Failed to check user status:", error);
       return false;
     }
   };

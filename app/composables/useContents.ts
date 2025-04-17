@@ -10,6 +10,8 @@ import type { Contents } from "~/types";
 export const useContents = () => {
   const { $directus, $content, $realtimeClient } = useNuxtApp();
 
+  const { setUserAvatar, getUserAvatarUrl } = useUserMeta();
+
   /**
    * 获取内容列表
    * @param options - 查询选项，包含过滤、排序、分页等条件
@@ -80,15 +82,60 @@ export const useContents = () => {
     query: Contents.QueryOptions,
     callback: (item: any) => void
   ): Promise<() => void> => {
-    const { subscription } = await $realtimeClient.subscribe("contents", { query });
+    let contentSubscription: any;
+    let userSubscription: any;
+    const { addCleanup, runCleanup } = createCleanup();
 
-    for await (const item of subscription) {
-      callback(item);
+    try {
+      // 订阅内容更新
+      const contentSub = await $realtimeClient.subscribe("contents", { query });
+      contentSubscription = contentSub.subscription;
+      addCleanup(() => contentSubscription?.return());
+
+      // 订阅用户头像更新
+      const userSub = await $realtimeClient.subscribe("directus_users", {
+        query: {
+          fields: ["id", "avatar"],
+        },
+      });
+      userSubscription = userSub.subscription;
+      addCleanup(() => userSubscription?.return());
+
+      // 处理内容更新
+      (async () => {
+        try {
+          for await (const item of contentSubscription) {
+            callback(item);
+          }
+        } catch (error) {
+          console.error('Error in content subscription:', error);
+        }
+      })();
+
+      // 处理用户头像更新
+      (async () => {
+        try {
+          for await (const item of userSubscription) {
+            if (item.event === "update") {
+              const userData = item.data[0];
+              if (userData?.avatar) {
+                setUserAvatar(userData.id, userData.avatar);
+              }
+            }
+          }
+        } catch (error) {
+          console.error('Error in user subscription:', error);
+        }
+      })();
+
+      return () => {
+        runCleanup();
+      };
+    } catch (error) {
+      // 确保在发生错误时清理订阅
+      runCleanup();
+      throw error;
     }
-
-    return () => {
-      subscription.return();
-    };
   };
 
   return {
@@ -96,5 +143,6 @@ export const useContents = () => {
     getContent,
     cleanMarkdown,
     subscribeContents,
+    getUserAvatarUrl,
   };
 };

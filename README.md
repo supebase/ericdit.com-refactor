@@ -1,34 +1,48 @@
-# Nuxt Minimal Starter
+# EricDit.com Nuxt 4 重构版 / Nuxt 4 Refactor for EricDit.com
 
-For database schema, please refer to types/index.ts
+这是基于 [Nuxt 4](https://nuxt.com/) 的个人网站重构项目，支持内容管理、评论、点赞、实时用户状态、代码高亮等功能。  
+This is a personal website refactor project based on [Nuxt 4](https://nuxt.com/), featuring content management, comments, likes, real-time user status, code highlighting, and more.
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+---
 
-## Setup
+## 📦 数据库结构 / Database Schema
 
-Make sure to install dependencies:
+请参考 [`types/index.ts`](types/index.ts) 查看数据库结构定义。  
+For database schema, please refer to [`types/index.ts`](types/index.ts).
+
+---
+
+## ⚙️ 环境变量 / Environment Variables
+
+请根据 `env.example` 文件配置你的环境变量（如 Directus API 地址、站点 URL 等）。  
+Please configure your environment variables according to `env.example` (such as Directus API URL, site URL, etc).
+
+---
+
+## 🚀 安装与启动 / Setup & Start
+
+### 安装依赖 / Install dependencies
 
 ```bash
-# npm
 npm install
 ```
 
-## Development Server
-
-Start the development server on `http://localhost:3000`:
+### 启动开发服务器 / Start the development server
 
 ```bash
-# npm
 npm run dev
 ```
 
-## Production
-
-Build the application for production:
+### 构建并启动生产服务器 / Build and start the production server
 
 ```bash
-# npm
 npm run build
+pm2 start ecosystem.config.js
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+---
+
+## 📝 贡献 / Contributing
+
+欢迎提出问题、提出建议、参与代码贡献等。
+Welcome to report issues, suggest improvements, and contribute code.

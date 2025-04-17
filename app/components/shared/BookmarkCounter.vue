@@ -56,14 +56,19 @@ const fetchBookmarksCount = async () => {
   }
 };
 
-onMounted(async () => {
-  await fetchBookmarksCount();
+const unsubscribe = ref<null | (() => void)>(null);
 
-  subscribeBookmarks(
+const setupSubscription = async () => {
+  if (unsubscribe.value) {
+    unsubscribe.value();
+    unsubscribe.value = null;
+  }
+  if (!user.value?.id) return;
+  unsubscribe.value = await subscribeBookmarks(
     {
       fields: ["id"],
       filter: {
-        user_created: { _eq: user.value?.id },
+        user_created: { _eq: user.value.id },
       },
     },
     async (event) => {
@@ -72,10 +77,20 @@ onMounted(async () => {
       }
     }
   );
+};
+
+onMounted(async () => {
+  await fetchBookmarksCount();
+  setupSubscription();
 });
 
-watch(user, () => {
+watch(() => user.value?.id, () => {
   fetchBookmarksCount();
+  setupSubscription();
+});
+
+onUnmounted(() => {
+  if (unsubscribe.value) unsubscribe.value();
 });
 </script>
 

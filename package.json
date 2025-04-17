@@ -1,6 +1,6 @@
 {
   "name": "eric-app",
-  "version": "0.9.3",
+  "version": "0.9.5",
   "private": true,
   "type": "module",
   "scripts": {
