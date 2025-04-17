@@ -11,6 +11,7 @@ import {
   readMe, // 获取当前用户信息
   readUser, // 获取指定用户信息
   readUsers, // 获取用户列表
+  readSingleton, // 获取单例数据
   // 内容管理相关接口
   readItem, // 读取单个内容项
   readItems, // 批量读取内容项
@@ -55,6 +56,7 @@ export default defineNuxtPlugin(() => {
         createItem,
         updateItem,
         deleteItem,
+        readSingleton,
       },
 
       // 文件管理 API

@@ -131,7 +131,10 @@ onMounted(() => {
 });
 
 useSeo({
-  title: "个人资料",
+  site_name: "个人资料",
+  site_description: '',
+  seo_keywords: '',
+  maintenance_mode: false,
   noindex: true,
 });
 </script>

@@ -23,7 +23,10 @@ watch(
 );
 
 useSeo({
-  title: "注册新用户",
+  site_name: "注册新用户",
+  site_description: '',
+  seo_keywords: '',
+  maintenance_mode: false,
   noindex: true,
 });
 </script>

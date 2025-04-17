@@ -1,71 +1,32 @@
-/**
- * SEO 元数据配置接口
- * @interface SeoOptions
- */
-interface SeoOptions {
-  /** 页面标题 */
-  title: string | Ref<string>;
-  /** 页面描述，用于 meta description 和社交媒体分享 */
-  description?: string | Ref<string>;
-  /** 页面类型，用于 Open Graph 协议 */
-  type?: "website" | "article";
-  /** 关键词数组，用于 meta keywords */
-  keywords?: string[];
-  /** 是否禁止搜索引擎索引此页面 */
-  noindex?: boolean;
-}
+import type { AppSettings } from "~/types";
 
-/**
- * SEO 元数据管理组合式函数
- * 用于统一管理页面的 SEO 相关元数据，支持:
- * - 基础 SEO 元数据
- * - Open Graph 协议
- * - Twitter Cards
- * - 搜索引擎索引控制
- *
- * @param {SeoOptions} options - SEO 配置选项
- * @example
- * ```ts
- * // 基础用法
- * useSeo({
- *   title: '页面标题',
- *   description: '页面描述'
- * })
- *
- * // 文章页面用法
- * useSeo({
- *   title: computed(() => article.value?.title),
- *   description: computed(() => article.value?.description),
- *   type: 'article'
- * })
- * ```
- */
-export function useSeo(options: SeoOptions) {
+export function useSeo(options: AppSettings) {
   const config = useRuntimeConfig();
   const route = useRoute();
+  const { getSettings } = useAppSettings();
 
-  // 从运行时配置获取站点 URL
-  const siteUrl = config.public.siteUrl;
-  const defaultDescription = "";
+  const { data: settings } = useAsyncData('seo-settings', getSettings);
 
-  // 设置所有 SEO 相关的元数据
+  const siteTitle = computed(() =>
+    unref(options.site_name) || settings.value?.site_name || ""
+  );
+  const siteDescription = computed(() =>
+    unref(options.site_description) || settings.value?.site_description || ""
+  );
+  const siteKeywords = computed(() =>
+    unref(options.seo_keywords) || settings.value?.seo_keywords || ""
+  );
+
   useSeoMeta({
-    // 基础 SEO 元数据
-    title: computed(() => `${unref(options.title)}`),
-    description: unref(options.description) || defaultDescription,
-    keywords: options.keywords?.join(", "),
-
-    // Open Graph 协议元数据
-    ogTitle: computed(() => `${unref(options.title)} - Eric`),
-    ogDescription: unref(options.description) || defaultDescription,
-    ogUrl: `${siteUrl}${route.path}`,
+    title: siteTitle,
+    description: siteDescription,
+    keywords: siteKeywords,
+    ogTitle: computed(() => `${siteTitle.value}`),
+    ogDescription: siteDescription,
+    ogUrl: `${config.public.siteUrl}${route.path}`,
     ogType: options.type || "website",
-
-    // Twitter Cards 元数据
-    twitterTitle: computed(() => `${unref(options.title)} - Eric`),
-    twitterDescription: unref(options.description) || defaultDescription,
-
-    // 搜索引擎索引控制
+    twitterTitle: computed(() => `${siteTitle.value}`),
+    twitterDescription: siteDescription,
     robots: options.noindex ? "noindex, nofollow" : "index, follow",
   });
 }

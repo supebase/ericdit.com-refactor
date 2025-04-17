@@ -164,3 +164,15 @@ export interface UserStatsReturn {
   fetchTotalUsers: () => Promise<void>;
   isLoading: Ref<boolean>;
 }
+
+/**
+ * 应用设置类型定义
+ */
+export interface AppSettings {
+  site_name: any; // 网站名称
+  site_description: any; // 网站描述
+  seo_keywords: string; // 搜索引擎关键词
+  maintenance_mode: boolean; // 维护模式
+  type?: "website" | "article"; // 页面类型
+  noindex?: boolean; // 是否禁止搜索引擎收录
+}

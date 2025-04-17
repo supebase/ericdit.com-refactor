@@ -23,7 +23,10 @@ watch(
 );
 
 useSeo({
-  title: "登录",
+  site_name: "登录",
+  site_description: '',
+  seo_keywords: '',
+  maintenance_mode: false,
   noindex: true,
 });
 </script>

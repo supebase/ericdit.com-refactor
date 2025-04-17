@@ -230,7 +230,10 @@ watch(user, () => {
 });
 
 useSeo({
-  title: "我的收藏",
+  site_name: "我的收藏",
+  site_description: '',
+  seo_keywords: '',
+  maintenance_mode: false,
   noindex: true,
 });
 </script>

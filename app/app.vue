@@ -1,8 +1,9 @@
-=<template>
+<template>
   <UApp :toaster="appConfig.toaster" :tooltip="appConfig.tooltip">
     <NuxtLayout>
+      <!-- 维护模式 -->
+      <MaintenanceMode />
       <NuxtPage />
-
       <!-- 版本更新提示 -->
       <UpdateNotification v-model="needsUpdate" />
     </NuxtLayout>
@@ -11,6 +12,10 @@
 
 <script setup lang="ts">
 const appConfig = useAppConfig();
+
+const MaintenanceMode = defineAsyncComponent(
+  () => import("./components/shared/MaintenanceMode.vue")
+);
 
 const UpdateNotification = defineAsyncComponent(
   () => import("./components/shared/UpdateNotification.vue")
@@ -49,8 +54,13 @@ const disableActivityTracking = async () => {
   isActivityTrackingEnabled = false;
 };
 
+const { getSettings } = useAppSettings();
+const settings = ref<any>(null);
+
 // 组件挂载时初始化用户会话
 onMounted(async () => {
+  settings.value = await getSettings();
+
   try {
     await refreshUser();
     if (isAuthenticated.value) {
@@ -94,7 +104,7 @@ if (import.meta.client) {
   });
 }
 
-useHead({
-  titleTemplate: "%s - Eric",
-});
+useHead(() => ({
+  titleTemplate: settings.value?.site_name ? `%s - ${settings.value.site_name}` : "%s",
+}));
 </script>

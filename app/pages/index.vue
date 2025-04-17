@@ -156,8 +156,9 @@ onMounted(() => {
 });
 
 useSeo({
-  title: "探索",
-  description: "发现和分享有趣的内容",
-  keywords: ["博客", "文章", "探索"],
+  site_name: "探索",
+  site_description: "",
+  seo_keywords: "",
+  maintenance_mode: false
 });
 </script>

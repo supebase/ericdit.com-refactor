@@ -60,8 +60,9 @@ onMounted(() => {
 });
 
 useSeo({
-  title: computed(() => content.value?.title || "正在加载"),
-  description: computed(() => content.value?.body?.substring(0, 100) || ""),
-  type: "article",
+  site_name: computed(() => content.value?.title || "正在加载"),
+  site_description: computed(() => content.value?.body?.substring(0, 100) || ""),
+  seo_keywords: "",
+  maintenance_mode: false
 });
 </script>
