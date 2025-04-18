@@ -5,8 +5,7 @@
     </div>
     <div class="flex items-center ml-10">
       <div class="mr-3">
-        <UChip inset size="sm" position="bottom-right"
-          :color="usersStatus[reply.user_created.id] ? 'success' : 'neutral'">
+        <UChip inset size="sm" position="bottom-right" :color="userStatus ? 'success' : 'neutral'">
           <SharedAvatar :src="userAvatarUrl || undefined"
             :alt="!reply.user_created.avatar ? reply.user_created.first_name : undefined" size="xs" class="uppercase" />
         </UChip>
@@ -52,11 +51,32 @@ const userLocation = computed(
   () => getUserLocation(props.reply.user_created.id, props.reply.user_created.location)
 );
 
-const { usersStatus, subscribeUserStatus } = usePresence();
+const { checkUserStatus, subscribeUserStatus, cleanup, usersStatus } = usePresence() as {
+  checkUserStatus: (userId: string) => Promise<boolean>;
+  subscribeUserStatus: (userId: string) => Promise<void>;
+  cleanup: () => void;
+  usersStatus: Ref<Record<string, boolean>>;
+};
+const userStatus = ref(false);
 
 const safeComment = computed(() => escapeHtml(props.reply.comment));
 
 onMounted(async () => {
   await subscribeUserStatus(props.reply.user_created.id);
+  userStatus.value = await checkUserStatus(props.reply.user_created.id);
+
+  watch(
+    () => usersStatus.value[props.reply.user_created.id],
+    (newStatus) => {
+      if (newStatus !== undefined) {
+        userStatus.value = newStatus;
+      }
+    },
+    { immediate: true }
+  );
+});
+
+onUnmounted(() => {
+  cleanup();
 });
 </script>

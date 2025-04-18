@@ -1,11 +1,11 @@
 <template>
   <UApp :toaster="appConfig.toaster" :tooltip="appConfig.tooltip">
     <NuxtLayout>
-      <!-- 维护模式 -->
-      <MaintenanceMode />
       <NuxtPage />
       <!-- 版本更新提示 -->
       <UpdateNotification v-model="needsUpdate" />
+      <!-- 维护模式提示 -->
+      <MaintenanceMode />
     </NuxtLayout>
   </UApp>
 </template>
@@ -28,7 +28,7 @@ const { needsUpdate, cleanup } = useVersionCheck();
 
 // 用户活动监听相关配置
 const USER_ACTIVITY_EVENTS = ["mousedown", "keydown", "scroll", "touchstart"] as const;
-let isActivityTrackingEnabled = false;
+const isActivityTrackingEnabled = ref(false);
 let cleanupSession: (() => void) | undefined;
 
 /**
@@ -39,7 +39,7 @@ const enableActivityTracking = async () => {
   USER_ACTIVITY_EVENTS.forEach((event) => {
     window.addEventListener(event, updateLastActivity);
   });
-  isActivityTrackingEnabled = true;
+  isActivityTrackingEnabled.value = true;
   await updateUserStatus();
 };
 
@@ -51,7 +51,7 @@ const disableActivityTracking = async () => {
   USER_ACTIVITY_EVENTS.forEach((event) => {
     window.removeEventListener(event, updateLastActivity);
   });
-  isActivityTrackingEnabled = false;
+  isActivityTrackingEnabled.value = false;
 };
 
 const { getSettings } = useAppSettings();
@@ -81,9 +81,9 @@ if (import.meta.client) {
   watch(
     isAuthenticated,
     async (newValue, oldValue) => {
-      if (newValue && !isActivityTrackingEnabled) {
+      if (newValue && !isActivityTrackingEnabled.value) {
         await enableActivityTracking();
-      } else if (!newValue && isActivityTrackingEnabled) {
+      } else if (!newValue && isActivityTrackingEnabled.value) {
         await disableActivityTracking();
         if (oldValue) {
           await updateUserStatus();
@@ -96,7 +96,7 @@ if (import.meta.client) {
   // 组件卸载时清理资源
   onUnmounted(() => {
     cleanupPresence();
-    if (isActivityTrackingEnabled) {
+    if (isActivityTrackingEnabled.value) {
       disableActivityTracking();
     }
     cleanupSession?.();

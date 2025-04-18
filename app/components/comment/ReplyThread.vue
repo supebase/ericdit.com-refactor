@@ -3,7 +3,6 @@
     <div class="space-y-6">
       <CommentReplyItem v-for="(reply, index) in displayReplies" :key="reply.id" :reply="reply"
         :show-arrow="index === 0" />
-
       <div v-if="replies.length > 1" class="text-[13px] ml-10">
         <button class="text-neutral-500 nums tabular-nums cursor-pointer" @click="toggleExpand">
           {{ isExpanded ? "收起回复" : `查看全部回复` }}
@@ -15,6 +14,7 @@
 
 <script setup lang="ts">
 import type { Comments } from "~/types";
+const CommentReplyItem = defineAsyncComponent(() => import("~/components/comment/ReplyItem.vue"));
 
 const props = defineProps<{
   commentId: string;
@@ -33,6 +33,8 @@ const fetchReplies = async () => {
         fields: ["id", "comment", "user_created.*", "date_created"],
         sort: ["-date_created"],
       })) || [];
+  } catch (e) {
+    replies.value = [];
   } finally {
     isLoading.value = false;
   }

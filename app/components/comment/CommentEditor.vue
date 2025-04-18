@@ -13,8 +13,8 @@
       </div>
       <div class="flex items-center space-x-6">
         <span class="text-xs nums tabular-nums select-none" :class="content.length >= COMMENT_MAX_LENGTH
-            ? 'text-red-600'
-            : 'text-neutral-400 dark:text-neutral-600'
+          ? 'text-red-600'
+          : 'text-neutral-400 dark:text-neutral-600'
           ">
           {{ content.length }} / {{ COMMENT_MAX_LENGTH }}
         </span>
@@ -30,6 +30,7 @@
 const props = defineProps<{
   placeholder?: string;
   isSubmitting?: boolean;
+  clearInput?: boolean; // 新增
 }>();
 
 const emit = defineEmits<{
@@ -83,8 +84,16 @@ const insertEmoji = (emoji: string) => {
 const submit = () => {
   if (!canSubmit.value) return;
   emit("submit", content.value);
-  content.value = "";
+  // 不在这里清空，由外部控制
 };
+
+// 新增：监听 clearInput prop，外部触发时清空输入框
+watch(
+  () => props.clearInput,
+  (val) => {
+    if (val) content.value = "";
+  }
+);
 
 defineExpose({
   clear: () => (content.value = ""),

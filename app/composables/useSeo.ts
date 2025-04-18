@@ -1,5 +1,9 @@
 import type { AppSettings } from "~/types";
 
+function deepUnref<T>(val: T): any {
+  return isRef(val) ? deepUnref(val.value) : val;
+}
+
 export function useSeo(options: AppSettings) {
   const config = useRuntimeConfig();
   const route = useRoute();
@@ -7,26 +11,27 @@ export function useSeo(options: AppSettings) {
 
   const { data: settings } = useAsyncData('seo-settings', getSettings);
 
+  // 关键：deepUnref 放到 computed 内部
   const siteTitle = computed(() =>
-    unref(options.site_name) || settings.value?.site_name || ""
+    deepUnref(options.site_name) || settings.value?.site_name || ""
   );
   const siteDescription = computed(() =>
-    unref(options.site_description) || settings.value?.site_description || ""
+    deepUnref(options.site_description) || settings.value?.site_description || ""
   );
   const siteKeywords = computed(() =>
-    unref(options.seo_keywords) || settings.value?.seo_keywords || ""
+    deepUnref(options.seo_keywords) || settings.value?.seo_keywords || ""
   );
 
   useSeoMeta({
     title: siteTitle,
     description: siteDescription,
     keywords: siteKeywords,
-    ogTitle: computed(() => `${siteTitle.value}`),
+    ogTitle: siteTitle,
     ogDescription: siteDescription,
-    ogUrl: `${config.public.siteUrl}${route.path}`,
-    ogType: options.type || "website",
-    twitterTitle: computed(() => `${siteTitle.value}`),
+    ogUrl: computed(() => `${config.public.siteUrl}${route.path}`),
+    ogType: computed(() => options.type || "website"),
+    twitterTitle: siteTitle,
     twitterDescription: siteDescription,
-    robots: options.noindex ? "noindex, nofollow" : "index, follow",
+    robots: computed(() => options.noindex ? "noindex, nofollow" : "index, follow"),
   });
 }

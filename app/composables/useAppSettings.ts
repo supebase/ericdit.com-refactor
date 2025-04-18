@@ -58,7 +58,7 @@ export const useAppSettings = () => {
                 }
             })();
 
-            return () => {
+            return (): void => {
                 runCleanup();
             };
         } catch (error) {

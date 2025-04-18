@@ -16,7 +16,7 @@
 const CommentThread = defineAsyncComponent(() => import("~/components/comment/CommentThread.vue"));
 
 const route = useRoute();
-const { getContent, subscribeContents } = useContents();
+const { getContent, subscribeContents, cleanMarkdown } = useContents();
 
 const CONTENT_FIELDS = [
   "id",
@@ -61,7 +61,7 @@ onMounted(() => {
 
 useSeo({
   site_name: computed(() => content.value?.title || "正在加载"),
-  site_description: computed(() => content.value?.body?.substring(0, 100) || ""),
+  site_description: computed(() => cleanMarkdown(content.value?.body?.substring(0, 100) || "")),
   seo_keywords: "",
   maintenance_mode: false
 });

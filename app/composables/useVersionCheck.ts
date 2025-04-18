@@ -3,6 +3,9 @@ export const useVersionCheck = () => {
   const { isVisible, setup, cleanup: cleanupVisibility } = useVisibilityChange();
   const { addCleanup, runCleanup } = createCleanup();
 
+  const RETRY_DELAY = 10 * 1000;
+  let retryTimeout: ReturnType<typeof setTimeout> | null = null;
+
   const checkVersion = async () => {
     try {
       const response = await fetch(`/version.json?t=${Date.now()}`, {
@@ -21,6 +24,7 @@ export const useVersionCheck = () => {
 
       // 首次加载时应该设置初始值
       if (!currentHash) {
+        needsUpdate.value = false;
         safeSetItem('app-version-hash', buildHash);
         safeSetItem('app-version', version);
         return;
@@ -33,6 +37,10 @@ export const useVersionCheck = () => {
       }
     } catch (error) {
       console.error('Version check failed:', error);
+
+      // 网络异常时重试
+      if (retryTimeout) clearTimeout(retryTimeout);
+      retryTimeout = setTimeout(checkVersion, RETRY_DELAY);
     }
   };
 
@@ -47,7 +55,10 @@ export const useVersionCheck = () => {
   setup();
   addCleanup(() => cleanupVisibility());
 
-  const cleanup = () => runCleanup();
+  const cleanup = (): void => {
+    runCleanup();
+    if (retryTimeout) clearTimeout(retryTimeout);
+  };
 
   return {
     needsUpdate,

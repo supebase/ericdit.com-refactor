@@ -160,7 +160,7 @@ export const usePresence = (): UserStatusComposable => {
   /**
    * 清理所有定时器和订阅
    */
-  const cleanup = () => {
+  const cleanup = (): void => {
     runCleanup();
   };
 

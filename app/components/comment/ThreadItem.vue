@@ -46,7 +46,7 @@
         ">
         <div>
           <CommentEditor :placeholder="`回复：${comment.user_created.first_name}`" :is-submitting="isSubmitting"
-            @submit="handleSubmit" />
+            :clear-input="clearInput" @submit="handleSubmit" />
           <UIcon v-if="isReplying" @click="cancelReply" name="hugeicons:cancel-circle"
             class="size-5 text-neutral-500 cursor-pointer absolute -top-2 -right-1" />
         </div>
@@ -66,6 +66,8 @@ const { isAuthenticated } = useAuth();
 const props = defineProps<{
   comment: Comments.Item;
   isReplying: boolean;
+  isSubmitting?: boolean;
+  clearInput?: boolean;
 }>();
 
 const { getUserAvatarUrl, getUserLocation } = useUserMeta();
@@ -83,7 +85,6 @@ const emit = defineEmits<{
   (e: "reply-end"): void;
 }>();
 
-const isSubmitting = ref(false);
 const replyListRef = ref();
 
 const refreshReplies = async () => {
@@ -104,17 +105,11 @@ const cancelReply = () => {
   emit("reply-end");
 };
 
-const handleSubmit = async (content: string) => {
-  try {
-    isSubmitting.value = true;
-    emit("reply", {
-      commentId: props.comment.id,
-      content: content.trim(),
-    });
-  } finally {
-    isSubmitting.value = false;
-    emit("reply-end");
-  }
+const handleSubmit = (content: string) => {
+  emit("reply", {
+    commentId: props.comment.id,
+    content: content.trim(),
+  });
 };
 
 const replyCount = computed(() => replyListRef.value?.repliesCount || 0);
@@ -136,7 +131,6 @@ const userStatus = ref(false);
 
 onMounted(async () => {
   if (import.meta.client) {
-    // 先订阅，再检查状态
     await subscribeUserStatus(props.comment.user_created.id);
     userStatus.value = await checkUserStatus(props.comment.user_created.id);
 
@@ -144,11 +138,10 @@ onMounted(async () => {
       () => usersStatus.value[props.comment.user_created.id],
       (newStatus) => {
         if (newStatus !== undefined) {
-          // 添加undefined检查
           userStatus.value = newStatus;
         }
       },
-      { immediate: true } // 立即执行一次
+      { immediate: true }
     );
   }
 });

@@ -1,18 +1,22 @@
 <template>
-    <div v-if="isMaintenanceMode"
-        class="min-h-screen flex items-center justify-center bg-neutral-50 dark:bg-neutral-900 fixed inset-0 z-50">
-        <div class="text-center">
-            <div class="mb-8 flex justify-center">
-                <UIcon name="hugeicons:computer-settings" class="size-10 text-neutral-900 dark:text-orange-200" />
-            </div>
-            <div class="text-lg font-extrabold mb-3">
-                系统维护中
-            </div>
-            <div class="text-sm text-neutral-500">
-                我们正在进行系统维护，请稍后再试。
-            </div>
-        </div>
-    </div>
+    <UModal :dismissible="false" :open="isMaintenanceMode" title="维护提示" description="维护模式开启/关闭后将自动显示/隐藏"
+        :ui="{ overlay: 'backdrop-grayscale-100' }">
+        <template #content>
+            <UCard class="p-6">
+                <div class="flex flex-col items-center">
+                    <div class="mb-6 flex justify-center">
+                        <UIcon name="hugeicons:computer-settings" class="size-10 animate-pulse" />
+                    </div>
+                    <div class="text-xl font-extrabold mb-2">
+                        维护模式
+                    </div>
+                    <div class="text-sm text-neutral-600 dark:text-neutral-300">
+                        我们正在进行系统维护，请稍后再试。
+                    </div>
+                </div>
+            </UCard>
+        </template>
+    </UModal>
 </template>
 
 <script setup lang="ts">
