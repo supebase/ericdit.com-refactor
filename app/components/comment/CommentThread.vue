@@ -2,19 +2,30 @@
   <div class="select-none pb-10">
     <div class="fixed bottom-17 z-30 left-1/2 -translate-x-1/2">
       <UButtonGroup
-        class="shadow-lg rounded-2xl hover:shadow-xl transition-shadow duration-300 backdrop-blur-sm bg-white/90 dark:bg-neutral-800/90">
+        class="shadow-lg rounded-2xl hover:shadow-xl ring-1 ring-neutral-200/70 dark:ring-neutral-700/70 transition-shadow duration-300 backdrop-blur-sm bg-white/90 dark:bg-neutral-800/90">
         <UButton :ui="{
           base: 'rounded-[calc(var(--ui-radius)*2)] transition-transform duration-200 hover:bg-white dark:hover:bg-neutral-800',
         }" color="neutral" variant="ghost" size="lg">
           <SharedLikeButton :content-id="contentId" :icon-size="20" likeType="clap" />
         </UButton>
-        <USeparator :ui="{ border: 'border-neutral-300 dark:border-neutral-600' }" class="h-4 w-2 my-auto"
+        <USeparator :ui="{ border: 'border-neutral-200 dark:border-neutral-700' }" class="h-4 w-2 my-auto"
           orientation="vertical" />
         <UButton :ui="{
           base: 'rounded-[calc(var(--ui-radius)*2)] transition-transform duration-200 hover:bg-white dark:hover:bg-neutral-800',
         }" color="neutral" variant="ghost" size="lg" class="cursor-pointer">
           <SharedCommentCounter :content-id="contentId" :allow-comments="allowComments" :icon-size="18"
             @click="scrollToComments" />
+        </UButton>
+        <USeparator :ui="{ border: 'border-neutral-200 dark:border-neutral-700' }"
+          class="h-4 w-2 my-auto transition-all duration-300 ease-out"
+          :class="showBackToTop ? 'opacity-100' : 'opacity-0 w-0 p-0'" orientation="vertical" />
+        <UButton :ui="{
+          base: 'rounded-[calc(var(--ui-radius)*2)] transition-all duration-300 ease-out hover:bg-white dark:hover:bg-neutral-800',
+        }" color="neutral" variant="ghost" size="lg" class="cursor-pointer"
+          :class="showBackToTop ? 'w-auto opacity-100' : 'w-0 p-1 opacity-0 overflow-hidden'" @click="scrollToTop">
+          <UIcon name="hugeicons:circle-arrow-up-02"
+            class="w-[18px] h-[18px] text-neutral-400 dark:text-neutral-500 transition-transform duration-300"
+            :class="showBackToTop ? 'rotate-0' : 'rotate-180'" />
         </UButton>
       </UButtonGroup>
     </div>
@@ -239,6 +250,14 @@ const scrollToComments = () => {
   if (commentsElement) {
     commentsElement.scrollIntoView({ behavior: "smooth" });
   }
+};
+
+const { showBackToTop, scrollToTop } = inject('scrollState', {
+  showBackToTop: ref(false),
+  scrollToTop: () => { }
+}) as {
+  showBackToTop: Ref<boolean>,
+  scrollToTop: () => void
 };
 
 onMounted(() => {

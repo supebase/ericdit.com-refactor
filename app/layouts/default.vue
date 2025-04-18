@@ -3,11 +3,9 @@
     <SharedLayoutHeader />
 
     <div class="flex-1 overflow-y-auto overflow-x-hidden" ref="scrollContainer">
-      <div class="flex flex-col max-w-md mx-auto px-5">
-        <main class="container mx-auto">
-          <slot :isNearBottom="isNearBottom" />
-        </main>
-      </div>
+      <main class="max-w-md mx-auto px-5 w-full">
+        <slot :isNearBottom="isNearBottom" />
+      </main>
     </div>
 
     <SharedLayoutFooter />
@@ -17,6 +15,7 @@
 <script setup>
 const scrollContainer = ref(null);
 const isNearBottom = ref(false);
+const showBackToTop = ref(false);
 
 // 使用防抖优化滚动事件
 const handleScroll = () => {
@@ -26,7 +25,15 @@ const handleScroll = () => {
   const threshold = 100;
 
   isNearBottom.value = scrollHeight - (scrollTop + clientHeight) < threshold;
+  showBackToTop.value = scrollTop > 150;
 };
+
+const scrollToTop = () => {
+  scrollContainer.value?.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  })
+}
 
 // 添加事件监听
 onMounted(() => {
@@ -46,6 +53,8 @@ onBeforeUnmount(() => {
 
 // 提供滚动状态
 provide('scrollState', {
-  isNearBottom
+  isNearBottom,
+  showBackToTop,
+  scrollToTop
 });
 </script>

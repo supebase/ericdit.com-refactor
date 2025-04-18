@@ -10,12 +10,9 @@
 
       <SharedColorMode />
 
-      <UPopover mode="click" arrow :open-delay="0" :close-delay="0">
-        <UButton
-          variant="ghost"
-          class="!p-0 !h-auto"
-          @click="() => { if (!totalUsers.value) fetchTotalUsers() }"
-        >
+      <UPopover arrow :open-delay="0" :close-delay="0">
+        <UButton variant="link" class="!p-0 !h-auto cursor-pointer"
+          @click="() => { if (!totalUsers) fetchTotalUsers() }">
           <UIcon name="hugeicons:user-status"
             class="size-4 text-neutral-500 hover:text-neutral-800 dark:hover:text-neutral-200 transform duration-500" />
         </UButton>

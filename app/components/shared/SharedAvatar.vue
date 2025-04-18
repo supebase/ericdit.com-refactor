@@ -7,7 +7,7 @@
 
     <template v-if="src">
       <NuxtImg provider="directus" :src="src" :alt="alt" :class="[sizeClass, 'rounded-full object-cover']"
-        @load="onImageLoad" v-bind="$attrs" />
+        @load="onImageLoad" v-bind="$attrs" class="ring-2 ring-neutral-200 dark:ring-neutral-800" />
     </template>
     <template v-else>
       <div :class="[

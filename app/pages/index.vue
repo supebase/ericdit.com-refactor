@@ -163,6 +163,7 @@ useSeo({
   site_name: "探索",
   site_description: "",
   seo_keywords: "",
-  maintenance_mode: false
+  maintenance_mode: false,
+  donate_images: [],
 });
 </script>

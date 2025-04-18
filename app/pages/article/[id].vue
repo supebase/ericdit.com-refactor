@@ -63,6 +63,7 @@ useSeo({
   site_name: computed(() => content.value?.title || "正在加载"),
   site_description: computed(() => cleanMarkdown(content.value?.body?.substring(0, 100) || "")),
   seo_keywords: "",
-  maintenance_mode: false
+  maintenance_mode: false,
+  donate_images: [],
 });
 </script>

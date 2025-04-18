@@ -1,6 +1,7 @@
 <template>
-  <div class="bg-neutral-100/30 dark:bg-neutral-900/40 ring-2 ring-neutral-200 dark:ring-neutral-800 rounded-lg p-1"
-    :class="isAuthenticated ? 'mt-4' : 'hidden'">
+  <div
+    class="bg-white/50 dark:bg-neutral-800/50 backdrop-blur-sm border border-neutral-200/80 dark:border-neutral-700/50 rounded-xl p-1 shadow-sm transition-all duration-300"
+    :class="isAuthenticated ? 'mt-4 hover:shadow-md' : 'hidden'">
     <UTextarea ref="commentInput" v-model="content" color="neutral" variant="none" autoresize :rows="1" :maxrows="6"
       :padded="false" size="lg" class="text-neutral-300 w-full" :class="isAuthenticated ? '' : 'login'"
       :maxlength="COMMENT_MAX_LENGTH" @input="validateInput" :disabled="!isAuthenticated || isSubmitting"
@@ -30,7 +31,7 @@
 const props = defineProps<{
   placeholder?: string;
   isSubmitting?: boolean;
-  clearInput?: boolean; // 新增
+  clearInput?: boolean;
 }>();
 
 const emit = defineEmits<{

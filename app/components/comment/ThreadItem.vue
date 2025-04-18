@@ -20,7 +20,7 @@
               <div class="text-neutral-400 dark:text-neutral-600">
                 {{ useDateFormatter(comment.date_created) }}
               </div>
-              <UIcon name="hugeicons:arrow-right-01" class="size-3 text-neutral-400 dark:text-neutral-600" />
+              <span class="text-neutral-400 dark:text-neutral-600">&bull;</span>
               <div class="text-neutral-400 dark:text-neutral-600">
                 {{ userLocation }}
               </div>

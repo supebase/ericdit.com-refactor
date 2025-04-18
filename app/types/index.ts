@@ -175,4 +175,5 @@ export interface AppSettings {
   maintenance_mode: boolean; // 维护模式
   type?: "website" | "article"; // 页面类型
   noindex?: boolean; // 是否禁止搜索引擎收录
+  donate_images: any[]; // 打赏二维码图片列表
 }

@@ -1,7 +1,7 @@
 <template>
   <article class="py-5 space-y-5">
     <div class="text-2xl font-bold">{{ content.title }}</div>
-    <div class="flex justify-between items-end text-sm text-neutral-500 nums tabular-nums select-none">
+    <div class="flex justify-between items-center text-sm text-neutral-500 nums tabular-nums select-none">
       <div class="flex items-center space-x-3">
         <div>
           <SharedAvatar :src="userAvatarUrl || undefined" size="md" :alt="content.user_created.first_name" />
@@ -12,14 +12,12 @@
           </div>
           <div class="flex items-center text-[13px] space-x-2">
             <div>{{ useDateFormatter(content.date_created) }}发布</div>
-            <div class="flex items-center space-x-2" v-if="content.date_updated">
-              <UIcon name="hugeicons:arrow-right-01" class="size-3 text-neutral-500" />
-              <div>{{ useDateFormatter(content.date_updated) }}更新</div>
-            </div>
+            <span class="text-neutral-400 dark:text-neutral-600">&bull;</span>
+            <div>阅读约 {{ useArticleMetrics(content.body) }}</div>
           </div>
         </div>
       </div>
-      <div class="text-[13px]">阅读约 {{ useArticleMetrics(content.body) }}</div>
+      <SharedBookmarkButton :content-id="content.id" :icon-size="20" />
     </div>
 
     <Suspense>
@@ -34,10 +32,18 @@
       </template>
     </Suspense>
 
-    <div class="flex justify-between items-center select-none">
-      <UIcon name="hugeicons:share-05" class="size-5 text-neutral-400 dark:text-neutral-500 cursor-pointer"
+    <div class="flex justify-between items-center select-none space-x-3 py-2">
+      <Donate>
+        <UIcon name="hugeicons:money-receive-square"
+          class="size-6 text-neutral-400 dark:text-neutral-500 cursor-pointer" />
+      </Donate>
+      <USeparator type="dashed">
+        <div class="text-xs text-neutral-400 dark:text-neutral-600">
+          打赏还是分享
+        </div>
+      </USeparator>
+      <UIcon name="hugeicons:share-05" class="size-6 text-neutral-400 dark:text-neutral-500 cursor-pointer"
         @click="shareButton(content.title, getPreviewText(content.body))" />
-      <SharedBookmarkButton :content-id="content.id" :icon-size="20" />
     </div>
   </article>
 </template>
@@ -45,6 +51,7 @@
 <script setup lang="ts">
 import { isClient } from "@vueuse/shared";
 import type { Contents } from "~/types";
+import Donate from '~/components/shared/Donate.vue';
 
 const toast = useToast();
 
