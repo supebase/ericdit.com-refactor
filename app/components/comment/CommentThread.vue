@@ -19,8 +19,8 @@
       </UButtonGroup>
     </div>
 
-    <UAlert v-if="!allowComments" :ui="{ wrapper: 'flex items-center' }" color="warning" variant="soft"
-      description="本页面评论功能已关闭。" class="mb-8">
+    <UAlert v-if="!allowComments" :ui="{ wrapper: 'flex items-center' }" color="neutral" variant="soft"
+      description="评论功能于本页面已停用" class="mb-8 text-neutral-500">
     </UAlert>
 
     <template v-else>
@@ -35,7 +35,7 @@
 
       <template v-else>
         <UAlert v-if="!totalComments" :ui="{ wrapper: 'flex items-center' }" color="neutral" variant="soft"
-          description="暂无评论，快来发表你的观点吧！" class="mb-8 text-neutral-500">
+          description="尚无评论，期待您的观点。" class="mb-8 text-neutral-500">
         </UAlert>
 
         <div id="comments">

@@ -107,7 +107,7 @@ const getIconName = computed(() => {
   if (props.likeType === "heart") {
     return isLiked.value ? "hugeicons:heart-check" : "hugeicons:favourite";
   } else {
-    return isLiked.value ? "hugeicons:hold-locked-02" : "hugeicons:waving-hand-02";
+    return isLiked.value ? "hugeicons:clapping-02" : "hugeicons:waving-hand-02";
   }
 });
 

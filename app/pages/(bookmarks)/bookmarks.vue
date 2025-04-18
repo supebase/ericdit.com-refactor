@@ -11,7 +11,7 @@
     <div v-else-if="bookmarks?.length === 0"
       class="flex flex-col items-center justify-center space-y-4 min-h-[calc(100vh-14rem)]">
       <UIcon name="hugeicons:bookmark-block-02" class="text-4xl text-neutral-300 dark:text-neutral-700" />
-      <p class="text-neutral-300 dark:text-neutral-700 text-sm font-medium">暂无收藏任何内容</p>
+      <p class="text-neutral-300 dark:text-neutral-700 text-sm font-medium">收藏夹当前为空置状态</p>
     </div>
 
     <div v-else class="space-y-6">

@@ -52,12 +52,10 @@
 
     <template #footer>
       <div class="flex justify-between items-center mt-4 px-1">
-        <div class="flex items-center space-x-3">
-          <SharedAvatar :src="userAvatarUrl || undefined" size="xs" :alt="content.user_created.first_name" />
-          <UBadge variant="soft" color="neutral" class="nums tabular-nums">
-            {{ useDateFormatter(content.date_created) }}
-          </UBadge>
-        </div>
+        <UBadge variant="soft" color="neutral" class="nums tabular-nums">
+          {{ useDateFormatter(content.date_created) }}
+        </UBadge>
+
         <SharedCommentCounter :content-id="content.id" :allow-comments="content.allow_comments" :icon-size="18" />
         <SharedLikeButton :content-id="content.id" :icon-size="20" likeType="clap" />
         <SharedBookmarkButton :content-id="content.id" :icon-size="18" />

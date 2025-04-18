@@ -8,7 +8,7 @@
           <UIcon name="hugeicons:reload" class="size-4" />
         </template>
         发现
-        <SharedAnimateNumber :value="newContentCount" /> 条新内容
+        <SharedAnimateNumber :value="newContentCount" /> 项新内容
       </UButton>
     </div>
 
@@ -25,7 +25,11 @@
           <ContentCard :content="content" />
         </SharedFadeIn>
       </div>
-      <div v-if="contents?.length === 0">暂无内容</div>
+      <div v-if="contents?.length === 0"
+        class="flex flex-col items-center justify-center space-y-4 min-h-[calc(100vh-14rem)] pt-16">
+        <UIcon name="hugeicons:ai-content-generator-01" class="text-4xl text-neutral-300 dark:text-neutral-700" />
+        <p class="text-neutral-300 dark:text-neutral-700 text-sm font-medium">信息矩阵仍处待填充态</p>
+      </div>
 
       <!-- 加载更多按钮 -->
       <div class="flex justify-center py-4" v-if="hasMore && isNearBottom">

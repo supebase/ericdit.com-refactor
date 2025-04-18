@@ -27,8 +27,8 @@
           <div class="flex flex-col items-center justify-center py-4 gap-2 text-neutral-400 dark:text-neutral-600">
             <p v-if="error">{{ error }}</p>
             <p v-else-if="searchQuery && searchQuery.length < MIN_SEARCH_LENGTH">请继续输入...</p>
-            <p v-else-if="searchQuery && !isLoading && !searchResults.length">未找到相关内容</p>
-            <p v-else>开始输入关键词进行搜索</p>
+            <p v-else-if="searchQuery && !isLoading && !searchResults.length">检索记录中无对应关键词数据</p>
+            <p v-else>请开始输入相关关键词，进行信息检索操作。</p>
           </div>
         </template>
       </UCommandPalette>
