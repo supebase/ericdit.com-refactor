@@ -34,17 +34,16 @@
 
     <div class="flex justify-between items-center select-none py-2">
       <div class="flex-1 flex justify-start">
-        <SharedContentViews :content-id="content.id" :icon-size="19" />
+        <UIcon name="hugeicons:share-05" class="size-5 text-neutral-400 dark:text-neutral-500 cursor-pointer"
+          @click="shareButton(content.title, getPreviewText(content.body))" />
       </div>
       <div class="flex-1 flex justify-center">
         <Donate>
-          <UIcon name="hugeicons:qr-code"
-            class="size-5 text-neutral-400 dark:text-neutral-500 cursor-pointer" />
+          <UIcon name="hugeicons:qr-code" class="size-5 text-neutral-400 dark:text-neutral-500 cursor-pointer" />
         </Donate>
       </div>
       <div class="flex-1 flex justify-end">
-        <UIcon name="hugeicons:share-05" class="size-5 text-neutral-400 dark:text-neutral-500 cursor-pointer"
-          @click="shareButton(content.title, getPreviewText(content.body))" />
+        <SharedContentViews :content-id="content.id" :icon-size="20" />
       </div>
     </div>
   </article>

@@ -39,7 +39,7 @@
         :description="error?.message || '加载评论失败，请稍后重试。'" class="mb-8">
       </UAlert>
 
-      <div v-else-if="isLoading && !comments" class="flex flex-col justify-center items-center space-y-3 mb-8">
+      <div v-else-if="isLoading && !comments" class="flex flex-col justify-center items-center space-y-3 py-8">
         <UProgress animation="swing" color="neutral" size="sm" class="max-w-[80px]" />
         <div class="text-sm text-neutral-400 dark:text-neutral-600">正在加载评论</div>
       </div>

@@ -1,14 +1,13 @@
 <template>
   <div class="container select-none">
     <!-- 新内容提示 -->
-    <div class="nums tabular-nums transform duration-300" :class="newContentCount > 0 ? 'translate-y-0 opacity-100 my-4' : '-translate-y-6 opacity-0 h-0'
-      ">
-      <UButton block color="primary" variant="soft" @click="handleLoadNewContent">
-        <template #leading>
-          <UIcon name="hugeicons:reload" class="size-4" />
-        </template>
+    <div class="flex justify-center duration-500 ease-in-out transition-all"
+      :class="newContentCount > 0 ? 'translate-y-2.5 opacity-100' : '-translate-y-8 opacity-0 -mb-8'">
+      <UButton color="primary" variant="solid" @click="handleLoadNewContent">
+        <UIcon name="hugeicons:sparkles" class="mr-1 size-5" />
         发现
-        <SharedAnimateNumber :value="newContentCount" /> 项新内容
+        <SharedAnimateNumber :value="newContentCount" class="font-bold" />
+        条新内容
       </UButton>
     </div>
 
@@ -20,8 +19,10 @@
       </UAlert>
     </div>
     <template v-else>
-      <div ref="el" class="cards">
-        <SharedFadeIn v-for="(content, index) in contents" :key="content.id" :delay="index * 50" class="py-3 card">
+      <div ref="el" class="my-2">
+        <SharedFadeIn v-for="(content, index) in contents" :key="content.id" :delay="index * 50" class="py-3"
+          enter-active-class="transition-all duration-500 ease-in-out"
+          enter-from-class="transform translate-y-3 opacity-0" enter-to-class="transform translate-y-0 opacity-100">
           <ContentCard :content="content" />
         </SharedFadeIn>
       </div>
@@ -32,16 +33,15 @@
       </div>
 
       <!-- 加载更多按钮 -->
-      <div class="flex justify-center py-4" v-if="hasMore && isNearBottom">
-        <UButton @click="loadMore" color="neutral" variant="link" :disabled="isFetchingNextPage"
-          :loading="isFetchingNextPage">
+      <div class="flex justify-center pb-4" v-if="hasMore && isNearBottom">
+        <UButton @click="loadMore" color="neutral" :disabled="isFetchingNextPage" :loading="isFetchingNextPage">
           加载更多
         </UButton>
       </div>
 
       <!-- 没有更多内容的提示 -->
       <div v-if="!hasMore && contents && contents.length > 0"
-        class="text-center text-sm text-neutral-300 dark:text-neutral-700 py-4">
+        class="text-center text-sm text-neutral-300 dark:text-neutral-700 pb-4">
         已显示全部内容
       </div>
     </template>
