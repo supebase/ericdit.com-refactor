@@ -138,11 +138,37 @@ export const useContents = () => {
     }
   };
 
+  /**
+   * 增加内容的浏览次数
+   * @param id - 内容ID
+   * @returns Promise<void>
+   * @description 先获取当前内容的浏览次数，然后加1后写回
+   */
+  const incrementContentViews = async (id: string) => {
+    try {
+      // 先获取当前 views
+      const content = await $directus.request<Contents.Item>(
+        $content.readItem("contents", id, { fields: ["views"] })
+      );
+      const currentViews = content?.views ?? 0;
+      // 更新 views
+      await $directus.request(
+        $content.updateItem("contents", id, {
+          views: currentViews + 1
+        })
+      );
+    } catch (error: any) {
+      // 可以选择静默失败
+      // console.warn("增加浏览次数失败", error);
+    }
+  };
+
   return {
     getContents,
     getContent,
     cleanMarkdown,
     subscribeContents,
     getUserAvatarUrl,
+    incrementContentViews,
   };
 };

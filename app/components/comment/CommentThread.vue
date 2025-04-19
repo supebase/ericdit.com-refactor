@@ -24,7 +24,7 @@
         }" color="neutral" variant="ghost" size="lg" class="cursor-pointer"
           :class="showBackToTop ? 'w-auto opacity-100' : 'w-0 p-1 opacity-0 overflow-hidden'" @click="scrollToTop">
           <UIcon name="hugeicons:circle-arrow-up-02"
-            class="w-[18px] h-[18px] text-neutral-400 dark:text-neutral-500 transition-transform duration-300"
+            class="w-[18px] h-[18px] text-neutral-400 dark:text-neutral-500 transition-transform duration-500"
             :class="showBackToTop ? 'rotate-0' : 'rotate-180'" />
         </UButton>
       </UButtonGroup>

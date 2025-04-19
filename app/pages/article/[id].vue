@@ -26,6 +26,7 @@ const CONTENT_FIELDS = [
   "user_created.*",
   "date_created",
   "date_updated",
+  "views",
 ] as const;
 
 const {

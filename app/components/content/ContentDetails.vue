@@ -32,18 +32,20 @@
       </template>
     </Suspense>
 
-    <div class="flex justify-between items-center select-none space-x-3 py-2">
-      <Donate>
-        <UIcon name="hugeicons:money-receive-square"
-          class="size-6 text-neutral-400 dark:text-neutral-500 cursor-pointer" />
-      </Donate>
-      <USeparator type="dashed">
-        <div class="text-xs text-neutral-400 dark:text-neutral-600">
-          打赏还是分享
-        </div>
-      </USeparator>
-      <UIcon name="hugeicons:share-05" class="size-6 text-neutral-400 dark:text-neutral-500 cursor-pointer"
-        @click="shareButton(content.title, getPreviewText(content.body))" />
+    <div class="flex justify-between items-center select-none py-2">
+      <div class="flex-1 flex justify-start">
+        <SharedContentViews :content-id="content.id" :icon-size="19" />
+      </div>
+      <div class="flex-1 flex justify-center">
+        <Donate>
+          <UIcon name="hugeicons:qr-code"
+            class="size-5 text-neutral-400 dark:text-neutral-500 cursor-pointer" />
+        </Donate>
+      </div>
+      <div class="flex-1 flex justify-end">
+        <UIcon name="hugeicons:share-05" class="size-5 text-neutral-400 dark:text-neutral-500 cursor-pointer"
+          @click="shareButton(content.title, getPreviewText(content.body))" />
+      </div>
     </div>
   </article>
 </template>
@@ -53,6 +55,7 @@ import { isClient } from "@vueuse/shared";
 import type { Contents } from "~/types";
 import Donate from '~/components/shared/Donate.vue';
 
+const { incrementContentViews } = useContents();
 const toast = useToast();
 
 const props = defineProps<{
@@ -97,4 +100,10 @@ const getPreviewText = (text: string) => {
 //   await new Promise((resolve) => setTimeout(resolve, 300000));
 //   return import("~/app.vue");
 // });
+
+onMounted(() => {
+  if (props.content.id) {
+    incrementContentViews(props.content.id);
+  }
+})
 </script>

@@ -48,6 +48,7 @@ export namespace Contents {
     user_created: User.Profile; // 创建者信息
     date_created: string; // 创建时间
     date_updated: string; // 更新时间
+    views: number; // 浏览量
   }
 
   /**
