@@ -81,19 +81,55 @@ const handleBookmark = () => {
   guardAction(() => handleBookmarkAction(), "登录后即可将内容添加到收藏夹");
 };
 
-onMounted(async () => {
-  subscribeBookmarks(
-    {
-      fields: ["id", "user_created.id"],
-    },
-    async (event) => {
-      if (["create", "delete"].includes(event.event)) {
-        await fetchBookmarkStatus();
-      }
-    }
-  );
+const unsubscribe = ref<null | (() => void)>(null);
 
+const setupSubscription = async () => {
+  try {
+    if (unsubscribe.value) {
+      unsubscribe.value();
+      unsubscribe.value = null;
+    }
+
+    unsubscribe.value = await subscribeBookmarks(
+      {
+        fields: ["id", "user_created.id"],
+      },
+      async (event) => {
+        if (["create", "delete"].includes(event.event)) {
+          await fetchBookmarkStatus();
+        }
+      }
+    );
+  } catch (error) {
+    console.error("Failed to setup subscription:", error);
+  }
+};
+
+const handleVisibilityChange = () => {
+  if (document.visibilityState === 'visible') {
+    // 添加延迟确保页面完全激活
+    setTimeout(() => {
+      fetchBookmarkStatus();
+      setupSubscription();
+    }, 300);
+  } else {
+    // 页面不可见时清理订阅
+    if (unsubscribe.value) {
+      unsubscribe.value();
+      unsubscribe.value = null;
+    }
+  }
+};
+
+onMounted(async () => {
   await fetchBookmarkStatus();
+  await setupSubscription();
+  document.addEventListener('visibilitychange', handleVisibilityChange);
+});
+
+onUnmounted(() => {
+  if (unsubscribe.value) unsubscribe.value();
+  document.removeEventListener('visibilitychange', handleVisibilityChange);
 });
 
 watch(isAuthenticated, (newValue) => {

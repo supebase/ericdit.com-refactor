@@ -59,30 +59,44 @@ const fetchBookmarksCount = async () => {
 const unsubscribe = ref<null | (() => void)>(null);
 
 const setupSubscription = async () => {
-  if (unsubscribe.value) {
-    unsubscribe.value();
-    unsubscribe.value = null;
-  }
-  if (!user.value?.id) return;
-  unsubscribe.value = await subscribeBookmarks(
-    {
-      fields: ["id"],
-      filter: {
-        user_created: { _eq: user.value.id },
-      },
-    },
-    async (event) => {
-      if (["create", "delete"].includes(event.event)) {
-        await fetchBookmarksCount();
-      }
+  try {
+    if (unsubscribe.value) {
+      unsubscribe.value();
+      unsubscribe.value = null;
     }
-  );
+    if (!user.value?.id) return;
+
+    unsubscribe.value = await subscribeBookmarks(
+      {
+        fields: ["id"],
+        filter: {
+          user_created: { _eq: user.value.id },
+        },
+      },
+      async (event) => {
+        if (["create", "delete"].includes(event.event)) {
+          await fetchBookmarksCount();
+        }
+      }
+    );
+  } catch (error) {
+    console.error("Failed to setup subscription:", error);
+  }
 };
 
 const handleVisibilityChange = () => {
   if (document.visibilityState === 'visible') {
-    fetchBookmarksCount();
-    setupSubscription();
+    // 添加延迟确保页面完全激活
+    setTimeout(() => {
+      fetchBookmarksCount();
+      setupSubscription();
+    }, 300);
+  } else {
+    // 页面不可见时清理订阅
+    if (unsubscribe.value) {
+      unsubscribe.value();
+      unsubscribe.value = null;
+    }
   }
 };
 
@@ -92,14 +106,14 @@ onMounted(async () => {
   document.addEventListener('visibilitychange', handleVisibilityChange);
 });
 
-watch(() => user.value?.id, () => {
-  fetchBookmarksCount();
-  setupSubscription();
-});
-
 onUnmounted(() => {
   if (unsubscribe.value) unsubscribe.value();
   document.removeEventListener('visibilitychange', handleVisibilityChange);
+});
+
+watch(() => user.value?.id, () => {
+  fetchBookmarksCount();
+  setupSubscription();
 });
 </script>
 

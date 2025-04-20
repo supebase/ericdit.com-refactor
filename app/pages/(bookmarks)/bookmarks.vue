@@ -187,28 +187,56 @@ const handleLinkClick = (index: number, event: MouseEvent | TouchEvent) => {
   });
 };
 
-const handleVisibilityChange = () => {
-  if (document.visibilityState === 'visible') {
-    refresh();
+const unsubscribe = ref<null | (() => void)>(null);
+
+const setupSubscription = async () => {
+  try {
+    if (unsubscribe.value) {
+      unsubscribe.value();
+      unsubscribe.value = null;
+    }
+    if (!user.value?.id) return;
+
+    unsubscribe.value = await subscribeBookmarks(
+      {
+        fields: ["id", "content_id.*", "date_created"],
+        filter: {
+          user_created: { _eq: user.value?.id },
+        },
+      },
+      async (event) => {
+        if (["create", "delete"].includes(event.event)) {
+          await refresh();
+        }
+      }
+    );
+  } catch (error) {
+    console.error("Failed to setup subscription:", error);
   }
 };
 
-const unsubscribe = ref<null | (() => void)>(null);
+const handleVisibilityChange = () => {
+  if (document.visibilityState === 'visible') {
+    // 先取消现有订阅
+    if (unsubscribe.value) {
+      unsubscribe.value();
+      unsubscribe.value = null;
+    }
+    // 重新获取数据并建立订阅
+    refresh();
+    setupSubscription();
+  } else {
+    // 页面不可见时清理订阅
+    if (unsubscribe.value) {
+      unsubscribe.value();
+      unsubscribe.value = null;
+    }
+  }
+};
 
 onMounted(async () => {
-  unsubscribe.value = await subscribeBookmarks(
-    {
-      fields: ["id", "content_id.*", "date_created"],
-      filter: {
-        user_created: { _eq: user.value?.id },
-      },
-    },
-    async (event) => {
-      if (["create", "delete"].includes(event.event)) {
-        await refresh();
-      }
-    }
-  );
+  await refresh();
+  await setupSubscription();
   document.addEventListener('visibilitychange', handleVisibilityChange);
 });
 
@@ -238,6 +266,7 @@ watch(bookmarks, () => {
 watch(user, () => {
   if (user.value?.id) {
     refresh();
+    setupSubscription();
   } else {
     bookmarks.value = [];
   }
