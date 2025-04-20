@@ -3,7 +3,7 @@
     <NuxtLayout>
       <NuxtPage />
       <!-- 版本更新提示 -->
-      <UpdateNotification v-model="needsUpdate" />
+      <UpdateNotification v-model="needsUpdate" :confirmUpdate="confirmUpdate" />
       <!-- 维护模式提示 -->
       <MaintenanceMode />
     </NuxtLayout>
@@ -24,7 +24,7 @@ const UpdateNotification = defineAsyncComponent(
 // 导入认证和用户状态相关的组合式函数
 const { refreshUser, startSessionCheck, isAuthenticated } = useAuth();
 const { updateLastActivity, updateUserStatus, cleanup: cleanupPresence } = usePresence();
-const { needsUpdate, cleanup } = useVersionCheck();
+const { needsUpdate, cleanup, confirmUpdate } = useVersionCheck();
 
 // 用户活动监听相关配置
 const USER_ACTIVITY_EVENTS = ["mousedown", "keydown", "scroll", "touchstart"] as const;

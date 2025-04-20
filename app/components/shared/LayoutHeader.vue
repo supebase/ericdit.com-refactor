@@ -1,6 +1,6 @@
 <template>
   <header class="flex-none">
-    <div class="max-w-md mx-auto py-4 flex justify-between items-center px-5">
+    <div class="max-w-md sm:max-w-xl mx-auto py-4 flex justify-between items-center px-5">
       <Transition name="fade" mode="out-in">
         <NavigationLogo v-if="$route.path === '/'" key="logo" />
         <SharedNavigationBack v-else key="icon" @click="safeBack()" class="cursor-pointer" />

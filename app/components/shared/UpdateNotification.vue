@@ -14,7 +14,7 @@
 
         <template #footer>
           <div class="flex justify-center">
-            <UButton size="xl" color="success" variant="soft" @click="refreshPage">
+            <UButton size="xl" color="success" variant="soft" @click="handleUpdate">
               立即刷新
             </UButton>
           </div>
@@ -25,15 +25,17 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{
+const props = defineProps<{
   modelValue: boolean;
+  confirmUpdate: () => void;
 }>();
 
 defineEmits<{
   "update:modelValue": [value: boolean];
 }>();
 
-const refreshPage = () => {
+const handleUpdate = () => {
+  props.confirmUpdate?.();
   window.location.reload();
 };
 </script>

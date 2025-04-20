@@ -59,16 +59,16 @@
       <div class="flex justify-between items-center text-sm text-neutral-500">
         <div class="flex gap-10">
           <div class="flex items-center gap-1">
-            <SharedLikeButton :content-id="content.id" :icon-size="21" likeType="clap" />
+            <SharedLikeButton :content-id="content.id" :icon-size="22" likeType="clap" />
           </div>
           <div class="flex items-center gap-1">
             <SharedCommentCounter :content-id="content.id" :allow-comments="content.allow_comments" :icon-size="18" />
           </div>
           <div class="flex items-center gap-1">
-            <SharedContentViews :content-id="content.id" :icon-size="20" />
+            <SharedContentViews :content-id="content.id" :icon-size="19" />
           </div>
         </div>
-        <div>阅读约 {{ useArticleMetrics(content.body) }}</div>
+        <div>阅读时长约 {{ useArticleMetrics(content.body) }}</div>
       </div>
     </div>
   </UCard>

@@ -10,6 +10,9 @@ export const useVersionCheck = () => {
   // 标记是否需要更新
   const needsUpdate = ref(false);
 
+  // 新版本信息暂存
+  let pendingVersionInfo: { buildHash: string; version: string } | null = null;
+
   // 页面可见性相关工具
   const { isVisible, setup, cleanup: cleanupVisibility } = useVisibilityChange();
 
@@ -50,9 +53,10 @@ export const useVersionCheck = () => {
         return;
       }
 
-      // 不要立即更新本地 hash，等用户刷新后再写入
+      // 检测到新版本，暂存新版本信息
       if (currentHash && buildHash !== currentHash) {
         needsUpdate.value = true;
+        pendingVersionInfo = { buildHash, version };
       }
     } catch (error) {
       console.error('Version check failed:', error);
@@ -88,5 +92,14 @@ export const useVersionCheck = () => {
   return {
     needsUpdate,
     cleanup,
+    confirmUpdate: () => {
+      // 只有检测到新版本时才写入
+      if (pendingVersionInfo) {
+        safeSetItem('app-version-hash', pendingVersionInfo.buildHash);
+        safeSetItem('app-version', pendingVersionInfo.version);
+        needsUpdate.value = false;
+        pendingVersionInfo = null;
+      }
+    }
   };
 };
