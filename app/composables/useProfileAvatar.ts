@@ -1,10 +1,4 @@
-import type { User } from "~/types";
-
-interface ProfileAvatarReturn {
-  avatarUrl: ComputedRef<string | null>;
-  isLoading: Ref<boolean>;
-  uploadAvatar: (file: File) => Promise<void>;
-}
+import type { User, ProfileAvatarReturn } from "~/types";
 
 /**
  * 用户头像管理组合式函数

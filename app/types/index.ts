@@ -160,10 +160,94 @@ export namespace Bookmarks {
   }
 }
 
-export interface UserStatsReturn {
-  totalUsers: Ref<number>;
-  fetchTotalUsers: () => Promise<void>;
+/**
+ * 头像上传相关返回类型
+ */
+export interface ProfileAvatarReturn {
+  /**
+   * 头像图片的计算属性 URL
+   */
+  avatarUrl: ComputedRef<string | null>;
+  /**
+   * 头像上传加载状态
+   */
   isLoading: Ref<boolean>;
+  /**
+   * 上传头像方法
+   * @param file 头像文件
+   */
+  uploadAvatar: (file: File) => Promise<void>;
+}
+
+/**
+ * 用户统计数据返回类型（全站维度）
+ */
+export interface UserStatsReturn {
+  /**
+   * 全站活跃用户总数
+   */
+  totalUsers: Ref<number>;
+  /**
+   * 获取用户总数的方法
+   */
+  fetchTotalUsers: () => Promise<void>;
+  /**
+   * 加载状态
+   */
+  isLoading: Ref<boolean>;
+}
+
+/**
+ * 用户个人统计数据返回类型
+ */
+export interface UserMetricsReturn {
+  /**
+   * 用户评论数
+   */
+  commentsCount: Ref<number>;
+  /**
+   * 用户点赞数
+   */
+  likesCount: Ref<number>;
+  /**
+   * 获取指定用户统计数据的方法
+   * @param userId 用户ID
+   */
+  fetchStats: (userId: string) => Promise<void>;
+}
+
+/**
+ * IP/地理位置接口返回类型
+ */
+export interface IPResponse {
+  ipinfo: {
+    /**
+     * IP 地址文本
+     */
+    text: string;
+  };
+  ipdata: {
+    /**
+     * 地理位置信息
+     */
+    info1: string;
+  };
+}
+
+/**
+ * 清理控制器类型定义
+ * - 用于注册和批量执行清理函数
+ */
+export interface CleanupController {
+  /**
+   * 注册清理函数
+   * @param fn 清理回调
+   */
+  addCleanup: (fn: () => void) => void;
+  /**
+   * 执行所有清理函数
+   */
+  runCleanup: () => void;
 }
 
 /**

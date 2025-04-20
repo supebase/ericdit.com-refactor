@@ -2,6 +2,12 @@ import type { ValidationResult } from "~/types/auth";
 import { AUTH_VALIDATION_RULES } from "~/types/auth";
 import forbiddenUsernames from "~/data/forbidden_usernames.json";
 
+/**
+ * 校验邮箱格式是否合法
+ * - 使用更严格的正则表达式
+ * @param email 邮箱地址
+ * @returns 是否为合法邮箱
+ */
 export const validateEmail = (email: string): boolean => {
   // 更严格的邮箱验证正则
   const emailRegex =
@@ -9,6 +15,12 @@ export const validateEmail = (email: string): boolean => {
   return email.length <= 254 && emailRegex.test(email);
 };
 
+/**
+ * 校验用户名是否合法
+ * - 检查敏感词、长度、字符类型、是否纯数字等
+ * @param name 用户名
+ * @returns 校验结果对象
+ */
 export const validateUsername = (name: string): ValidationResult => {
   if (!name) return { valid: false, message: "请输入你的名字。" };
 
@@ -42,6 +54,12 @@ export const validateUsername = (name: string): ValidationResult => {
   return { valid: true, message: "" };
 };
 
+/**
+ * 校验密码复杂度
+ * - 检查长度、包含大写/小写/数字/特殊字符
+ * @param password 密码
+ * @returns 校验结果对象
+ */
 export const validatePassword = (password: string): ValidationResult => {
   if (!password) return { valid: false, message: "请输入密码" };
 

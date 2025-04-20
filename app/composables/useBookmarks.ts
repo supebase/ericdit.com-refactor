@@ -9,8 +9,14 @@ import type { Bookmarks } from "~/types";
  * - 订阅书签变化
  */
 export const useBookmarks = () => {
+  // 获取 Nuxt 应用中注入的 Directus、内容管理和实时客户端实例
   const { $directus, $content, $realtimeClient } = useNuxtApp();
 
+  /**
+   * 获取书签列表
+   * @param options 查询参数
+   * @returns 书签项数组
+   */
   const getBookmarks = async (options?: Bookmarks.QueryOptions): Promise<Bookmarks.Item[]> => {
     try {
       const response = await $directus.request<Bookmarks.Item[]>(
@@ -22,6 +28,11 @@ export const useBookmarks = () => {
     }
   };
 
+  /**
+   * 创建新的书签
+   * @param data 书签数据
+   * @returns 创建后的书签项
+   */
   const createBookmark = async (data: Partial<Bookmarks.Item>): Promise<Bookmarks.Item> => {
     try {
       const response = await $directus.request<Bookmarks.Item>(
@@ -33,6 +44,10 @@ export const useBookmarks = () => {
     }
   };
 
+  /**
+   * 删除指定书签
+   * @param id 书签ID
+   */
   const deleteBookmark = async (id: string): Promise<void> => {
     try {
       await $directus.request($content.deleteItem("bookmarks", id));
@@ -41,6 +56,10 @@ export const useBookmarks = () => {
     }
   };
 
+  /**
+   * 若未收藏则添加书签，已收藏则提示
+   * @param contentId 内容ID
+   */
   const addBookmarkIfNotExists = async (contentId: string) => {
     // 查询当前用户是否已收藏该内容
     const existing = await getBookmarks({
@@ -66,21 +85,44 @@ export const useBookmarks = () => {
     return createBookmark({ content_id: contentId });
   };
 
+  /**
+   * 订阅书签数据的实时变化
+   * @param query 订阅条件
+   * @param callback 数据变化时的回调
+   * @returns 取消订阅的函数
+   */
   const subscribeBookmarks = async (
     query: Bookmarks.QueryOptions,
     callback: (item: any) => void
   ): Promise<() => void> => {
-    const { subscription } = await $realtimeClient.subscribe("bookmarks", { query });
+    let subscription: any;
+    const { addCleanup, runCleanup } = createCleanup();
 
-    for await (const item of subscription) {
-      callback(item);
+    try {
+      const sub = await $realtimeClient.subscribe("bookmarks", { query });
+      subscription = sub.subscription;
+      addCleanup(() => subscription?.return());
+
+      (async () => {
+        try {
+          for await (const item of subscription) {
+            callback(item);
+          }
+        } catch (error) {
+          console.error('Error in bookmarks subscription:', error);
+        }
+      })();
+
+      return () => {
+        runCleanup();
+      };
+    } catch (error) {
+      runCleanup();
+      throw error;
     }
-
-    return () => {
-      subscription.return();
-    };
   };
 
+  // 导出所有书签相关操作
   return {
     getBookmarks,
     createBookmark,
