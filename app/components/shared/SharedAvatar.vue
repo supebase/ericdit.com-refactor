@@ -29,7 +29,7 @@ const props = withDefaults(
   defineProps<{
     src?: string;
     alt?: string;
-    size?: "xs" | "sm" | "md" | "lg" | "xl";
+    size?: "2xs" | "xs" | "sm" | "md" | "lg" | "xl";
     loadingIcon?: string;
   }>(),
   {
@@ -43,6 +43,8 @@ const avatarLoading = ref(!!props.src);
 // 根据不同size设置不同的图标大小
 const iconSize = computed(() => {
   switch (props.size) {
+    case "2xs":
+      return "2";
     case "xs":
       return "3";
     case "sm":
@@ -61,6 +63,7 @@ const iconSize = computed(() => {
 // 添加尺寸类计算属性
 const sizeClass = computed(() => {
   const sizes = {
+    "2xs": "w-6 h-6",
     xs: "w-7 h-7",
     sm: "w-8 h-8",
     md: "w-10 h-10",
@@ -77,6 +80,7 @@ const avatarText = computed(() => {
 
 const textSizeClass = computed(() => {
   const sizes = {
+    "2xs": "w-6 h-6",
     xs: "w-7 h-7",
     sm: "w-8 h-8",
     md: "w-10 h-10",

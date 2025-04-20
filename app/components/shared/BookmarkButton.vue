@@ -1,10 +1,13 @@
 <template>
   <div class="flex justify-end items-center">
     <button @click="handleBookmark" :disabled="isProcessing"
-      class="text-sm flex items-center space-x-2 text-neutral-400 dark:text-neutral-500 cursor-pointer disabled:cursor-not-allowed">
+      class="text-sm flex items-center space-x-2 text-neutral-500 cursor-pointer disabled:cursor-not-allowed">
       <UIcon name="svg-spinners:ring-resize" :size="iconSize" class="text-neutral-500" v-if="isProcessing" />
-      <UIcon v-else :name="isBookmarked ? 'hugeicons:bookmark-minus-02' : 'hugeicons:bookmark-add-02'" :size="iconSize"
-        :class="{ 'bookmark-animation': showAnimation }" />
+      <UIcon v-else :name="isBookmarked ? 'hugeicons:bookmark-check-02' : 'hugeicons:bookmark-add-02'" :size="iconSize"
+        :class="[
+          { 'bookmark-animation': showAnimation },
+          isBookmarked ? 'text-neutral-700 dark:text-neutral-300' : ''
+        ]" />
     </button>
   </div>
 </template>
@@ -17,7 +20,7 @@ const props = defineProps<{
 
 const { guardAction } = useAuthGuard();
 const { isAuthenticated } = useAuth();
-const { getBookmarks, createBookmark, deleteBookmark, subscribeBookmarks } = useBookmarks();
+const { getBookmarks, deleteBookmark, addBookmarkIfNotExists, subscribeBookmarks } = useBookmarks();
 
 const isBookmarked = ref(false);
 const currentBookmarkId = ref<string | null>(null);
@@ -59,9 +62,7 @@ const handleBookmarkAction = async () => {
       isBookmarked.value = false;
       currentBookmarkId.value = null;
     } else {
-      const newBookmark = await createBookmark({
-        content_id: props.contentId,
-      });
+      const newBookmark = await addBookmarkIfNotExists(props.contentId);
       isBookmarked.value = true;
       currentBookmarkId.value = newBookmark.id;
       showAnimation.value = true;

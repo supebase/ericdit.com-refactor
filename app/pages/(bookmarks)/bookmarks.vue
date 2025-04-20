@@ -14,8 +14,8 @@
       <p class="text-neutral-300 dark:text-neutral-700 text-sm font-medium">收藏夹当前为空置状态</p>
     </div>
 
-    <div v-else class="space-y-6">
-      <div class="flex items-center justify-center gap-2 text-neutral-400 dark:text-neutral-600 animate-pulse">
+    <div v-else class="space-y-4">
+      <div class="flex items-center justify-center gap-2 text-neutral-500 animate-pulse">
         <UIcon name="hugeicons:swipe-left-09" class="size-5" />
         <span class="text-sm font-medium">向左滑动可删除收藏</span>
       </div>
@@ -187,6 +187,36 @@ const handleLinkClick = (index: number, event: MouseEvent | TouchEvent) => {
   });
 };
 
+const handleVisibilityChange = () => {
+  if (document.visibilityState === 'visible') {
+    refresh();
+  }
+};
+
+const unsubscribe = ref<null | (() => void)>(null);
+
+onMounted(async () => {
+  unsubscribe.value = await subscribeBookmarks(
+    {
+      fields: ["id", "content_id.*", "date_created"],
+      filter: {
+        user_created: { _eq: user.value?.id },
+      },
+    },
+    async (event) => {
+      if (["create", "delete"].includes(event.event)) {
+        await refresh();
+      }
+    }
+  );
+  document.addEventListener('visibilitychange', handleVisibilityChange);
+});
+
+onUnmounted(() => {
+  if (unsubscribe.value) unsubscribe.value();
+  document.removeEventListener('visibilitychange', handleVisibilityChange);
+});
+
 onBeforeRouteLeave(() => {
   if (bookmarks.value) {
     offsets.value = new Array(bookmarks.value.length).fill(0);
@@ -205,22 +235,6 @@ watch(bookmarks, () => {
   }
 }, { immediate: true });
 
-onMounted(() => {
-  subscribeBookmarks(
-    {
-      fields: ["id", "content_id.*", "date_created"],
-      filter: {
-        user_created: { _eq: user.value?.id },
-      },
-    },
-    async (event) => {
-      if (["create", "delete"].includes(event.event)) {
-        await refresh();
-      }
-    }
-  );
-});
-
 watch(user, () => {
   if (user.value?.id) {
     refresh();
@@ -238,9 +252,3 @@ useSeo({
   donate_images: [],
 });
 </script>
-
-<style scoped>
-.touch-none {
-  touch-action: none;
-}
-</style>

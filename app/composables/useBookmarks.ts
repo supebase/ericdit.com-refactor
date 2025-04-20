@@ -41,6 +41,31 @@ export const useBookmarks = () => {
     }
   };
 
+  const addBookmarkIfNotExists = async (contentId: string) => {
+    // 查询当前用户是否已收藏该内容
+    const existing = await getBookmarks({
+      fields: ["id"],
+      filter: {
+        user_created: { _eq: useAuth().user.value?.id },
+        content_id: { _eq: contentId },
+      },
+    });
+    if (existing.length > 0) {
+      // 已收藏，返回提示
+      const toast = useToast();
+      toast.add({
+        title: "收藏提示",
+        description: "您已收藏该内容，无需重复收藏。",
+        icon: "hugeicons:alert-02",
+        color: "warning",
+      });
+
+      throw new Error("您已收藏该内容，无需重复收藏");
+    }
+    // 未收藏，执行添加
+    return createBookmark({ content_id: contentId });
+  };
+
   const subscribeBookmarks = async (
     query: Bookmarks.QueryOptions,
     callback: (item: any) => void
@@ -60,6 +85,7 @@ export const useBookmarks = () => {
     getBookmarks,
     createBookmark,
     deleteBookmark,
+    addBookmarkIfNotExists,
     subscribeBookmarks,
   };
 };

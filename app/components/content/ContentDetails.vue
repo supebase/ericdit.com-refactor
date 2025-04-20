@@ -4,10 +4,10 @@
     <div class="flex justify-between items-center text-sm text-neutral-500 nums tabular-nums select-none">
       <div class="flex items-center space-x-3">
         <div>
-          <SharedAvatar :src="userAvatarUrl || undefined" size="md" :alt="content.user_created.first_name" />
+          <SharedAvatar :src="userAvatarUrl || undefined" size="sm" :alt="content.user_created.first_name" />
         </div>
         <div class="flex flex-col">
-          <div class="text-base text-neutral-900 dark:text-neutral-50 font-medium">
+          <div class="text-sm text-neutral-900 dark:text-neutral-50 font-medium">
             {{ content.user_created.first_name }}
           </div>
           <div class="flex items-center text-[13px] space-x-2">
@@ -34,12 +34,12 @@
 
     <div class="flex justify-between items-center select-none py-2">
       <div class="flex-1 flex justify-start">
-        <UIcon name="hugeicons:share-05" class="size-5 text-neutral-400 dark:text-neutral-500 cursor-pointer"
+        <UIcon name="hugeicons:share-05" class="size-5 text-neutral-500 cursor-pointer"
           @click="shareButton(content.title, getPreviewText(content.body))" />
       </div>
       <div class="flex-1 flex justify-center">
         <Donate>
-          <UIcon name="hugeicons:qr-code" class="size-5 text-neutral-400 dark:text-neutral-500 cursor-pointer" />
+          <UIcon name="hugeicons:qr-code" class="size-5 text-neutral-500 cursor-pointer" />
         </Donate>
       </div>
       <div class="flex-1 flex justify-end">

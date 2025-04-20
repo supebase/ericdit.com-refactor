@@ -6,7 +6,7 @@
         <UButton :ui="{
           base: 'rounded-[calc(var(--ui-radius)*2)] transition-transform duration-200 hover:bg-white dark:hover:bg-neutral-800',
         }" color="neutral" variant="ghost" size="lg">
-          <SharedLikeButton :content-id="contentId" :icon-size="20" likeType="clap" />
+          <SharedLikeButton :content-id="contentId" :icon-size="21" likeType="clap" />
         </UButton>
         <USeparator :ui="{ border: 'border-neutral-200 dark:border-neutral-700' }" class="h-4 w-2 my-auto"
           orientation="vertical" />
@@ -24,7 +24,7 @@
         }" color="neutral" variant="ghost" size="lg" class="cursor-pointer"
           :class="showBackToTop ? 'w-auto opacity-100' : 'w-0 p-1 opacity-0 overflow-hidden'" @click="scrollToTop">
           <UIcon name="hugeicons:circle-arrow-up-02"
-            class="w-[18px] h-[18px] text-neutral-400 dark:text-neutral-500 transition-transform duration-500"
+            class="w-[18px] h-[18px] text-neutral-500 transition-transform duration-500"
             :class="showBackToTop ? 'rotate-0' : 'rotate-180'" />
         </UButton>
       </UButtonGroup>

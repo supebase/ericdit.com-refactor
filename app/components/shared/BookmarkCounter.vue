@@ -79,9 +79,17 @@ const setupSubscription = async () => {
   );
 };
 
+const handleVisibilityChange = () => {
+  if (document.visibilityState === 'visible') {
+    fetchBookmarksCount();
+    setupSubscription();
+  }
+};
+
 onMounted(async () => {
   await fetchBookmarksCount();
   setupSubscription();
+  document.addEventListener('visibilitychange', handleVisibilityChange);
 });
 
 watch(() => user.value?.id, () => {
@@ -91,6 +99,7 @@ watch(() => user.value?.id, () => {
 
 onUnmounted(() => {
   if (unsubscribe.value) unsubscribe.value();
+  document.removeEventListener('visibilitychange', handleVisibilityChange);
 });
 </script>
 

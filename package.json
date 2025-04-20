@@ -1,9 +1,10 @@
 {
   "name": "eric-app",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "type": "module",
   "scripts": {
+    "prebuild": "node bump-version.js",
     "build": "nuxt build",
     "dev": "nuxt dev --host=0.0.0.0",
     "generate": "nuxt generate",

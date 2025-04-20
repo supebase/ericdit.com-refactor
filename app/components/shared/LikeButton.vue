@@ -1,9 +1,12 @@
 <template>
   <div class="flex justify-end items-center">
     <button @click="handleLike" :disabled="isProcessing"
-      class="text-sm flex items-center space-x-1.5 text-neutral-400 dark:text-neutral-500 cursor-pointer disabled:cursor-not-allowed">
+      class="text-sm flex items-center space-x-1.5 text-neutral-500 cursor-pointer disabled:cursor-not-allowed">
       <UIcon name="svg-spinners:ring-resize" :size="iconSize" class="text-neutral-500" v-if="isProcessing" />
-      <UIcon v-else :name="getIconName || ''" :size="iconSize" :class="{ 'scale-effect': showScale }" />
+      <UIcon v-else :name="getIconName || ''" :size="iconSize" :class="[
+        { 'scale-effect': showScale },
+        isLiked ? 'text-neutral-700 dark:text-neutral-300' : ''
+      ]" />
       <SharedAnimateNumber :value="likesCount" />
     </button>
   </div>
@@ -107,7 +110,7 @@ const getIconName = computed(() => {
   if (props.likeType === "heart") {
     return isLiked.value ? "hugeicons:heart-check" : "hugeicons:favourite";
   } else {
-    return isLiked.value ? "hugeicons:clapping-02" : "hugeicons:waving-hand-02";
+    return isLiked.value ? "hugeicons:waving-hand-02" : "hugeicons:waving-hand-02";
   }
 });
 
