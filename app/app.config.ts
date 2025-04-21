@@ -56,8 +56,9 @@ export default defineAppConfig({
 
   // 消息提示配置
   toaster: {
+    position: "top-right", // 消息提示位置
     expand: false, // 禁用消息展开效果
-    duration: 4000, // 消息显示持续时间（毫秒）
+    duration: 3000, // 消息显示持续时间（毫秒）
   },
 
   // 工具提示配置

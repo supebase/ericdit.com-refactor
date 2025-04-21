@@ -4,40 +4,60 @@
     body: replyCount ? 'p-4 sm:p-6' : 'p-0 sm:p-0',
   }" variant="soft" class="my-4">
     <template #header>
-      <div class="flex items-center">
-        <div class="mr-3">
-          <UChip inset size="sm" position="bottom-right" :color="userStatus ? 'success' : 'neutral'">
-            <SharedAvatar :src="userAvatarUrl || undefined"
-              :alt="!comment.user_created.avatar ? comment.user_created.first_name : undefined" size="xs"
-              class="uppercase" />
-          </UChip>
-        </div>
-
-        <div class="flex-1 mb-1">
-          <div class="flex justify-between items-center">
-            <div class="flex items-center space-x-2 text-[13px] nums tabular-nums">
-              <div class="text-sm font-medium">{{ comment.user_created.first_name }}</div>
-              <div class="text-neutral-500">
-                {{ useDateFormatter(comment.date_created) }}
-              </div>
-              <span class="text-neutral-400 dark:text-neutral-600">&bull;</span>
-              <div class="text-neutral-500">
-                {{ userLocation }}
-              </div>
+      <div class="relative overflow-hidden touch-none select-none active:cursor-grabbing"
+        :class="{ 'cursor-grab': canDelete }" @touchstart="handleDragStart($event, 0)"
+        @touchmove="handleDragMove($event, 0)" @touchend="handleDragEnd(0)" @touchcancel="handleDragEnd(0)"
+        @mousedown.prevent="handleDragStart($event, 0)" @mousemove.prevent="handleDragMove($event, 0)"
+        @mouseup="handleDragEnd(0)" @mouseleave="handleDragEnd(0)">
+        <div class="relative transform transition-transform duration-200 ease-out"
+          :style="{ transform: `translateX(${offsets[0] || 0}px)` }">
+          <div class="flex items-center">
+            <div class="mr-3">
+              <UChip inset size="sm" position="bottom-right" :color="userStatus ? 'success' : 'neutral'">
+                <SharedAvatar :src="userAvatarUrl || undefined"
+                  :alt="!comment.user_created.avatar ? comment.user_created.first_name : undefined" size="xs"
+                  class="uppercase" />
+              </UChip>
             </div>
 
-            <SharedLikeButton :comment-id="comment.id" :icon-size="18" likeType="heart" />
+            <div class="flex-1 mb-1">
+              <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-2 text-[13px] nums tabular-nums">
+                  <div class="text-sm font-medium">{{ comment.user_created.first_name }}</div>
+                  <div class="text-neutral-500">
+                    {{ useDateFormatter(comment.date_created) }}
+                  </div>
+                  <span class="text-neutral-400 dark:text-neutral-600">&bull;</span>
+                  <div class="text-neutral-500">
+                    {{ userLocation }}
+                  </div>
+                </div>
+
+                <SharedLikeButton :comment-id="comment.id" :icon-size="18" likeType="heart" />
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-1 text-[15px] text-neutral-600 dark:text-neutral-400">
+            {{ safeComment }}
+          </div>
+          <div class="mt-1" :class="isReplying ? 'hidden' : ''">
+            <button @click="handleReply" class="text-[13px] text-neutral-500 nums tabular-nums cursor-pointer">
+              {{ replyCount > 0 ? `${replyCount} 条回复` : "回复" }}
+            </button>
           </div>
         </div>
-      </div>
-
-      <div class="mt-1 cursor-pointer text-[15px] text-neutral-600 dark:text-neutral-400" @click="toggleReplyInput">
-        {{ safeComment }}
-      </div>
-      <div class="mt-1" :class="isReplying ? 'hidden' : ''">
-        <button @click="toggleReplyInput" class="text-[13px] text-neutral-500 nums tabular-nums cursor-pointer">
-          {{ replyCount > 0 ? `${replyCount} 条回复` : "回复" }}
-        </button>
+        <div class="absolute top-0 right-0 h-full flex items-center">
+          <button v-if="canDelete"
+            class="bg-white dark:bg-neutral-900 text-red-500 p-2 mr-2 rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 ease-out origin-right"
+            :style="{
+              opacity: Math.min(Math.abs(offsets[0] || 0) / 75, 1),
+              transform: `translateX(${75 - Math.abs(offsets[0] || 0)}px)`
+            }" @click.stop="handleDelete(0)">
+            <UIcon v-if="!isDeleting" name="hugeicons:cancel-circle-half-dot" class="size-5" />
+            <UIcon v-else name="svg-spinners:ring-resize" class="size-5" />
+          </button>
+        </div>
       </div>
 
       <div class="transform transition-all duration-300 ease-in-out" :class="isReplying
@@ -61,7 +81,9 @@
 
 <script setup lang="ts">
 import type { Comments } from "~/types";
-const { isAuthenticated } = useAuth();
+const { guardAction } = useAuthGuard();
+const { user } = useAuth();
+const { deleteComment } = useComments();
 
 const props = defineProps<{
   comment: Comments.Item;
@@ -91,9 +113,11 @@ const refreshReplies = async () => {
   await replyListRef.value?.refresh();
 };
 
-const toggleReplyInput = () => {
-  if (!isAuthenticated.value) return;
+const handleReply = () => {
+  guardAction(() => toggleReplyInput());
+};
 
+const toggleReplyInput = () => {
   if (!props.isReplying) {
     emit("reply-start");
   } else {
@@ -129,6 +153,66 @@ const { checkUserStatus, subscribeUserStatus, cleanup, usersStatus } = usePresen
 };
 const userStatus = ref(false);
 
+const canDelete = computed(() => user.value?.id === props.comment.user_created.id);
+
+const offsets = ref<number[]>([0]);
+const dragStartX = ref<number[]>([0]);
+const isDragging = ref<boolean[]>([false]);
+const dragThreshold = 10;
+const currentOpenIndex = ref<number | null>(null);
+const isDeleting = ref(false);
+
+const handleDragStart = (event: MouseEvent | TouchEvent, index: number) => {
+  if (!canDelete.value) return;
+  if (currentOpenIndex.value !== null && currentOpenIndex.value !== index) {
+    offsets.value[currentOpenIndex.value] = 0;
+  }
+  isDragging.value[index] = true;
+  dragStartX.value[index] = event instanceof MouseEvent ? event.clientX : event.touches?.[0]?.clientX ?? 0;
+  offsets.value[index] = offsets.value[index] || 0;
+};
+
+const handleDragMove = (event: MouseEvent | TouchEvent, index: number) => {
+  if (!canDelete.value) return;
+  if (!isDragging.value[index]) return;
+  const currentX = event instanceof MouseEvent ? event.clientX : event.touches?.[0]?.clientX ?? 0;
+  const diff = currentX - (dragStartX.value[index] ?? 0);
+  if (event.type === 'touchmove' && Math.abs(diff) > dragThreshold) event.preventDefault();
+
+  let newOffset = diff;
+  if (currentOpenIndex.value === index) {
+    newOffset = Math.max(Math.min(diff - 75, 0), -75);
+  } else {
+    newOffset = Math.max(Math.min(diff, 0), -75);
+  }
+  offsets.value[index] = newOffset;
+};
+
+const handleDragEnd = (index: number) => {
+  if (!canDelete.value) return;
+  if (!isDragging.value[index]) return;
+  const offset = offsets.value[index];
+  const isOpen = Math.abs(offset || 0) > 35;
+  offsets.value[index] = isOpen ? -75 : 0;
+  currentOpenIndex.value = isOpen ? index : null;
+  isDragging.value[index] = false;
+};
+
+const handleDelete = async (index: number) => {
+  if (Math.abs(offsets.value[index] || 0) < 35) return;
+  if (isDeleting.value) return;
+  isDeleting.value = true;
+  try {
+    await deleteComment(props.comment.id);
+    offsets.value[index] = 0;
+    currentOpenIndex.value = null;
+  } catch (e) {
+    // 错误处理
+  } finally {
+    isDeleting.value = false;
+  }
+};
+
 onMounted(async () => {
   if (import.meta.client) {
     await subscribeUserStatus(props.comment.user_created.id);
@@ -152,5 +236,10 @@ onUnmounted(() => {
 
 onDeactivated(() => {
   emit("reply-end");
+});
+
+onBeforeRouteLeave(() => {
+  offsets.value = [0];
+  currentOpenIndex.value = null;
 });
 </script>

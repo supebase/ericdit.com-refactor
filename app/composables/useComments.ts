@@ -63,6 +63,35 @@ export const useComments = () => {
   };
 
   /**
+    * 删除评论或回复（会递归删除所有子回复）
+    * @param commentId - 评论ID
+    * @returns Promise<void>
+    */
+  const deleteComment = async (commentId: string): Promise<void> => {
+    try {
+      // 先查找所有子回复
+      const replies = await $directus.request<Comments.Item[]>(
+        $content.readItems("comments", {
+          filter: {
+            parent_comment_id: { _eq: commentId },
+          },
+          fields: ["id"],
+        })
+      );
+      // 递归删除所有子回复
+      for (const reply of replies) {
+        await deleteComment(reply.id);
+      }
+      // 删除主评论
+      await $directus.request(
+        $content.deleteItem("comments", commentId)
+      );
+    } catch (error: any) {
+      throw new Error(error.errors?.[0]?.message || "删除评论失败");
+    }
+  };
+
+  /**
    * 订阅指定文章的评论更新
    * @param contentId - 文章ID
    * @param callback - 数据变化时的回调函数
@@ -140,6 +169,7 @@ export const useComments = () => {
   return {
     getCommentsList,
     createComment,
+    deleteComment,
     subscribeComments,
     getUserAvatarUrl,
     getUserLocation,

@@ -1,5 +1,5 @@
 <template>
-  <UCard :ui="{ body: '!p-0', footer: '!px-4' }" variant="soft" class="select-none">
+  <UCard :ui="{ body: '!p-0 border-none', footer: '!px-4' }" variant="soft" class="select-none">
     <NuxtLink :to="{ name: 'article-id', params: { id: content.id } }" class="block hover:no-underline">
       <!-- 单图显示 -->
       <div v-if="displayType === 'single'" class="relative overflow-hidden rounded-t-lg">

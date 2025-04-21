@@ -61,6 +61,12 @@
           </div>
         </div>
 
+        <div class="flex items-center justify-center gap-2 text-neutral-500 animate-pulse my-5"
+          v-if="allowComments && totalComments">
+          <UIcon name="hugeicons:swipe-left-09" class="size-5" />
+          <span class="text-sm font-medium">向左滑动删除评论或回复</span>
+        </div>
+
         <div v-if="rootComments.length" class="mb-8">
           <SharedFadeIn v-for="(comment, index) in rootComments" :key="comment.id" :delay="index * 100">
             <CommentThreadItem :comment="comment" :is-replying="activeReplyId === comment.id"

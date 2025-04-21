@@ -2,7 +2,7 @@
     <UModal :dismissible="false" :open="isMaintenanceMode" title="维护提示" description="维护模式开启/关闭后将自动显示/隐藏"
         :ui="{ overlay: 'backdrop-blur-sm backdrop-grayscale-100' }">
         <template #content>
-            <UCard class="p-6">
+            <UCard class="p-6 select-none">
                 <div class="flex flex-col items-center">
                     <div class="mb-6 flex justify-center">
                         <UIcon name="hugeicons:computer-settings" class="size-10 animate-pulse" />
