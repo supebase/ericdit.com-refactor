@@ -1,8 +1,7 @@
 <template>
   <UTooltip arrow :text="isDark ? '切换到浅色' : '切换到深色'">
     <UIcon :name="isDark ? 'hugeicons:moon-02' : 'hugeicons:sun-02'"
-      class="size-4 text-neutral-500 hover:text-neutral-800 dark:hover:text-neutral-200 transform duration-500 cursor-pointer"
-      @click="isDark = !isDark" />
+      class="size-5 text-neutral-600 dark:text-neutral-400 cursor-pointer" @click="isDark = !isDark" />
   </UTooltip>
 </template>
 

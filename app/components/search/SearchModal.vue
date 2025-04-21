@@ -1,5 +1,5 @@
 <template>
-  <UModal v-model:open="isOpen" title="Search" description="站内搜索">
+  <UModal v-model:open="isOpen" :ui="{ overlay: 'backdrop-blur-sm' }" title="Search" description="站内搜索">
     <UIcon name="hugeicons:search-01" class="size-5 text-neutral-600 dark:text-neutral-400 cursor-pointer" />
     <template #content>
       <UCommandPalette v-model:search-term="searchQuery" :loading="isLoading" :groups="groups"

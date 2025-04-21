@@ -15,20 +15,17 @@ const props = defineProps({
 const isVisible = ref(false);
 const element = ref(null);
 
-onMounted(() => {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        setTimeout(() => {
-          isVisible.value = true;
-        }, props.delay);
-        observer.disconnect();
-      }
-    });
-  });
-
-  observer.observe(element.value);
-});
+useIntersectionObserver(
+  element,
+  ([{ isIntersecting }]) => {
+    if (isIntersecting) {
+      setTimeout(() => {
+        isVisible.value = true;
+      }, props.delay)
+    }
+  },
+  { once: true }
+)
 </script>
 
 <style scoped>

@@ -3,7 +3,7 @@
     <SharedLayoutHeader />
 
     <div class="flex-1 overflow-y-auto overflow-x-hidden" ref="scrollContainer">
-      <main class="max-w-md sm:max-w-xl mx-auto px-5 w-full">
+      <main class="max-w-md mx-auto px-5 w-full">
         <slot :isNearBottom="isNearBottom" />
       </main>
     </div>

@@ -6,7 +6,7 @@
       <UIcon v-else :name="isBookmarked ? 'hugeicons:bookmark-minus-02' : 'hugeicons:bookmark-add-02'" :size="iconSize"
         :class="[
           { 'bookmark-animation': showAnimation },
-          isBookmarked ? 'text-neutral-700 dark:text-neutral-300' : ''
+          isBookmarked ? 'text-neutral-800 dark:text-neutral-300' : ''
         ]" />
     </button>
   </div>

@@ -20,15 +20,13 @@
 
     <!-- 数据统计卡片 -->
     <div class="grid grid-cols-2 gap-4 mt-8">
-      <div
-        class="p-6 rounded-xl bg-gradient-to-br from-purple-500/10 to-pink-500/10 hover:from-purple-500/20 hover:to-pink-500/20 transition-all duration-300">
+      <div class="p-6 rounded-lg bg-neutral-100 dark:bg-neutral-950/70">
         <div class="flex justify-center">
           <SharedAnimateNumber :value="commentsCount" class="text-3xl font-bold" />
         </div>
         <div class="text-neutral-500 font-medium text-center mt-2">评论数</div>
       </div>
-      <div
-        class="p-6 rounded-xl bg-gradient-to-br from-amber-500/10 to-orange-500/10 hover:from-amber-500/20 hover:to-orange-500/20 transition-all duration-300">
+      <div class="p-6 rounded-lg bg-neutral-100 dark:bg-neutral-950/70">
         <div class="flex justify-center">
           <SharedAnimateNumber :value="likesCount" class="text-3xl font-bold" />
         </div>

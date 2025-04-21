@@ -2,36 +2,36 @@
   <div class="select-none pb-10">
     <div class="fixed bottom-17 z-30 left-1/2 -translate-x-1/2">
       <UButtonGroup
-        class="shadow-lg rounded-2xl hover:shadow-xl ring-1 ring-neutral-200/70 dark:ring-neutral-700/70 transition-shadow duration-300 backdrop-blur-sm bg-white/90 dark:bg-neutral-800/90">
+        class="shadow-lg rounded-2xl hover:shadow-xl ring-1 ring-neutral-200/70 dark:ring-neutral-800/70 transition-shadow duration-300 backdrop-blur-sm bg-white/90 dark:bg-neutral-950/90">
         <UButton :ui="{
-          base: 'rounded-[calc(var(--ui-radius)*2)] transition-transform duration-200 hover:bg-white dark:hover:bg-neutral-800',
+          base: 'rounded-[calc(var(--ui-radius)*2)] transition-transform duration-200 hover:bg-white dark:hover:bg-neutral-950',
         }" color="neutral" variant="ghost" size="lg">
           <SharedLikeButton :content-id="contentId" :icon-size="22" likeType="clap" />
         </UButton>
-        <USeparator :ui="{ border: 'border-neutral-200 dark:border-neutral-700' }" class="h-4 w-2 my-auto"
+        <USeparator :ui="{ border: 'border-neutral-200 dark:border-neutral-700/70' }" class="h-4 w-2 my-auto"
           orientation="vertical" />
         <UButton :ui="{
-          base: 'rounded-[calc(var(--ui-radius)*2)] transition-transform duration-200 hover:bg-white dark:hover:bg-neutral-800',
+          base: 'rounded-[calc(var(--ui-radius)*2)] transition-transform duration-200 hover:bg-white dark:hover:bg-neutral-950',
         }" color="neutral" variant="ghost" size="lg" class="cursor-pointer">
           <SharedCommentCounter :content-id="contentId" :allow-comments="allowComments" :icon-size="18"
             @click="scrollToComments" />
         </UButton>
-        <USeparator :ui="{ border: 'border-neutral-200 dark:border-neutral-700' }"
+        <USeparator :ui="{ border: 'border-neutral-200 dark:border-neutral-700/70' }"
           class="h-4 w-2 my-auto transition-all duration-300 ease-out"
           :class="showBackToTop ? 'opacity-100' : 'opacity-0 w-0 p-0'" orientation="vertical" />
         <UButton :ui="{
-          base: 'rounded-[calc(var(--ui-radius)*2)] transition-all duration-300 ease-out hover:bg-white dark:hover:bg-neutral-800',
+          base: 'rounded-[calc(var(--ui-radius)*2)] transition-all duration-300 ease-out hover:bg-white dark:hover:bg-neutral-950',
         }" color="neutral" variant="ghost" size="lg" class="cursor-pointer"
           :class="showBackToTop ? 'w-auto opacity-100' : 'w-0 p-1 opacity-0 overflow-hidden'" @click="scrollToTop">
           <UIcon name="hugeicons:circle-arrow-up-02"
-            class="size-5 text-neutral-500 transition-transform duration-500"
+            class="size-5 text-primary-500 dark:text-orange-200 transition-transform duration-500"
             :class="showBackToTop ? 'rotate-0' : 'rotate-180'" />
         </UButton>
       </UButtonGroup>
     </div>
 
     <UAlert v-if="!allowComments" :ui="{ wrapper: 'flex items-center' }" color="neutral" variant="soft"
-      description="评论功能于本页面已停用" class="mb-8 text-neutral-500">
+      description="本评论区已启动勿扰模式" class="mb-8 text-neutral-500">
     </UAlert>
 
     <template v-else>
@@ -46,7 +46,7 @@
 
       <template v-else>
         <UAlert v-if="!totalComments" :ui="{ wrapper: 'flex items-center' }" color="neutral" variant="soft"
-          description="尚无评论，期待您的观点。" class="mb-8 text-neutral-500">
+          description="评论区竟无人类交互记录" class="mb-8 text-neutral-500">
         </UAlert>
 
         <div id="comments">
@@ -62,11 +62,12 @@
         </div>
 
         <div v-if="rootComments.length" class="mb-8">
-          <CommentThreadItem v-for="comment in rootComments" :key="comment.id" :comment="comment"
-            :is-replying="activeReplyId === comment.id" :is-submitting="replySubmitting[comment.id] || false"
-            :clear-input="clearReplyInput[comment.id] || false" @reply="handleReply"
-            @reply-start="handleReplyStart(comment.id)" @reply-end="handleReplyEnd(comment.id)"
-            :ref="(el) => setCommentRef(comment.id, el)" />
+          <SharedFadeIn v-for="(comment, index) in rootComments" :key="comment.id" :delay="index * 100">
+            <CommentThreadItem :comment="comment" :is-replying="activeReplyId === comment.id"
+              :is-submitting="replySubmitting[comment.id] || false" :clear-input="clearReplyInput[comment.id] || false"
+              @reply="handleReply" @reply-start="handleReplyStart(comment.id)" @reply-end="handleReplyEnd(comment.id)"
+              :ref="(el) => setCommentRef(comment.id, el)" />
+          </SharedFadeIn>
         </div>
       </template>
     </template>

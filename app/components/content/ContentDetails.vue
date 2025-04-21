@@ -13,7 +13,7 @@
           <div class="flex items-center text-[13px] space-x-2">
             <div>{{ useDateFormatter(content.date_created) }}发布</div>
             <span class="text-neutral-400 dark:text-neutral-600">&bull;</span>
-            <div>阅读时长约 {{ useArticleMetrics(content.body) }}</div>
+            <div>阅读约 {{ useArticleMetrics(content.body) }}</div>
           </div>
         </div>
       </div>

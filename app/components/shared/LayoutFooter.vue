@@ -8,8 +8,6 @@
         <span>{{ version }}（{{ useDateFormatter(buildTime) }}构建）</span>
       </div>
 
-      <SharedColorMode />
-
       <UPopover arrow :open-delay="0" :close-delay="0">
         <UButton variant="link" class="!p-0 !h-auto cursor-pointer"
           @click="() => { if (!totalUsers) fetchTotalUsers() }">

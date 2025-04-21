@@ -5,7 +5,7 @@
       <UIcon name="svg-spinners:ring-resize" :size="iconSize" class="text-neutral-500" v-if="isProcessing" />
       <UIcon v-else :name="getIconName || ''" :size="iconSize" :class="[
         { 'scale-effect': showScale },
-        isLiked ? 'text-neutral-700 dark:text-neutral-300' : ''
+        isLiked ? 'text-neutral-800 dark:text-neutral-300' : ''
       ]" />
       <SharedAnimateNumber :value="likesCount" />
     </button>

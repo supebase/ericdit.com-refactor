@@ -1,6 +1,6 @@
 <template>
     <UModal :dismissible="false" :open="isMaintenanceMode" title="维护提示" description="维护模式开启/关闭后将自动显示/隐藏"
-        :ui="{ overlay: 'backdrop-grayscale-100' }">
+        :ui="{ overlay: 'backdrop-blur-sm backdrop-grayscale-100' }">
         <template #content>
             <UCard class="p-6">
                 <div class="flex flex-col items-center">
