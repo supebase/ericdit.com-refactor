@@ -56,7 +56,7 @@
       <div class="flex justify-between items-center text-sm text-neutral-500">
         <div class="flex gap-10">
           <div class="flex items-center gap-1">
-            <SharedLikeButton :content-id="content.id" :icon-size="22" likeType="clap" />
+            <SharedLikeButton :content-id="content.id" :icon-size="21" likeType="clap" />
           </div>
           <div class="flex items-center gap-1">
             <SharedCommentCounter :content-id="content.id" :allow-comments="content.allow_comments" :icon-size="18" />

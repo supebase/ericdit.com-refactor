@@ -44,15 +44,15 @@
             </button>
           </div>
         </div>
-        <div class="absolute top-0 right-0 h-full flex items-center">
+        <div>
           <button v-if="canDelete"
-            class="bg-white dark:bg-neutral-900 text-red-500 p-2 mr-2 rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 ease-out origin-right"
+            class="absolute top-0.5 right-0 text-red-500 p-1 flex items-center justify-center cursor-pointer transition-all duration-200 ease-out origin-right"
             :style="{
-              opacity: Math.min(Math.abs(offsets[0] || 0) / 75, 1),
-              transform: `translateX(${75 - Math.abs(offsets[0] || 0)}px)`
+              opacity: Math.min(Math.abs(offsets[0] || 0) / 60, 1),
+              transform: `translateX(${60 - Math.abs(offsets[0] || 0)}px)`
             }" @click.stop="handleDelete(0)">
-            <UIcon v-if="!isDeleting" name="hugeicons:cancel-circle-half-dot" class="size-5" />
-            <UIcon v-else name="svg-spinners:ring-resize" class="size-5" />
+            <UIcon v-if="!isDeleting" name="hugeicons:delete-01" class="size-[18px]" />
+            <UIcon v-else name="svg-spinners:ring-resize" class="size-[18px]" />
           </button>
         </div>
       </div>

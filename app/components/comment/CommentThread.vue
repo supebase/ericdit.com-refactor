@@ -6,7 +6,7 @@
         <UButton :ui="{
           base: 'rounded-[calc(var(--ui-radius)*2)] transition-transform duration-200 hover:bg-white dark:hover:bg-neutral-950',
         }" color="neutral" variant="ghost" size="lg">
-          <SharedLikeButton :content-id="contentId" :icon-size="22" likeType="clap" />
+          <SharedLikeButton :content-id="contentId" :icon-size="21" likeType="clap" />
         </UButton>
         <USeparator :ui="{ border: 'border-neutral-200 dark:border-neutral-700/70' }" class="h-4 w-2 my-auto"
           orientation="vertical" />
