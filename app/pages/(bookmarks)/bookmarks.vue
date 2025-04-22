@@ -21,9 +21,9 @@
       </div>
 
       <div v-for="(bookmark, index) in bookmarks" :key="bookmark.id"
-        class="relative overflow-hidden touch-none select-none cursor-grab active:cursor-grabbing"
-        @touchstart="handleDragStart($event, index)" @touchmove="handleDragMove($event, index)"
-        @touchend="handleDragEnd(index)" @touchcancel="handleDragEnd(index)"
+        class="relative overflow-hidden touch-pan-y select-none cursor-grab active:cursor-grabbing"
+        @touchstart="handleDragStart($event, index)" @touchmove.passive="false"
+        @touchmove="handleDragMove($event, index)" @touchend="handleDragEnd(index)" @touchcancel="handleDragEnd(index)"
         @mousedown.prevent="handleDragStart($event, index)" @mousemove.prevent="handleDragMove($event, index)"
         @mouseup="handleDragEnd(index)" @mouseleave="handleDragEnd(index)">
         <div class="relative transform transition-transform duration-200 ease-out"
@@ -72,12 +72,7 @@ definePageMeta({
 const { getBookmarks, deleteBookmark, subscribeBookmarks } = useBookmarks();
 const { user } = useAuth();
 const processingIds = ref<string[]>([]);
-const offsets = ref<number[]>([]);
-const dragStartX = ref<number[]>([]);
-const isDragging = ref<boolean[]>([]);
-const currentOpenIndex = ref<number | null>(null);
-const dragThreshold = 10; // 新增：滑动阈值，单位 px
-const hasMoved = ref<boolean[]>([]); // 新增：记录每个 item 是否发生过滑动
+const hasMoved = ref<boolean[]>([]); // 记录每个 item 是否发生过滑动
 
 const {
   data: bookmarks,
@@ -106,54 +101,15 @@ const getContentTitle = (contentId: string | { id: string; title: string }): str
   return typeof contentId === "string" ? "未知标题" : contentId.title;
 };
 
-const getEventX = (event: MouseEvent | TouchEvent): number => {
-  if (event instanceof MouseEvent) {
-    return event.clientX;
-  }
-  return event.touches?.[0]?.clientX ?? 0;
-};
-
-const handleDragStart = (event: MouseEvent | TouchEvent, index: number) => {
-  // 不再在这里 preventDefault
-  if (currentOpenIndex.value !== null && currentOpenIndex.value !== index) {
-    offsets.value[currentOpenIndex.value] = 0;
-  }
-  isDragging.value[index] = true;
-  dragStartX.value[index] = getEventX(event);
-  offsets.value[index] = offsets.value[index] || 0;
-  hasMoved.value[index] = false; // 新增
-};
-
-const handleDragMove = (event: MouseEvent | TouchEvent, index: number) => {
-  if (!isDragging.value[index]) return;
-
-  const currentX = getEventX(event);
-  const diff = currentX - (dragStartX.value[index] ?? 0);
-
-  // 新增：只有横向滑动超过阈值才 preventDefault
-  if (event.type === 'touchmove' && Math.abs(diff) > dragThreshold) {
-    event.preventDefault();
-    hasMoved.value[index] = true;
-  }
-
-  let newOffset = diff;
-  if (currentOpenIndex.value === index) {
-    newOffset = Math.max(Math.min(diff - 75, 0), -75);
-  } else {
-    newOffset = Math.max(Math.min(diff, 0), -75);
-  }
-  offsets.value[index] = newOffset;
-};
-
-const handleDragEnd = (index: number) => {
-  if (!isDragging.value[index]) return;
-
-  const offset = offsets.value[index];
-  const isOpen = Math.abs(offset || 0) > 35;
-  offsets.value[index] = isOpen ? -75 : 0;
-  currentOpenIndex.value = isOpen ? index : null;
-  isDragging.value[index] = false;
-};
+// 使用 useSwipeToDelete 替换原有滑动相关变量和方法
+const {
+  offsets,
+  isDragging,
+  currentOpenIndex,
+  handleDragStart,
+  handleDragMove,
+  handleDragEnd,
+} = useSwipeToDelete(() => true);
 
 const handleDelete = async (bookmark: Bookmarks.Item, index: number) => {
   if (Math.abs(offsets.value[index] || 0) < 35) return;
@@ -173,7 +129,7 @@ const handleDelete = async (bookmark: Bookmarks.Item, index: number) => {
 };
 
 const handleLinkClick = (index: number, event: MouseEvent | TouchEvent) => {
-  // 新增：判断 hasMoved，只有未滑动才允许点击
+  // 判断 hasMoved，只有未滑动才允许点击
   if (isDragging.value[index] || hasMoved.value[index] || Math.abs(offsets.value[index] || 0) > 5) {
     event.preventDefault();
     return;
@@ -217,16 +173,13 @@ const setupSubscription = async () => {
 
 const handleVisibilityChange = () => {
   if (document.visibilityState === 'visible') {
-    // 先取消现有订阅
     if (unsubscribe.value) {
       unsubscribe.value();
       unsubscribe.value = null;
     }
-    // 重新获取数据并建立订阅
     refresh();
     setupSubscription();
   } else {
-    // 页面不可见时清理订阅
     if (unsubscribe.value) {
       unsubscribe.value();
       unsubscribe.value = null;
@@ -256,9 +209,8 @@ watch(bookmarks, () => {
   if (bookmarks.value) {
     const length = bookmarks.value.length;
     offsets.value = new Array(length).fill(0);
-    dragStartX.value = new Array(length).fill(0);
     isDragging.value = new Array(length).fill(false);
-    hasMoved.value = new Array(length).fill(false); // 新增
+    hasMoved.value = new Array(length).fill(false);
     currentOpenIndex.value = null;
   }
 }, { immediate: true });

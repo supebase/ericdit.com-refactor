@@ -1,6 +1,6 @@
 <template>
-  <div class="relative overflow-hidden touch-none select-none active:cursor-grabbing"
-    :class="{ 'cursor-grab': canDelete }" @touchstart="handleDragStart($event, 0)"
+  <div class="relative overflow-hidden touch-pan-y select-none active:cursor-grabbing"
+    :class="{ 'cursor-grab': canDelete }" @touchstart="handleDragStart($event, 0)" @touchmove.passive="false"
     @touchmove="handleDragMove($event, 0)" @touchend="handleDragEnd(0)" @touchcancel="handleDragEnd(0)"
     @mousedown.prevent="handleDragStart($event, 0)" @mousemove.prevent="handleDragMove($event, 0)"
     @mouseup="handleDragEnd(0)" @mouseleave="handleDragEnd(0)">
@@ -18,7 +18,6 @@
                 class="uppercase" />
             </UChip>
           </div>
-
           <div class="flex-1 mb-1">
             <div class="flex justify-between items-center">
               <div class="flex items-center text-[13px] space-x-2 nums tabular-nums">
@@ -31,7 +30,6 @@
                   {{ userLocation }}
                 </div>
               </div>
-
               <SharedLikeButton :comment-id="reply.id" :icon-size="18" likeType="heart" />
             </div>
           </div>
@@ -57,6 +55,7 @@
 
 <script setup lang="ts">
 import type { Comments } from "~/types";
+
 const { user } = useAuth();
 const { deleteComment } = useComments();
 
@@ -86,48 +85,16 @@ const safeComment = computed(() => escapeHtml(props.reply.comment));
 
 const canDelete = computed(() => user.value?.id === props.reply.user_created.id);
 
-const offsets = ref<number[]>([0]);
-const dragStartX = ref<number[]>([0]);
-const isDragging = ref<boolean[]>([false]);
-const dragThreshold = 10;
-const currentOpenIndex = ref<number | null>(null);
 const isDeleting = ref(false);
 
-const handleDragStart = (event: MouseEvent | TouchEvent, index: number) => {
-  if (!canDelete.value) return;
-  if (currentOpenIndex.value !== null && currentOpenIndex.value !== index) {
-    offsets.value[currentOpenIndex.value] = 0;
-  }
-  isDragging.value[index] = true;
-  dragStartX.value[index] = event instanceof MouseEvent ? event.clientX : event.touches?.[0]?.clientX ?? 0;
-  offsets.value[index] = offsets.value[index] || 0;
-};
-
-const handleDragMove = (event: MouseEvent | TouchEvent, index: number) => {
-  if (!canDelete.value) return;
-  if (!isDragging.value[index]) return;
-  const currentX = event instanceof MouseEvent ? event.clientX : event.touches?.[0]?.clientX ?? 0;
-  const diff = currentX - (dragStartX.value[index] ?? 0);
-  if (event.type === 'touchmove' && Math.abs(diff) > dragThreshold) event.preventDefault();
-
-  let newOffset = diff;
-  if (currentOpenIndex.value === index) {
-    newOffset = Math.max(Math.min(diff - 75, 0), -75);
-  } else {
-    newOffset = Math.max(Math.min(diff, 0), -75);
-  }
-  offsets.value[index] = newOffset;
-};
-
-const handleDragEnd = (index: number) => {
-  if (!canDelete.value) return;
-  if (!isDragging.value[index]) return;
-  const offset = offsets.value[index];
-  const isOpen = Math.abs(offset || 0) > 35;
-  offsets.value[index] = isOpen ? -75 : 0;
-  currentOpenIndex.value = isOpen ? index : null;
-  isDragging.value[index] = false;
-};
+// 使用抽离的滑动删除逻辑
+const {
+  offsets,
+  handleDragStart,
+  handleDragMove,
+  handleDragEnd,
+  currentOpenIndex,
+} = useSwipeToDelete(() => canDelete.value);
 
 const handleDelete = async (index: number) => {
   if (Math.abs(offsets.value[index] || 0) < 35) return;
