@@ -5,7 +5,7 @@
       <div class="text-center text-sm text-neutral-500 space-x-2">
         <span>{{ new Date().getFullYear() }} &copy; Eric</span>
         <span class="text-neutral-300 dark:text-neutral-700 text-xs">&bull;</span>
-        <span>{{ version }}（{{ useDateFormatter(buildTime) }}构建）</span>
+        <span>v{{ version }}（{{ useDateFormatter(buildTime) }}构建）</span>
       </div>
 
       <UPopover arrow :open-delay="0" :close-delay="0">
@@ -23,7 +23,7 @@
 </template>
 
 <script setup>
-const version = ref("正在加载");
+const version = ref("0.0.0");
 const buildTime = ref();
 const { totalUsers, fetchTotalUsers } = useUserStats();
 

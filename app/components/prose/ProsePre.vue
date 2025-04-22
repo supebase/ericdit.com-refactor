@@ -2,13 +2,13 @@
   <div class="relative">
     <!-- 固定 Header -->
     <div class="absolute top-0 left-0 right-0 z-10 flex justify-between items-center p-3">
-      <div class="text-xs text-neutral-300 dark:text-neutral-700 select-none uppercase truncate">
+      <div class="text-xs text-neutral-400 dark:text-neutral-600 select-none uppercase truncate">
         {{ $props.language }}
       </div>
       <div @click="copyWithFeedback(source)" class="text-xs text-neutral-500 shrink-0">
         <span v-if="!copied" class="cursor-pointer">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
-            <g fill="none" class="stroke-neutral-300 dark:stroke-neutral-700" stroke="currentColor"
+            <g fill="none" class="stroke-neutral-400 dark:stroke-neutral-600" stroke="currentColor"
               stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
               <path
                 d="M9 15c0-2.828 0-4.243.879-5.121C10.757 9 12.172 9 15 9h1c2.828 0 4.243 0 5.121.879C22 10.757 22 12.172 22 15v1c0 2.828 0 4.243-.879 5.121C20.243 22 18.828 22 16 22h-1c-2.828 0-4.243 0-5.121-.879C9 20.243 9 18.828 9 16z" />
@@ -19,7 +19,7 @@
         </span>
         <span v-else>
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
-            <g fill="none" class="stroke-neutral-700" stroke="currentColor" stroke-linecap="round"
+            <g fill="none" class="stroke-neutral-500" stroke="currentColor" stroke-linecap="round"
               stroke-linejoin="round" stroke-width="1.5">
               <path
                 d="M21.448 8.2c.052 1.05.052 2.3.052 3.8c0 4.478 0 6.718-1.391 8.109S16.479 21.5 12 21.5c-4.478 0-6.718 0-8.109-1.391S2.5 16.479 2.5 12c0-4.478 0-6.718 1.391-8.109S7.521 2.5 12 2.5c1.072 0 2.016 0 2.85.02" />

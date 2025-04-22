@@ -1,5 +1,10 @@
 <template>
-  <div class="flex justify-end items-center">
+  <div class="flex justify-end items-center space-x-2">
+    <transition name="slide-fade">
+      <UBadge v-if="showMessage" variant="soft" class="pointer-events-none">
+        {{ messageText }}
+      </UBadge>
+    </transition>
     <button @click="handleBookmark" :disabled="isProcessing"
       class="text-sm flex items-center space-x-2 text-neutral-500 cursor-pointer disabled:cursor-not-allowed">
       <UIcon name="svg-spinners:ring-resize" :size="iconSize" class="text-neutral-500" v-if="isProcessing" />
@@ -13,6 +18,8 @@
 </template>
 
 <script setup lang="ts">
+import { UBadge } from '#components';
+
 const props = defineProps<{
   contentId: string;
   iconSize?: number;
@@ -25,6 +32,9 @@ const { getBookmarks, deleteBookmark, addBookmarkIfNotExists, subscribeBookmarks
 const isBookmarked = ref(false);
 const currentBookmarkId = ref<string | null>(null);
 const isProcessing = ref(false);
+
+const showMessage = ref(false);
+const messageText = ref('');
 
 const fetchBookmarkStatus = async () => {
   try {
@@ -61,15 +71,21 @@ const handleBookmarkAction = async () => {
       await deleteBookmark(currentBookmarkId.value);
       isBookmarked.value = false;
       currentBookmarkId.value = null;
+      messageText.value = '已取消';
     } else {
       const newBookmark = await addBookmarkIfNotExists(props.contentId);
       isBookmarked.value = true;
       currentBookmarkId.value = newBookmark.id;
+      messageText.value = '已添加';
       showAnimation.value = true;
       setTimeout(() => {
         showAnimation.value = false;
       }, 500);
     }
+    showMessage.value = true;
+    setTimeout(() => {
+      showMessage.value = false;
+    }, 2000);
   } catch (error) {
     console.error("Failed to toggle bookmark:", error);
   } finally {
@@ -168,5 +184,19 @@ watch(isAuthenticated, (newValue) => {
   100% {
     transform: translateY(0) scale(1) rotate(0);
   }
+}
+
+.slide-fade-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateX(10px);
+  opacity: 0;
 }
 </style>
