@@ -56,9 +56,9 @@
           </button>
         </div>
       </div>
-      <div class="transform transition-all duration-300 ease-in-out" :class="isReplying
-        ? 'translate-y-0 opacity-100 max-h-[200px]'
-        : 'translate-y-3 opacity-0 max-h-0 overflow-hidden'
+      <div class="transform transition-all duration-500 ease-in-out" :class="isReplying
+        ? 'translate-y-0 opacity-100 max-h-auto'
+        : '-translate-y-3 opacity-0 max-h-0 overflow-hidden'
         ">
         <div>
           <CommentEditor :placeholder="`回复：${comment.user_created.first_name}`" :is-submitting="isSubmitting"
@@ -67,7 +67,6 @@
               <UIcon v-if="isReplying" @click="cancelReply" name="hugeicons:cancel-circle"
             class="size-5 text-neutral-500 cursor-pointer" />
             </div>
-          
         </div>
       </div>
     </template>

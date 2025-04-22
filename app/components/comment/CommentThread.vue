@@ -50,8 +50,8 @@
         </UAlert>
 
         <div id="comments">
-          <div class="transform transition-all duration-300 ease-in-out" :class="showMainCommentForm
-            ? 'translate-y-0 opacity-100 max-h-[200px]'
+          <div class="transform transition-all duration-500 ease-in-out" :class="showMainCommentForm
+            ? 'translate-y-0 opacity-100 max-h-auto'
             : 'translate-y-3 opacity-0 max-h-0 overflow-hidden'
             ">
             <div :class="!totalComments ? 'mb-8' : ''">

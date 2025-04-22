@@ -14,7 +14,7 @@ export const useVersionCheck = () => {
   let pendingVersionInfo: { buildHash: string; version: string } | null = null;
 
   // 页面可见性相关工具
-  const { isVisible, setup, cleanup: cleanupVisibility } = useVisibilityChange();
+  const { isVisible } = useVisibilityChange();
 
   // 清理函数管理
   const { addCleanup, runCleanup } = createCleanup();
@@ -76,10 +76,6 @@ export const useVersionCheck = () => {
   const interval = import.meta.dev ? 30 * 1000 : 2 * 60 * 1000;
   const intervalId = setInterval(checkVersion, interval);
   addCleanup(() => clearInterval(intervalId));
-
-  // 初始化页面可见性监听
-  setup();
-  addCleanup(() => cleanupVisibility());
 
   /**
    * 清理所有定时器和事件监听

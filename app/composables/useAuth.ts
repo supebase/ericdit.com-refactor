@@ -137,7 +137,7 @@ export const useAuth = () => {
   const startSessionCheck = () => {
     if (typeof window === "undefined") return;
 
-    const { isVisible, setup, cleanup } = useVisibilityChange();
+    const { isVisible } = useVisibilityChange();
     const { addCleanup, runCleanup } = createCleanup();
 
     // 每 30 分钟检查一次
@@ -155,10 +155,6 @@ export const useAuth = () => {
         refreshUser().catch(() => { });
       }
     });
-
-    // 设置可见性监听
-    setup();
-    addCleanup(() => cleanup());
 
     // 返回清理函数
     return () => {
