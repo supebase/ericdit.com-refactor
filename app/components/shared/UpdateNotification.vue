@@ -2,7 +2,7 @@
   <UModal :dismissible="false" :open="modelValue" @update:open="$emit('update:modelValue', $event)" title="更新提示"
     description="刷新后同步最新版本" :ui="{ overlay: 'backdrop-blur-sm backdrop-grayscale-100' }">
     <template #content>
-      <UCard class="select-none">
+      <UCard class="select-none bg-neutral-100 dark:bg-neutral-900">
         <div class="flex items-center gap-3">
           <UIcon name="hugeicons:refresh" class="size-5" />
           <div class="text-base font-bold">发现新版本</div>
@@ -14,7 +14,7 @@
 
         <template #footer>
           <div class="flex justify-center">
-            <UButton size="xl" color="success" variant="soft" @click="handleUpdate">
+            <UButton size="xl" color="primary" variant="soft" @click="handleUpdate">
               立即刷新
             </UButton>
           </div>

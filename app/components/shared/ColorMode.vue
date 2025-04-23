@@ -3,12 +3,10 @@
     <div class="relative h-5 w-5 overflow-hidden">
       <div class="color-scroll" :style="{ transform: `translateY(${isDark ? -50 : 0}%)` }">
         <div class="color-cell h-5">
-          <UIcon name="hugeicons:sun-02" class="size-5 text-neutral-500 cursor-pointer"
-            @click="toggleColorMode" />
+          <UIcon name="hugeicons:sun-02" class="size-5 text-neutral-500 cursor-pointer" @click="toggleColorMode" />
         </div>
         <div class="color-cell h-5">
-          <UIcon name="hugeicons:moon-02" class="size-5 text-neutral-500 cursor-pointer"
-            @click="toggleColorMode" />
+          <UIcon name="hugeicons:moon-02" class="size-5 text-neutral-500 cursor-pointer" @click="toggleColorMode" />
         </div>
       </div>
     </div>
@@ -31,7 +29,7 @@ const toggleColorMode = () => {
   isDark.value = !isDark.value;
 };
 
-const neutral = appConfig.ui?.colors?.neutral || 'zinc';
+const neutral = computed(() => appConfig.ui?.colors?.neutral || 'zinc');
 
 // TailwindCSS 预设色板
 const tailwindColors = {
@@ -42,9 +40,13 @@ const tailwindColors = {
   slate: { light: '#e2e8f0', dark: '#0f172a' },
 };
 
-const themeColors = tailwindColors[neutral as keyof typeof tailwindColors] || tailwindColors['zinc'];
+const getThemeColors = (neutralValue: string) => {
+  return tailwindColors[neutralValue as keyof typeof tailwindColors] || tailwindColors['zinc'];
+};
 
-watch(colorMode, (newMode) => {
+// 监听 colorMode 和 neutral 的变化
+watch([colorMode, neutral], ([newMode, newNeutral]) => {
+  const themeColors = getThemeColors(newNeutral);
   useHead({
     meta: [{
       name: 'theme-color',
