@@ -15,9 +15,9 @@
     </div>
 
     <div v-else class="space-y-4">
-      <div class="flex items-center justify-center gap-2 text-neutral-500 animate-pulse">
+      <div class="flex items-center justify-center gap-2 text-neutral-400 dark:text-neutral-600 animate-pulse">
         <UIcon name="hugeicons:swipe-left-09" class="size-5" />
-        <span class="text-sm font-medium">向左滑动可删除收藏</span>
+        <span class="text-sm">向左滑动可删除收藏</span>
       </div>
 
       <div v-for="(bookmark, index) in bookmarks" :key="bookmark.id"

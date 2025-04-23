@@ -8,7 +8,19 @@
         <span>v{{ version }}（{{ useDateFormatter(buildTime) }}构建）</span>
       </div>
 
-      <UPopover arrow :open-delay="0" :close-delay="0">
+      <UPopover arrow :ui="{ content: 'bg-white dark:bg-neutral-950' }">
+        <UIcon name="hugeicons:connect" class="size-4 cursor-pointer"
+          :class="wsStatus === 'OPEN' ? 'text-green-500' : 'text-red-500'" />
+        <template #content>
+          <div class="py-2 px-4">
+            <div class="text-neutral-500 text-xs text-center h-6 flex items-center justify-center">
+              WebSocket {{ wsStatus === 'OPEN' ? '已连接' : '连接已断开' }}
+            </div>
+          </div>
+        </template>
+      </UPopover>
+
+      <UPopover arrow :ui="{ content: 'bg-white dark:bg-neutral-950' }">
         <UButton variant="link" class="!p-0 !h-auto cursor-pointer"
           @click="() => { if (!totalUsers) fetchTotalUsers() }">
           <UIcon name="hugeicons:user-status"
@@ -26,6 +38,7 @@
 const version = ref("0.0.0");
 const buildTime = ref();
 const { totalUsers, fetchTotalUsers } = useUserStats();
+const { status: wsStatus } = useWebSocketStatus();
 
 onMounted(async () => {
   try {

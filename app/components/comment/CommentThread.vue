@@ -2,7 +2,7 @@
   <div class="select-none pb-10">
     <div class="fixed bottom-17 z-30 left-1/2 -translate-x-1/2">
       <UButtonGroup
-        class="shadow-lg rounded-2xl hover:shadow-xl ring-1 ring-neutral-300/70 dark:ring-neutral-800/70 transition-shadow duration-300 backdrop-blur-sm bg-white/90 dark:bg-neutral-950/90">
+        class="shadow-lg rounded-2xl hover:shadow-xl ring-1 ring-neutral-300/70 dark:ring-neutral-800/70 transition-shadow duration-300 backdrop-blur-sm bg-white/80 dark:bg-neutral-950/80">
         <UButton :ui="{
           base: 'rounded-[calc(var(--ui-radius)*2)] transition-transform duration-200 hover:bg-white dark:hover:bg-neutral-950',
         }" color="neutral" variant="ghost" size="lg">
@@ -61,10 +61,10 @@
           </div>
         </div>
 
-        <div class="flex items-center justify-center gap-2 text-neutral-500 animate-pulse my-5"
+        <div class="flex items-center justify-center gap-2 text-neutral-400 dark:text-neutral-600 animate-pulse my-5"
           v-if="allowComments && totalComments">
           <UIcon name="hugeicons:swipe-left-09" class="size-5" />
-          <span class="text-sm font-medium">向左滑动删除评论或回复</span>
+          <span class="text-sm">向左滑动删除评论或回复</span>
         </div>
 
         <div v-if="rootComments.length" class="mb-8">

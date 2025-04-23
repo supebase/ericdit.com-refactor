@@ -46,7 +46,7 @@
           opacity: Math.min(Math.abs(offsets[0] || 0) / 60, 1),
           transform: `translateX(${60 - Math.abs(offsets[0] || 0)}px)`
         }" @click.stop="handleDelete(0)">
-        <UIcon v-if="!isDeleting" name="hugeicons:delete-01" class="size-[18px]" />
+        <UIcon v-if="!isDeleting" name="hugeicons:remove-circle-half-dot" class="size-[18px]" />
         <UIcon v-else name="svg-spinners:ring-resize" class="size-[18px]" />
       </button>
     </div>

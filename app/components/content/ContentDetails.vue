@@ -4,10 +4,10 @@
     <div class="flex justify-between items-center text-sm text-neutral-500 nums tabular-nums select-none">
       <div class="flex items-center space-x-3">
         <div>
-          <SharedAvatar :src="userAvatarUrl || undefined" size="sm" :alt="content.user_created.first_name" />
+          <SharedAvatar :src="userAvatarUrl || undefined" size="2sm" :alt="content.user_created.first_name" />
         </div>
         <div class="flex flex-col">
-          <div class="text-sm text-neutral-900 dark:text-neutral-50 font-medium">
+          <div class="text-[15px] text-neutral-900 dark:text-neutral-50 font-bold">
             {{ content.user_created.first_name }}
           </div>
           <div class="flex items-center text-[13px] space-x-2">

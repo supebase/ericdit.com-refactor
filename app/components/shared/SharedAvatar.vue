@@ -1,8 +1,8 @@
 <template>
   <div class="relative">
     <div v-if="avatarLoading && src"
-      class="absolute inset-0 ring-1 ring-neutral-100 dark:ring-neutral-900 flex items-center justify-center bg-neutral-50 dark:bg-neutral-900 rounded-full">
-      <UIcon :name="loadingIcon" :class="[`size-${iconSize}`, 'text-neutral-500 animate-pulse']" />
+      class="absolute inset-0 ring-1 ring-neutral-100 dark:ring-neutral-800 flex items-center justify-center bg-neutral-50 dark:bg-neutral-800 rounded-full">
+      <UIcon :name="loadingIcon" :class="[`size-${iconSize}`, 'text-neutral-500']" />
     </div>
 
     <template v-if="src">
@@ -14,8 +14,8 @@
         sizeClass,
         'rounded-full flex items-center justify-center',
         textSizeClass,
-        'ring-1 ring-neutral-100 dark:ring-neutral-800',
-        'bg-neutral-100 dark:bg-neutral-800'
+        'ring-1 ring-neutral-50 dark:ring-neutral-800',
+        'bg-neutral-50 dark:bg-neutral-800'
       ]">
         <span class="text-neutral-500 dark:text-neutral-400 font-medium">{{ avatarText }}</span>
       </div>
@@ -29,7 +29,7 @@ const props = withDefaults(
   defineProps<{
     src?: string;
     alt?: string;
-    size?: "2xs" | "xs" | "sm" | "md" | "lg" | "xl";
+    size?: "2xs" | "xs" | "sm" | "2sm" | "md" | "lg" | "xl";
     loadingIcon?: string;
   }>(),
   {
@@ -66,6 +66,7 @@ const sizeClass = computed(() => {
     "2xs": "w-6 h-6",
     xs: "w-7 h-7",
     sm: "w-8 h-8",
+    "2sm": "w-9 h-9",
     md: "w-10 h-10",
     lg: "w-12 h-12",
     xl: "w-14 h-14",
@@ -83,6 +84,7 @@ const textSizeClass = computed(() => {
     "2xs": "w-6 h-6",
     xs: "w-7 h-7",
     sm: "w-8 h-8",
+    "2sm": "w-9 h-9",
     md: "w-10 h-10",
     lg: "w-12 h-12",
     xl: "w-14 h-14",

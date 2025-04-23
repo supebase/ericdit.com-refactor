@@ -1,7 +1,7 @@
 <template>
   <UCard :ui="{
     root: replyCount ? 'divide-neutral-200 dark:divide-neutral-900 divide-y-2' : 'divide-none',
-    body: replyCount ? 'p-4 sm:p-6' : 'p-0 sm:p-0',
+    body: replyCount ? 'p-4 sm:p-4' : 'p-0 sm:p-0',
   }" variant="soft" class="my-4">
     <template #header>
       <div class="relative overflow-hidden touch-pan-y select-none active:cursor-grabbing"
@@ -51,7 +51,7 @@
               opacity: Math.min(Math.abs(offsets[0] || 0) / 60, 1),
               transform: `translateX(${60 - Math.abs(offsets[0] || 0)}px)`
             }" @click.stop="handleDelete(0)">
-            <UIcon v-if="!isDeleting" name="hugeicons:delete-01" class="size-[18px]" />
+            <UIcon v-if="!isDeleting" name="hugeicons:remove-circle-half-dot" class="size-[18px]" />
             <UIcon v-else name="svg-spinners:ring-resize" class="size-[18px]" />
           </button>
         </div>
