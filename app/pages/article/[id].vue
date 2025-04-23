@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div v-if="status === 'pending' && !content" class="fixed inset-0 flex justify-center items-center">
-      <UIcon name="svg-spinners:ring-resize" class="size-7 text-neutral-400 dark:text-orange-200" />
+      <UIcon name="svg-spinners:ring-resize" class="size-7 text-primary-500" />
     </div>
     <div v-else-if="error" class="flex items-center justify-center min-h-[50vh]">
       <UAlert color="error" variant="soft" icon="hugeicons:alert-02" :description="error?.message || '加载失败，请稍后重试'">

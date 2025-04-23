@@ -3,8 +3,8 @@
     <!-- 新内容提示 -->
     <div class="flex justify-center duration-500 ease-in-out transition-all"
       :class="newContentCount > 0 ? 'translate-y-2.5 opacity-100' : '-translate-y-8 opacity-0 -mb-8'">
-      <UButton color="primary" variant="solid" @click="handleLoadNewContent">
-        <UIcon name="hugeicons:sparkles" class="mr-1 size-5" />
+      <UButton block color="primary" variant="soft" @click="handleLoadNewContent">
+        <UIcon name="hugeicons:sparkles" class="mr-1 size-5 animate-pulse" />
         发现
         <SharedAnimateNumber :value="newContentCount" class="font-bold" />
         条新内容
@@ -12,7 +12,7 @@
     </div>
 
     <div v-if="isLoading && !contents?.length" class="fixed inset-0 flex justify-center items-center">
-      <UIcon name="svg-spinners:ring-resize" class="size-7 text-neutral-400 dark:text-orange-200" />
+      <UIcon name="svg-spinners:ring-resize" class="size-7 text-primary-500" />
     </div>
     <div v-else-if="error" class="flex items-center justify-center min-h-[50vh]">
       <UAlert color="error" variant="soft" icon="hugeicons:alert-02" :description="error?.message || '加载失败，请稍后重试'">
@@ -34,7 +34,8 @@
 
       <!-- 加载更多按钮 -->
       <div class="flex justify-center pb-4" v-if="hasMore && isNearBottom">
-        <UButton @click="loadMore" color="neutral" :disabled="isFetchingNextPage" :loading="isFetchingNextPage">
+        <UButton @click="loadMore" variant="soft" color="primary" :disabled="isFetchingNextPage"
+          :loading="isFetchingNextPage">
           加载更多
         </UButton>
       </div>

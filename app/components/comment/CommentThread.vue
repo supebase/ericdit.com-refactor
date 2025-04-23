@@ -24,7 +24,7 @@
         }" color="neutral" variant="ghost" size="lg" class="cursor-pointer"
           :class="showBackToTop ? 'w-auto opacity-100' : 'w-0 p-1 opacity-0 overflow-hidden'" @click="scrollToTop">
           <UIcon name="hugeicons:circle-arrow-up-02"
-            class="size-5 text-primary-500 dark:text-orange-200 transition-transform duration-500"
+            class="size-5 text-primary-500 transition-transform duration-500"
             :class="showBackToTop ? 'rotate-0' : 'rotate-180'" />
         </UButton>
       </UButtonGroup>
@@ -40,7 +40,7 @@
       </UAlert>
 
       <div v-else-if="isLoading && !comments" class="flex flex-col justify-center items-center space-y-3 py-8">
-        <UProgress animation="swing" color="neutral" size="sm" class="max-w-[80px]" />
+        <UProgress animation="swing" color="primary" size="sm" class="max-w-[80px]" />
         <div class="text-sm text-neutral-400 dark:text-neutral-600">正在加载评论</div>
       </div>
 
