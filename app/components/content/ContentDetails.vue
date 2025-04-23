@@ -25,7 +25,7 @@
         <MDC :value="content.body" class="prose dark:prose-invert mdc-prose" />
       </template>
       <template #fallback>
-        <div class="flex justify-center items-center text-neutral-500 space-x-2 h-42 animate-pulse">
+        <div class="flex justify-center items-center text-neutral-400 dark:text-neutral-700 space-x-2 h-42 animate-pulse">
           <UIcon name="hugeicons:ai-content-generator-01" class="size-6" />
           <div class="text-sm">正在渲染，请稍等。</div>
         </div>
@@ -34,12 +34,12 @@
 
     <div class="flex justify-between items-center select-none py-2">
       <div class="flex-1 flex justify-start">
-        <UIcon name="hugeicons:share-05" class="size-5 text-neutral-500 cursor-pointer"
+        <UIcon name="hugeicons:share-05" class="size-5 text-neutral-400 dark:text-neutral-600 cursor-pointer"
           @click="shareButton(content.title, getPreviewText(content.body))" />
       </div>
       <div class="flex-1 flex justify-center">
         <Donate>
-          <UIcon name="hugeicons:qr-code" class="size-5 text-neutral-500 cursor-pointer" />
+          <UIcon name="hugeicons:qr-code" class="size-5 text-neutral-400 dark:text-neutral-600 cursor-pointer" />
         </Donate>
       </div>
       <div class="flex-1 flex justify-end">

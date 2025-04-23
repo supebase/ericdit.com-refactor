@@ -25,7 +25,7 @@
                 <div class="text-neutral-500">
                   {{ useDateFormatter(reply.date_created) }}
                 </div>
-                <span class="text-neutral-400 dark:text-neutral-600">&bull;</span>
+                <span class="text-neutral-300 dark:text-neutral-700">&bull;</span>
                 <div class="text-neutral-500">
                   {{ userLocation }}
                 </div>

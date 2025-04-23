@@ -29,7 +29,7 @@
       <div v-if="contents?.length === 0"
         class="flex flex-col items-center justify-center space-y-4 min-h-[calc(100vh-14rem)] pt-16">
         <UIcon name="hugeicons:ai-content-generator-01" class="text-4xl text-neutral-300 dark:text-neutral-700" />
-        <p class="text-neutral-300 dark:text-neutral-700 text-sm font-medium">信息矩阵仍处待填充态</p>
+        <p class="text-neutral-400 dark:text-neutral-700 text-sm font-medium">信息矩阵仍处待填充态</p>
       </div>
 
       <!-- 加载更多按钮 -->
@@ -41,7 +41,7 @@
 
       <!-- 没有更多内容的提示 -->
       <div v-if="!hasMore && contents && contents.length > 0"
-        class="text-center text-sm text-neutral-300 dark:text-neutral-700 pb-4">
+        class="text-center text-sm text-neutral-400 dark:text-neutral-700 pb-4">
         已显示全部内容
       </div>
     </template>

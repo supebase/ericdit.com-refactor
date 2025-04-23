@@ -2,7 +2,7 @@
   <div class="select-none pb-10">
     <div class="fixed bottom-17 z-30 left-1/2 -translate-x-1/2">
       <UButtonGroup
-        class="shadow-lg rounded-2xl hover:shadow-xl ring-1 ring-neutral-200/70 dark:ring-neutral-800/70 transition-shadow duration-300 backdrop-blur-sm bg-white/90 dark:bg-neutral-950/90">
+        class="shadow-lg rounded-2xl hover:shadow-xl ring-1 ring-neutral-300/70 dark:ring-neutral-800/70 transition-shadow duration-300 backdrop-blur-sm bg-white/90 dark:bg-neutral-950/90">
         <UButton :ui="{
           base: 'rounded-[calc(var(--ui-radius)*2)] transition-transform duration-200 hover:bg-white dark:hover:bg-neutral-950',
         }" color="neutral" variant="ghost" size="lg">

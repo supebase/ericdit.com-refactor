@@ -1,6 +1,6 @@
 <template>
   <UModal v-model:open="isOpen" :ui="{ overlay: 'backdrop-blur-sm' }" title="Search" description="站内搜索">
-    <UIcon name="hugeicons:search-01" class="size-5 text-neutral-600 dark:text-neutral-400 cursor-pointer" />
+    <UIcon name="hugeicons:search-01" class="size-5 text-neutral-500 cursor-pointer" />
     <template #content>
       <UCommandPalette v-model:search-term="searchQuery" :loading="isLoading" :groups="groups"
         icon="hugeicons:search-01" :placeholder="'请输入至少 ' + MIN_SEARCH_LENGTH + ' 个字符'" class="h-[30vh]" close

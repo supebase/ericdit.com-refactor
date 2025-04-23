@@ -1,6 +1,6 @@
 <template>
   <UCard :ui="{
-    root: replyCount ? 'divide-neutral-100 dark:divide-neutral-900 divide-y-2' : 'divide-none',
+    root: replyCount ? 'divide-neutral-200 dark:divide-neutral-900 divide-y-2' : 'divide-none',
     body: replyCount ? 'p-4 sm:p-6' : 'p-0 sm:p-0',
   }" variant="soft" class="my-4">
     <template #header>
@@ -26,7 +26,7 @@
                   <div class="text-neutral-500">
                     {{ useDateFormatter(comment.date_created) }}
                   </div>
-                  <span class="text-neutral-400 dark:text-neutral-600">&bull;</span>
+                  <span class="text-neutral-300 dark:text-neutral-700">&bull;</span>
                   <div class="text-neutral-500">
                     {{ userLocation }}
                   </div>

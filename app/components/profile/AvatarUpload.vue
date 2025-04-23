@@ -2,7 +2,7 @@
   <div class="flex items-center justify-center relative cursor-pointer group" @click="openFileInput">
     <SharedAvatar :src="avatarUrl || undefined" :alt="!avatarUrl ? user?.first_name : undefined" size="xl" />
     <div
-      class="absolute -bottom-1 -right-1 bg-white dark:bg-neutral-900 size-5 rounded-full flex items-center justify-center">
+      class="absolute -bottom-1 -right-1 bg-neutral-200 dark:bg-neutral-900 size-5 rounded-full flex items-center justify-center">
       <UIcon :name="isLoading ? 'svg-spinners:ring-resize' : 'hugeicons:upload-circle-01'"
         class="size-4 text-neutral-500" />
     </div>

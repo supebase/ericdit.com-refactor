@@ -6,9 +6,18 @@
 @plugin "@tailwindcss/typography";
 
 :root {
+  --ui-bg: var(--color-neutral-200);
+  --ui-bg-elevated: var(--color-white);
+  --ui-border: var(--ui-color-neutral-300);
   --ui-radius: 0.5rem;
   --animation-duration: 0.3s;
   --animation-timing: ease;
+}
+
+.dark {
+  --ui-bg: var(--color-neutral-900);
+  --ui-bg-elevated: var(--ui-color-neutral-800);
+  --ui-border: var(--ui-color-neutral-800);
 }
 
 html {
@@ -144,8 +153,8 @@ body {
 .mdc-prose {
   @apply prose-img:rounded-lg 
          prose-pre:rounded-lg 
-         prose-pre:bg-neutral-100/80 
-         dark:prose-pre:bg-neutral-950/60 
+         prose-pre:bg-white/50 
+         dark:prose-pre:bg-neutral-950 
          prose-code:text-[0.8rem] 
          prose-code:leading-[1.3rem] 
          prose-a:text-primary-500 

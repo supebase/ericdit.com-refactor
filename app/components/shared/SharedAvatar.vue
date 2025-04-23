@@ -1,13 +1,13 @@
 <template>
   <div class="relative">
     <div v-if="avatarLoading && src"
-      class="absolute inset-0 ring-1 ring-neutral-100 dark:ring-neutral-800 flex items-center justify-center bg-neutral-100 dark:bg-neutral-800 rounded-full">
+      class="absolute inset-0 ring-1 ring-neutral-100 dark:ring-neutral-900 flex items-center justify-center bg-neutral-50 dark:bg-neutral-900 rounded-full">
       <UIcon :name="loadingIcon" :class="[`size-${iconSize}`, 'text-neutral-500 animate-pulse']" />
     </div>
 
     <template v-if="src">
       <NuxtImg provider="directus" :src="src" :alt="alt" :class="[sizeClass, 'rounded-full object-cover']"
-        @load="onImageLoad" v-bind="$attrs" class="ring-2 ring-neutral-200 dark:ring-neutral-800" />
+        @load="onImageLoad" v-bind="$attrs" />
     </template>
     <template v-else>
       <div :class="[

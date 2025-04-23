@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-white/90 dark:bg-neutral-950/90 border border-neutral-200/70 dark:border-neutral-800/70 rounded-xl p-1 transition-all duration-300"
+    class="bg-white/80 dark:bg-neutral-950/80 border border-neutral-200/70 dark:border-neutral-800/70 rounded-xl p-1 transition-all duration-300"
     :class="isAuthenticated ? 'mt-4 hover:shadow-md' : 'hidden'">
     <UTextarea ref="commentInput" v-model="content" color="neutral" variant="none" autoresize :rows="1" :maxrows="6"
       :padded="false" size="lg" class="text-neutral-300 w-full" :class="isAuthenticated ? '' : 'login'"
@@ -13,14 +13,14 @@
           :class="!validation.isValid ? 'translate-x-0 opacity-100' : '-translate-x-3 opacity-0'" />
       </div>
       <div class="flex items-center space-x-6">
-        <span class="text-xs nums tabular-nums select-none" :class="content.length >= COMMENT_MAX_LENGTH
+        <span class="text-[13px] nums tabular-nums select-none" :class="content.length >= COMMENT_MAX_LENGTH
           ? 'text-red-600'
           : 'text-neutral-400 dark:text-neutral-600'
           ">
           {{ content.length }} / {{ COMMENT_MAX_LENGTH }}
         </span>
         <UButton @click="submit" color="neutral" size="lg" variant="ghost"
-          class="hover:!bg-transparent cursor-pointer px-0" :loading="isSubmitting" :icon="submitIcon"
+          class="hover:!bg-transparent cursor-pointer px-0 text-neutral-500" :loading="isSubmitting" :icon="submitIcon"
           :disabled="!canSubmit" />
       </div>
     </div>

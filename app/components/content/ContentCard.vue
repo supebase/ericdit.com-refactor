@@ -42,18 +42,17 @@
           <!-- <SharedAvatar :src="userAvatarUrl || undefined" size="2xs" :alt="content.user_created.first_name"
             class="mr-0.5" /> -->
           <span class="text-[15px] text-neutral-500 font-medium">{{ content.user_created.first_name }}</span>
-          <span class="mx-1 text-neutral-400 dark:text-neutral-600">&bull;</span>
-          <span class="text-sm text-neutral-500">{{ useDateFormatter(content.date_created) }}</span>
+          <span class="mx-1 text-neutral-300 dark:text-neutral-700">&bull;</span>
+          <span class="text-sm text-neutral-400 dark:text-neutral-600">{{ useDateFormatter(content.date_created) }}</span>
         </div>
-        <SharedBookmarkButton :content-id="content.id" :icon-size="19"
-          class="text-neutral-300 hover:text-primary-500 transition" />
+        <SharedBookmarkButton :content-id="content.id" :icon-size="19" />
       </div>
       <NuxtLink :to="{ name: 'article-id', params: { id: content.id } }" class="block hover:no-underline">
         <div class="text-neutral-500 dark:text-neutral-400 line-clamp-3 mb-4">
           {{ cleanBody }}
         </div>
       </NuxtLink>
-      <div class="flex justify-between items-center text-sm text-neutral-500">
+      <div class="flex justify-between items-center text-sm text-neutral-400 dark:text-neutral-600">
         <div class="flex gap-10">
           <div class="flex items-center gap-1">
             <SharedLikeButton :content-id="content.id" :icon-size="21" likeType="clap" />
