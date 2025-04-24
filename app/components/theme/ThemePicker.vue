@@ -29,7 +29,7 @@ const primary = computed({
 </script>
 
 <template>
-    <UPopover arrow :ui="{ content: 'w-72 px-6 py-4 flex flex-col gap-4 bg-white dark:bg-neutral-950' }">
+    <UPopover arrow :ui="{ content: 'w-72 px-6 py-4 flex flex-col gap-4 bg-white dark:bg-neutral-950', arrow: 'fill-white dark:fill-neutral-950' }">
         <template #default>
             <UIcon name="hugeicons:paint-brush-04" class="size-5 text-neutral-500 cursor-pointer" />
         </template>

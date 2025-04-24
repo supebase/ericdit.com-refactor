@@ -30,6 +30,7 @@ export default defineNuxtConfig({
       siteUrl: import.meta.env.SITE_URL,
       directusApiUrl: import.meta.env.DIRECTUS_API_URL,
       directusDefaultPageSize: import.meta.env.DIRECTUS_DEFAULT_PAGE_SIZE,
+      directusWebSocketUrl: import.meta.env.DIRECTUS_WEBSOCKET_URL,
       ipDataApiUrl: import.meta.env.PUBLIC_IPDATA_API_URL,
     },
   },

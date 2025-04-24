@@ -22,7 +22,7 @@
 
     <Suspense>
       <template #default>
-        <MDC :value="content.body" class="prose dark:prose-invert mdc-prose" />
+        <MDCCached :value="content.body" class="prose dark:prose-invert mdc-prose" />
       </template>
       <template #fallback>
         <div class="flex justify-center items-center text-neutral-400 dark:text-neutral-700 space-x-2 h-42 animate-pulse">
@@ -53,6 +53,7 @@
 import { isClient } from "@vueuse/shared";
 import type { Contents } from "~/types";
 import Donate from '~/components/shared/Donate.vue';
+import { MDCCached } from "#components";
 
 const { incrementContentViews } = useContents();
 const toast = useToast();
