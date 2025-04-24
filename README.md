@@ -40,6 +40,12 @@ npm run build
 pm2 start ecosystem.config.js
 ```
 
+### 如果变更版本号和 Hash 值，需要执行以下命令：
+### If you changed version number and hash value, you need to run the following command:
+```bash
+npm run bump && npm run build
+```
+
 ---
 
 ## 📝 贡献 / Contributing

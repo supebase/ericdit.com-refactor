@@ -4,14 +4,12 @@ import type { RouterConfig } from "@nuxt/schema";
 export const safeBack = () => {
   const route = useRoute();
 
-  // 使用 try-catch 包裹本地存储操作，避免隐私模式下的异常
   try {
-    const history = JSON.parse(safeGetItem("routeHistory") || "[]");
+    let history = JSON.parse(safeGetItem("routeHistory") || "[]");
     const originalPath = safeGetItem("originalPath");
 
     // 如果是从登录/注册页面返回
     if (route.path.includes("/login") || route.path.includes("/register")) {
-      // 如果有登录前的页面记录，优先返回该页面
       if (originalPath && !originalPath.includes("/login") && !originalPath.includes("/register")) {
         safeRemoveItem("originalPath");
         return navigateTo(originalPath);
@@ -19,27 +17,28 @@ export const safeBack = () => {
       return navigateTo("/");
     }
 
-    // 防止历史记录中出现重复项
-    const uniqueHistory = [...new Set(history)];
-
-    // 移除当前路径
-    if (uniqueHistory.length > 0 && uniqueHistory[uniqueHistory.length - 1] === route.path) {
-      uniqueHistory.pop();
+    // 移除当前路径（如果在最后一项）
+    if (history.length > 0 && history[history.length - 1] === route.path) {
+      history.pop();
     }
 
     // 获取上一个有效路径
-    let previousPath = uniqueHistory.length > 0 ? uniqueHistory.pop() : "/";
-
-    // 避免返回到登录/注册页面
-    if (
-      typeof previousPath === "string" &&
-      (previousPath.includes("/login") || previousPath.includes("/register"))
-    ) {
-      previousPath = "/";
+    let previousPath = "/";
+    while (history.length > 0) {
+      const candidate = history.pop();
+      if (
+        typeof candidate === "string" &&
+        !candidate.includes("/login") &&
+        !candidate.includes("/register") &&
+        candidate !== route.path
+      ) {
+        previousPath = candidate;
+        break;
+      }
     }
 
-    safeSetItem("routeHistory", JSON.stringify(uniqueHistory));
-    return navigateTo(previousPath as string);
+    safeSetItem("routeHistory", JSON.stringify(history));
+    return navigateTo(previousPath);
   } catch (error) {
     console.warn("无法访问本地存储，可能处于隐私模式:", error);
     return navigateTo("/");

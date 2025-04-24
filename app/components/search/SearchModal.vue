@@ -6,10 +6,10 @@
         icon="hugeicons:search-01" :placeholder="'请输入至少 ' + MIN_SEARCH_LENGTH + ' 个字符'" class="h-[30vh]" close
         @update:open="isOpen = $event" @update:model-value="onSelect">
         <template #item="{ item }">
-          <div class="flex items-center justify-between mr-2 rounded-lg w-full">
+          <div class="flex items-center justify-between mr-2 rounded-sm w-full">
             <div class="flex items-center gap-3 flex-1 min-w-0">
               <div
-                class="w-8 h-8 shrink-0 rounded-lg overflow-hidden bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center">
+                class="w-8 h-8 shrink-0 rounded-sm overflow-hidden bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center">
                 <NuxtImg provider="directus" v-if="item.avatar" :src="item.avatar.src" :alt="item.label"
                   class="w-full h-full object-cover" />
                 <UIcon v-else name="hugeicons:file-01" class="size-5 text-neutral-400 dark:text-neutral-600" />

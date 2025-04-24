@@ -47,6 +47,15 @@ export default defineAppConfig({
         },
       ],
     },
+    modal: {
+      variants: {
+        fullscreen: {
+          false: {
+            content: "rounded-sm", // 模态框内内容圆角大小
+          }
+        },
+      },
+    },
     popover: {
       slots: {
         content: "rounded-[calc(var(--ui-radius)*1)]", // 弹出框内容圆角大小

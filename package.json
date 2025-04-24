@@ -1,10 +1,10 @@
 {
   "name": "eric-app",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "private": true,
   "type": "module",
   "scripts": {
-    "prebuild": "node bump-version.js",
+    "bump": "node bump-version.js",
     "build": "nuxt build",
     "dev": "nuxt dev --host=0.0.0.0",
     "generate": "nuxt generate",
@@ -14,7 +14,7 @@
   "dependencies": {
     "@directus/sdk": "^19.1.0",
     "@nuxt/image": "^1.10.0",
-    "@nuxt/ui": "^3.0.2",
+    "@nuxt/ui": "^3.1.0",
     "@vueuse/nuxt": "^13.1.0",
     "nuxt-emoji-picker": "^1.1.0",
     "vue": "^3.5.13"

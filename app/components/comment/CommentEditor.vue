@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-white/80 dark:bg-neutral-950/80 border border-neutral-200/70 dark:border-neutral-800/70 rounded-lg p-1 transition-all duration-300"
+    class="bg-white/80 dark:bg-neutral-950/80 border border-neutral-200/70 dark:border-neutral-800/70 rounded-sm p-1 transition-all duration-300"
     :class="isAuthenticated ? 'mt-4' : 'hidden'">
     <UTextarea ref="commentInput" v-model="content" color="neutral" variant="none" autoresize :rows="1" :maxrows="6"
       :padded="false" size="lg" class="text-neutral-300 w-full" :class="isAuthenticated ? '' : 'login'"

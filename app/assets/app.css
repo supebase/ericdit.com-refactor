@@ -151,8 +151,8 @@ body {
 }
 
 .mdc-prose {
-  @apply prose-img:rounded-lg 
-         prose-pre:rounded-lg 
+  @apply prose-img:rounded-sm 
+         prose-pre:rounded-sm 
          prose-pre:bg-white/50 
          dark:prose-pre:bg-neutral-950 
          prose-code:text-[0.8rem] 
@@ -167,10 +167,6 @@ body {
          prose-a:underline-offset-4
          prose-a:decoration-wavy
          prose-a:decoration-[1px];
-}
-
-textarea {
-  resize: none;
 }
 
 hr {

@@ -2,7 +2,7 @@
   <UCard :ui="{ body: '!p-0 border-none', footer: '!px-4' }" variant="soft" class="select-none">
     <NuxtLink :to="{ name: 'article-id', params: { id: content.id } }" class="block hover:no-underline">
       <!-- 单图显示 -->
-      <div v-if="displayType === 'single'" class="relative overflow-hidden rounded-t-lg">
+      <div v-if="displayType === 'single'" class="relative overflow-hidden rounded-t-sm">
         <NuxtImg provider="directus" :src="content.images[0].directus_files_id" loading="eager" fetchpriority="high"
           preload placeholder format="webp" quality="80" sizes="(max-width: 768px) 100vw, 768px"
           class="aspect-[16/7] object-cover w-full transition-transform duration-500" />
@@ -14,12 +14,12 @@
         </div>
       </div>
       <!-- 图库轮播显示 -->
-      <div v-else class="relative overflow-hidden rounded-t-lg">
-        <UCarousel v-slot="{ item, index }: { item: { directus_files_id: string }, index: number }" autoplay class-names
-          wheel-gestures :items="content.images">
+      <div v-else class="relative overflow-hidden rounded-t-sm">
+        <UCarousel v-slot="{ item, index }: { item: any, index: number }" autoplay class-names wheel-gestures
+          :items="carouselImages">
           <div class="relative">
             <NuxtImg provider="directus" :src="item.directus_files_id" loading="lazy" placeholder
-              class="aspect-[16/7] object-cover w-full rounded-t-lg transition-transform duration-500" />
+              class="aspect-[16/7] object-cover w-full rounded-t-sm transition-transform duration-500" />
             <!-- 当前图片序号/总数 -->
             <UBadge color="neutral" size="sm"
               class="absolute top-3 right-3 text-white nums tabular-nums rounded-full bg-neutral-900/40 backdrop-blur-sm">
@@ -45,7 +45,7 @@
             content.user_created.first_name }}</span>
           <span class="mx-1 text-neutral-300 dark:text-neutral-700">&bull;</span>
           <span class="text-sm text-neutral-400 dark:text-neutral-600">{{ useDateFormatter(content.date_created)
-            }}</span>
+          }}</span>
         </div>
         <SharedBookmarkButton :content-id="content.id" :icon-size="19" />
       </div>
@@ -105,6 +105,13 @@ const displayType = computed(() => {
   // 默认显示文本
   return "text";
 });
+
+const carouselImages = computed(() =>
+  (props.content.images ?? []).filter(
+    (img): img is { directus_files_id: string } =>
+      !!img && typeof img.directus_files_id === "string"
+  )
+);
 
 // 预加载图片
 onMounted(() => {
