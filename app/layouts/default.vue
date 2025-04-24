@@ -13,20 +13,37 @@
 </template>
 
 <script setup>
-const scrollContainer = ref(null);
-const isNearBottom = ref(false);
-const showBackToTop = ref(false);
+const scrollContainer = ref(null)
+const isNearBottom = ref(false)
+const showBackToTop = ref(false)
 
-// 使用防抖优化滚动事件
-const handleScroll = () => {
-  if (!scrollContainer.value) return;
+const threshold = 100
 
-  const { scrollTop, scrollHeight, clientHeight } = scrollContainer.value;
-  const threshold = 100;
+let y = ref(0)
+let scrollHeight = ref(0)
+let clientHeight = ref(0)
 
-  isNearBottom.value = scrollHeight - (scrollTop + clientHeight) < threshold;
-  showBackToTop.value = scrollTop > 150;
-};
+onMounted(() => {
+  // 绑定 useScroll 到自定义容器
+  const { y: scrollY } = useScroll(scrollContainer, {
+    throttle: 0,
+    onScroll(e) {
+      // 兼容性处理
+      const el = scrollContainer.value
+      if (el) {
+        scrollHeight.value = el.scrollHeight
+        clientHeight.value = el.clientHeight
+      }
+    }
+  })
+  y = scrollY
+
+  // 监听 y 变化
+  watch([y, scrollHeight, clientHeight], () => {
+    isNearBottom.value = scrollHeight.value - (y.value + clientHeight.value) < threshold
+    showBackToTop.value = y.value > 150
+  }, { immediate: true })
+})
 
 const scrollToTop = () => {
   scrollContainer.value?.scrollTo({
@@ -35,26 +52,11 @@ const scrollToTop = () => {
   })
 }
 
-// 添加事件监听
-onMounted(() => {
-  const container = scrollContainer.value;
-  if (container) {
-    container.addEventListener('scroll', handleScroll, { passive: true });
-  }
-});
-
-// 移除事件监听
-onBeforeUnmount(() => {
-  const container = scrollContainer.value;
-  if (container) {
-    container.removeEventListener('scroll', handleScroll);
-  }
-});
-
-// 提供滚动状态
 provide('scrollState', {
   isNearBottom,
   showBackToTop,
-  scrollToTop
-});
+  scrollToTop,
+  scrollHeight,
+  clientHeight
+})
 </script>

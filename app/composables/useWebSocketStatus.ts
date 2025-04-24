@@ -3,38 +3,45 @@ const {
     public: { directusWebSocketUrl },
 } = useRuntimeConfig();
 
+const missingConfig = !directusWebSocketUrl || typeof directusWebSocketUrl !== 'string' || !directusWebSocketUrl.trim();
+
 // 定义 WebSocket 连接状态的响应式变量，初始为 'CLOSED'
 const status = ref<'OPEN' | 'CONNECTING' | 'CLOSED'>('CLOSED')
 
 // 使用 useWebSocket 组合式管理 WebSocket 连接
 // 配置连接、断开、错误时的回调，以及自动重连和心跳机制
-const { status: wsStatus, open } = useWebSocket(directusWebSocketUrl as string, {
-    // 连接成功时设置状态为 OPEN
-    onConnected: () => { status.value = 'OPEN' },
-    // 断开连接或出错时设置状态为 CLOSED
-    onDisconnected: () => { status.value = 'CLOSED' },
-    onError: () => { status.value = 'CLOSED' },
-
-    // 自动重连配置：最多重试3次，每次间隔3秒
-    autoReconnect: {
-        retries: 3,
-        delay: 3000,
-    },
-    // 心跳机制配置：每30秒发送一次 'ping'，5秒内未收到 'pong' 判为超时
-    heartbeat: {
-        message: 'ping',
-        interval: 30000,
-        pongTimeout: 5000,
-    },
-})
-
-// 监听页面可见性变化，页面重新可见且连接已关闭时自动重连
-const { isVisible } = useVisibilityChange()
-watch([isVisible, wsStatus], ([visible, ws]) => {
-    if (visible && ws === 'CLOSED') {
-        open()
-    }
-})
+// 只有配置存在时才初始化 WebSocket
+let wsStatus: any = ref('CLOSED');
+let open = () => { };
+if (!missingConfig) {
+    const ws = useWebSocket(directusWebSocketUrl as string, {
+        // 连接成功时设置状态为 OPEN
+        onConnected: () => { status.value = 'OPEN' },
+        // 断开连接或出错时设置状态为 CLOSED
+        onDisconnected: () => { status.value = 'CLOSED' },
+        onError: () => { status.value = 'CLOSED' },
+        // 自动重连配置：最多重试3次，每次间隔3秒
+        autoReconnect: {
+            retries: 3,
+            delay: 3000,
+        },
+        // 心跳机制配置：每30秒发送一次 'ping'，5秒内未收到 'pong' 判为超时
+        heartbeat: {
+            message: 'ping',
+            interval: 30000,
+            pongTimeout: 5000,
+        },
+    });
+    wsStatus = ws.status;
+    open = ws.open;
+    // 监听页面可见性变化，页面重新可见且连接已关闭时自动重连
+    const { isVisible } = useVisibilityChange()
+    watch([isVisible, wsStatus], ([visible, ws]) => {
+        if (visible && ws === 'CLOSED') {
+            open()
+        }
+    })
+}
 
 /**
  * useWebSocketStatus
@@ -46,5 +53,6 @@ export function useWebSocketStatus(): object {
     const connectionStatus = computed(() => wsStatus.value)
     return {
         status: connectionStatus,
+        missingConfig,
     }
 }

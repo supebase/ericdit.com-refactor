@@ -10,11 +10,20 @@
 
       <UPopover arrow :ui="{ content: 'bg-white dark:bg-neutral-950', arrow: 'fill-white dark:fill-neutral-950' }">
         <UIcon :name="wsStatus === 'OPEN' ? 'hugeicons:gps-signal-01' : 'hugeicons:gps-signal-02'"
-          class="size-4 cursor-pointer" :class="wsStatus === 'OPEN' ? 'text-green-500' : 'text-red-500'" />
+          class="size-4 cursor-pointer"
+          :class="missingConfig ? 'text-red-500' : (wsStatus === 'OPEN' ? 'text-green-500' : 'text-neutral-500')" />
         <template #content>
           <div class="py-2 px-4">
             <div class="text-neutral-500 text-xs text-center flex items-center justify-center">
-              WebSocket {{ wsStatus === 'OPEN' ? '已连接' : '连接已断开' }}
+              <template v-if="missingConfig">
+                <div>
+                  <p>未配置 WebSocket 地址</p>
+                  <p>请检查环境变量 DIRECTUS_WEBSOCKET_URL</p>
+                </div>
+              </template>
+              <template v-else>
+                WebSocket {{ wsStatus === 'OPEN' ? '已连接' : '连接已断开' }}
+              </template>
             </div>
           </div>
         </template>
@@ -38,7 +47,7 @@ const { data: settings } = useAsyncData('settings', getSettings);
 const version = ref("0.0.0");
 const buildTime = ref();
 const { totalUsers, fetchTotalUsers } = useUserStats();
-const { status: wsStatus } = useWebSocketStatus();
+const { status: wsStatus, missingConfig } = useWebSocketStatus();
 
 onMounted(async () => {
   try {

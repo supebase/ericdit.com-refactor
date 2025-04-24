@@ -33,7 +33,7 @@
       </div>
 
       <!-- 加载更多按钮 -->
-      <div class="flex justify-center pb-4" v-if="hasMore && isNearBottom">
+      <div class="flex justify-center pb-4" v-if="hasMore && isNearBottom && scrollable">
         <UButton @click="loadMore" variant="soft" color="primary" :disabled="isFetchingNextPage"
           :loading="isFetchingNextPage">
           加载更多
@@ -42,10 +42,17 @@
 
       <!-- 没有更多内容的提示 -->
       <div v-if="!hasMore && contents && contents.length > 0"
-        class="text-center text-sm text-neutral-400 dark:text-neutral-700 pb-4">
+        class="text-center text-sm text-neutral-400 dark:text-neutral-700 pb-5">
         已显示全部内容
       </div>
     </template>
+
+    <!-- 悬浮返回顶部按钮 -->
+    <UButton
+      class="fixed right-12 bottom-[69px] z-20 rounded-full shadow-lg -rotate-45 prose-invert transition duration-500 ease-in-out cursor-pointer"
+      :class="showBackToTop ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0'" color="primary" variant="solid"
+      icon="hugeicons:rocket-01" @click="scrollToTop" aria-label="返回顶部">
+    </UButton>
   </div>
 </template>
 
@@ -75,8 +82,27 @@ const limit = Number(directusDefaultPageSize);
 const hasMore = ref(true);
 const isFetchingNextPage = ref(false);
 const el = ref<HTMLElement | null>(null);
-// 从布局接收滚动状态
-const { isNearBottom } = inject('scrollState', { isNearBottom: ref(false) });
+
+const scrollState = inject('scrollState', {
+  isNearBottom: ref(false),
+  showBackToTop: ref(false),
+  scrollToTop: () => { },
+  scrollHeight: ref(0),
+  clientHeight: ref(0)
+});
+
+const { isNearBottom, showBackToTop, scrollToTop, scrollHeight, clientHeight } = scrollState as {
+  isNearBottom: Ref<boolean>,
+  showBackToTop: Ref<boolean>,
+  scrollToTop: () => void,
+  scrollHeight: Ref<number>,
+  clientHeight: Ref<number>
+};
+
+const scrollable = computed(() => {
+  // 只有内容高度大于可视高度时才允许滚动
+  return (scrollHeight?.value || 0) > (clientHeight?.value || 0);
+});
 
 const {
   data: contents,
