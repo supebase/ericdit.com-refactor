@@ -1,6 +1,6 @@
 <template>
   <UCard :ui="{ body: '!p-0 border-none', footer: '!px-4' }" variant="soft" class="select-none">
-    <NuxtLink :to="{ name: 'article-id', params: { id: content.id } }" class="block hover:no-underline">
+    <NuxtLink :to="{ name: 'article-id', params: { id: content.id } }">
       <!-- 单图显示 -->
       <div v-if="displayType === 'single'" class="relative overflow-hidden rounded-t-sm">
         <NuxtImg provider="directus" :src="content.images[0].directus_files_id" loading="eager" fetchpriority="high"

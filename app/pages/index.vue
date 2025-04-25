@@ -11,8 +11,8 @@
       </UButton>
     </div>
 
-    <div v-if="isLoading && !contents?.length" class="fixed inset-0 flex justify-center items-center">
-      <UIcon name="svg-spinners:ring-resize" class="size-7 text-primary-500" />
+    <div v-if="isLoading && !contents?.length">
+      <ContentSkeleton />
     </div>
     <div v-else-if="error" class="flex items-center justify-center min-h-[50vh]">
       <UAlert color="error" variant="soft" icon="hugeicons:alert-02" :description="error?.message || '加载失败，请稍后重试'">
@@ -46,13 +46,6 @@
         已显示全部内容
       </div>
     </template>
-
-    <!-- 悬浮返回顶部按钮 -->
-    <UButton
-      class="fixed right-12 bottom-[69px] z-20 rounded-full shadow-lg -rotate-45 prose-invert transition duration-500 ease-in-out cursor-pointer"
-      :class="showBackToTop ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0'" color="primary" variant="solid"
-      icon="hugeicons:rocket-01" @click="scrollToTop" aria-label="返回顶部">
-    </UButton>
   </div>
 </template>
 
@@ -83,21 +76,11 @@ const hasMore = ref(true);
 const isFetchingNextPage = ref(false);
 const el = ref<HTMLElement | null>(null);
 
-const scrollState = inject('scrollState', {
+const { isNearBottom, scrollHeight, clientHeight } = inject('scrollState', {
   isNearBottom: ref(false),
-  showBackToTop: ref(false),
-  scrollToTop: () => { },
   scrollHeight: ref(0),
   clientHeight: ref(0)
 });
-
-const { isNearBottom, showBackToTop, scrollToTop, scrollHeight, clientHeight } = scrollState as {
-  isNearBottom: Ref<boolean>,
-  showBackToTop: Ref<boolean>,
-  scrollToTop: () => void,
-  scrollHeight: Ref<number>,
-  clientHeight: Ref<number>
-};
 
 const scrollable = computed(() => {
   // 只有内容高度大于可视高度时才允许滚动
