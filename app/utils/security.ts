@@ -5,6 +5,8 @@
  * @returns 转义后的安全字符串
  */
 export const escapeHtml = (text: string): string => {
+  // 类型和边界检查：只处理字符串类型
+  if (typeof text !== "string" || !text) return "";
   return text
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")

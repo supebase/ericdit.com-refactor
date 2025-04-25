@@ -1,4 +1,4 @@
-import type { Comments } from "~/types";
+import type { CommentItem, CommentQueryOptions } from "~/types";
 
 /**
  * 评论管理组合式函数
@@ -24,11 +24,11 @@ export const useComments = () => {
   const getCommentsList = async (
     type: "content" | "reply",
     id: string,
-    options?: Comments.QueryOptions
-  ): Promise<Comments.Item[]> => {
+    options?: CommentQueryOptions
+  ): Promise<CommentItem[]> => {
     try {
       const filterKey = type === "content" ? "content_id" : "parent_comment_id";
-      const response = await $directus.request<Comments.Item[]>(
+      const response = await $directus.request<CommentItem[]>(
         $content.readItems("comments", {
           ...options,
           filter: {
@@ -51,11 +51,9 @@ export const useComments = () => {
    * @returns Promise<Comments.Item> 创建成功的评论
    * @throws Error 当 API 请求失败时抛出错误
    */
-  const createComment = async (data: Partial<Comments.Item>): Promise<Comments.Item> => {
+  const createComment = async (data: Partial<CommentItem>): Promise<CommentItem> => {
     try {
-      const response = await $directus.request<Comments.Item>(
-        $content.createItem("comments", data)
-      );
+      const response = await $directus.request<CommentItem>($content.createItem("comments", data));
       return response;
     } catch (error: any) {
       throw new Error(error.errors?.[0]?.message || "创建评论失败");
@@ -63,14 +61,14 @@ export const useComments = () => {
   };
 
   /**
-    * 删除评论或回复（会递归删除所有子回复）
-    * @param commentId - 评论ID
-    * @returns Promise<void>
-    */
+   * 删除评论或回复（会递归删除所有子回复）
+   * @param commentId - 评论ID
+   * @returns Promise<void>
+   */
   const deleteComment = async (commentId: string): Promise<void> => {
     try {
       // 先查找所有子回复
-      const replies = await $directus.request<Comments.Item[]>(
+      const replies = await $directus.request<CommentItem[]>(
         $content.readItems("comments", {
           filter: {
             parent_comment_id: { _eq: commentId },
@@ -83,9 +81,7 @@ export const useComments = () => {
         await deleteComment(reply.id);
       }
       // 删除主评论
-      await $directus.request(
-        $content.deleteItem("comments", commentId)
-      );
+      await $directus.request($content.deleteItem("comments", commentId));
     } catch (error: any) {
       throw new Error(error.errors?.[0]?.message || "删除评论失败");
     }
@@ -133,7 +129,7 @@ export const useComments = () => {
             callback(item);
           }
         } catch (error) {
-          console.error('Error in comment subscription:', error);
+          console.error("Error in comment subscription:", error);
         }
       })();
 
@@ -152,7 +148,7 @@ export const useComments = () => {
             }
           }
         } catch (error) {
-          console.error('Error in user subscription:', error);
+          console.error("Error in user subscription:", error);
         }
       })();
 

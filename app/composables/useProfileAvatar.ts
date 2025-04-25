@@ -1,4 +1,4 @@
-import type { User, ProfileAvatarReturn } from "~/types";
+import type { UserProfile, ProfileAvatarReturn } from "~/types";
 
 /**
  * 用户头像管理组合式函数
@@ -61,7 +61,7 @@ export const useProfileAvatar = (): ProfileAvatarReturn => {
       const uploadResponse = await $authClient.request($file.uploadFiles(formData));
       if (uploadResponse && uploadResponse.id) {
         // 更新用户信息中的头像ID
-        const updatedUser = await $authClient.request<User.Profile>(
+        const updatedUser = await $authClient.request<UserProfile>(
           $user.updateMe({ avatar: uploadResponse.id })
         );
         if (user.value) {

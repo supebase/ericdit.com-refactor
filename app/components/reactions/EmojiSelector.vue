@@ -7,8 +7,9 @@
 
     <template #content>
       <div class="p-2">
-        <NuxtEmojiPicker native hide-search hide-group-icons hide-group-names disable-sticky-group-names
-          disable-skin-tones :theme="theme" @select="handleEmojiSelect" :disabled-groups="disabledGroups" />
+        <NuxtEmojiPicker native hide-search hide-group-icons hide-group-names
+          disable-sticky-group-names disable-skin-tones :theme="theme" @select="handleEmojiSelect"
+          :disabled-groups="disabledGroups" />
       </div>
     </template>
   </UPopover>

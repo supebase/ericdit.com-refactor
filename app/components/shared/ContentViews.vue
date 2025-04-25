@@ -1,6 +1,7 @@
 <template>
     <div class="flex justify-end items-center space-x-1.5">
-        <UIcon name="hugeicons:tinder" :size="iconSize" class="text-neutral-400 dark:text-neutral-500" />
+        <UIcon name="hugeicons:tinder" :size="iconSize"
+            class="text-neutral-400 dark:text-neutral-500" />
         <span class="text-neutral-400 dark:text-neutral-500 flex items-center">
             <template v-if="viewsCount < 1000">
                 <SharedAnimateNumber :value="viewsCount" />

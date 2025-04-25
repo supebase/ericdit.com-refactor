@@ -6,8 +6,8 @@
     </div>
 
     <template v-if="src">
-      <NuxtImg provider="directus" :src="src" :alt="alt" :class="[sizeClass, 'rounded-full object-cover']"
-        @load="onImageLoad" v-bind="$attrs" />
+      <NuxtImg provider="directus" :src="src" :alt="alt"
+        :class="[sizeClass, 'rounded-full object-cover']" @load="onImageLoad" v-bind="$attrs" />
     </template>
     <template v-else>
       <div :class="[

@@ -1,12 +1,13 @@
 <template>
   <div class="flex justify-end items-center space-x-2">
     <UIcon :name="!allowComments
-        ? 'hugeicons:comment-block-02'
-        : commentsCount > 0
-          ? 'hugeicons:comment-01'
-          : 'hugeicons:comment-02'
+      ? 'hugeicons:comment-block-02'
+      : commentsCount > 0
+        ? 'hugeicons:comment-01'
+        : 'hugeicons:comment-02'
       " :size="iconSize" class="text-neutral-400 dark:text-neutral-500" />
-    <span class="text-base text-neutral-400 dark:text-neutral-500" :class="{ 'flex items-center': !allowComments }">
+    <span class="text-base text-neutral-400 dark:text-neutral-500"
+      :class="{ 'flex items-center': !allowComments }">
       <template v-if="!allowComments">
         <span class="text-base tabular-nums">0</span>
       </template>

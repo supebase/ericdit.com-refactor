@@ -5,18 +5,20 @@
   }" variant="soft" class="my-4">
     <template #header>
       <div class="relative overflow-hidden touch-pan-y select-none active:cursor-grabbing"
-        :class="{ 'cursor-grab': canDelete }" @touchstart="handleDragStart($event, 0)" @touchmove.passive="false"
-        @touchmove="handleDragMove($event, 0)" @touchend="handleDragEnd(0)" @touchcancel="handleDragEnd(0)"
-        @mousedown.prevent="handleDragStart($event, 0)" @mousemove.prevent="handleDragMove($event, 0)"
-        @mouseup="handleDragEnd(0)" @mouseleave="handleDragEnd(0)">
+        :class="{ 'cursor-grab': canDelete }" @touchstart="handleDragStart($event, 0)"
+        @touchmove.passive="false" @touchmove="handleDragMove($event, 0)"
+        @touchend="handleDragEnd(0)" @touchcancel="handleDragEnd(0)"
+        @mousedown.prevent="handleDragStart($event, 0)"
+        @mousemove.prevent="handleDragMove($event, 0)" @mouseup="handleDragEnd(0)"
+        @mouseleave="handleDragEnd(0)">
         <div class="relative transform transition-transform duration-200 ease-out"
           :style="{ transform: `translateX(${offsets[0] || 0}px)` }">
           <div class="flex items-center">
             <div class="mr-3">
               <UChip :show="userStatus" inset size="sm" position="bottom-right" color="success">
                 <SharedAvatar :src="userAvatarUrl || undefined"
-                  :alt="!comment.user_created.avatar ? comment.user_created.first_name : undefined" size="xs"
-                  class="uppercase" />
+                  :alt="!comment.user_created.avatar ? comment.user_created.first_name : undefined"
+                  size="xs" class="uppercase" />
               </UChip>
             </div>
             <div class="flex-1 mb-1">
@@ -39,7 +41,8 @@
             {{ safeComment }}
           </div>
           <div class="mt-1" :class="isReplying ? 'hidden' : ''">
-            <button @click="handleReply" class="text-[13px] text-neutral-500 tabular-nums cursor-pointer">
+            <button @click="handleReply"
+              class="text-[13px] text-neutral-500 tabular-nums cursor-pointer">
               {{ replyCount > 0 ? `${replyCount} 条回复` : "回复" }}
             </button>
           </div>
@@ -61,8 +64,8 @@
         : '-translate-y-3 opacity-0 max-h-0 overflow-hidden'
         ">
         <div>
-          <CommentEditor :placeholder="`回复：${comment.user_created.first_name}`" :is-submitting="isSubmitting"
-            :clear-input="clearInput" @submit="handleSubmit" />
+          <CommentEditor :placeholder="`回复：${comment.user_created.first_name}`"
+            :is-submitting="isSubmitting" :clear-input="clearInput" @submit="handleSubmit" />
           <div class=" absolute -top-2 -right-1 bg-white dark:bg-neutral-950 h-5 rounded-full">
             <UIcon v-if="isReplying" @click="cancelReply" name="hugeicons:cancel-circle"
               class="size-5 text-neutral-500 cursor-pointer" />
@@ -77,14 +80,14 @@
 </template>
 
 <script setup lang="ts">
-import type { Comments } from "~/types";
+import type { CommentItem } from "~/types";
 
 const { guardAction } = useAuthGuard();
 const { user } = useAuth();
 const { deleteComment } = useComments();
 
 const props = defineProps<{
-  comment: Comments.Item;
+  comment: CommentItem;
   isReplying: boolean;
   isSubmitting?: boolean;
   clearInput?: boolean;

@@ -1,6 +1,7 @@
 <template>
   <div class="flex items-center tabular-nums">
-    <div v-for="(digit, index) in displayDigits" :key="index" :class="[digit === ',' ? 'comma' : 'number-column']">
+    <div v-for="(digit, index) in displayDigits" :key="index"
+      :class="[digit === ',' ? 'comma' : 'number-column']">
       <template v-if="digit === ','"> , </template>
       <template v-else>
         <div class="number-scroll" :style="{ transform: `translateY(${digit * -10}%)` }">

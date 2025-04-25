@@ -1,4 +1,4 @@
-import type { Contents } from "~/types";
+import type { ContentItem, ContentQueryOptions } from "~/types";
 
 /**
  * 内容管理组合式函数
@@ -18,9 +18,9 @@ export const useContents = () => {
    * @returns Promise<Contents.Item[]> 内容列表
    * @throws Error 当 API 请求失败时抛出错误
    */
-  const getContents = async (options?: Contents.QueryOptions): Promise<Contents.Item[] | null> => {
+  const getContents = async (options?: ContentQueryOptions): Promise<ContentItem[] | null> => {
     try {
-      const response = await $directus.request<Contents.Item[]>(
+      const response = await $directus.request<ContentItem[]>(
         $content.readItems("contents", options)
       );
       return response;
@@ -38,10 +38,10 @@ export const useContents = () => {
    */
   const getContent = async (
     id: string,
-    options?: Contents.QueryOptions
-  ): Promise<Contents.Item | null> => {
+    options?: ContentQueryOptions
+  ): Promise<ContentItem | null> => {
     try {
-      const response = await $directus.request<Contents.Item>(
+      const response = await $directus.request<ContentItem>(
         $content.readItem("contents", id, options)
       );
       return response;
@@ -56,7 +56,8 @@ export const useContents = () => {
    * @returns 清理后的纯文本
    */
   const cleanMarkdown = (text: string): string => {
-    if (!text) return "";
+    // 类型和边界检查：只处理字符串类型
+    if (typeof text !== "string" || !text) return "";
 
     const cleaned = text
       .replace(/#{1,6}\s/g, "")
@@ -79,7 +80,7 @@ export const useContents = () => {
    * @returns 取消订阅的清理函数
    */
   const subscribeContents = async (
-    query: Contents.QueryOptions,
+    query: ContentQueryOptions,
     callback: (item: any) => void
   ): Promise<() => void> => {
     let contentSubscription: any;
@@ -108,7 +109,7 @@ export const useContents = () => {
             callback(item);
           }
         } catch (error) {
-          console.error('Error in content subscription:', error);
+          console.error("Error in content subscription:", error);
         }
       })();
 
@@ -124,7 +125,7 @@ export const useContents = () => {
             }
           }
         } catch (error) {
-          console.error('Error in user subscription:', error);
+          console.error("Error in user subscription:", error);
         }
       })();
 
@@ -147,14 +148,14 @@ export const useContents = () => {
   const incrementContentViews = async (id: string) => {
     try {
       // 先获取当前 views
-      const content = await $directus.request<Contents.Item>(
+      const content = await $directus.request<ContentItem>(
         $content.readItem("contents", id, { fields: ["views"] })
       );
       const currentViews = content?.views ?? 0;
       // 更新 views
       await $directus.request(
         $content.updateItem("contents", id, {
-          views: currentViews + 1
+          views: currentViews + 1,
         })
       );
     } catch (error: any) {

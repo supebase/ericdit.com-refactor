@@ -1,6 +1,7 @@
 import { writeFileSync, mkdirSync, existsSync, readFileSync } from "fs";
 import { resolve, dirname } from "path";
 import { createHash } from "crypto";
+import type { VersionInfo } from "~/types";
 
 export default defineNitroPlugin(() => {
   // 只在生产构建时生成版本文件
@@ -17,7 +18,7 @@ export default defineNitroPlugin(() => {
     // 生成唯一的构建哈希值
     const buildHash = createHash("md5").update(buildTime).digest("hex").substring(0, 8);
 
-    const version = {
+    const version: VersionInfo = {
       version: packageJson.version,
       buildTime,
       buildHash,

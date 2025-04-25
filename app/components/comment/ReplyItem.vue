@@ -1,21 +1,23 @@
 <template>
   <div class="relative overflow-hidden touch-pan-y select-none active:cursor-grabbing"
-    :class="{ 'cursor-grab': canDelete }" @touchstart="handleDragStart($event, 0)" @touchmove.passive="false"
-    @touchmove="handleDragMove($event, 0)" @touchend="handleDragEnd(0)" @touchcancel="handleDragEnd(0)"
-    @mousedown.prevent="handleDragStart($event, 0)" @mousemove.prevent="handleDragMove($event, 0)"
-    @mouseup="handleDragEnd(0)" @mouseleave="handleDragEnd(0)">
+    :class="{ 'cursor-grab': canDelete }" @touchstart="handleDragStart($event, 0)"
+    @touchmove.passive="false" @touchmove="handleDragMove($event, 0)" @touchend="handleDragEnd(0)"
+    @touchcancel="handleDragEnd(0)" @mousedown.prevent="handleDragStart($event, 0)"
+    @mousemove.prevent="handleDragMove($event, 0)" @mouseup="handleDragEnd(0)"
+    @mouseleave="handleDragEnd(0)">
     <div class="relative transform transition-transform duration-200 ease-out"
       :style="{ transform: `translateX(${offsets[0] || 0}px)` }">
       <div class="relative">
         <div v-if="showArrow" class="absolute top-0 left-2">
-          <UIcon name="hugeicons:arrow-move-down-right" class="size-5 text-neutral-300/80 dark:text-neutral-700/80" />
+          <UIcon name="hugeicons:arrow-move-down-right"
+            class="size-5 text-neutral-300/80 dark:text-neutral-700/80" />
         </div>
         <div class="flex items-center ml-10">
           <div class="mr-3">
             <UChip :show="userStatus" inset size="sm" position="bottom-right" color="success">
               <SharedAvatar :src="userAvatarUrl || undefined"
-                :alt="!reply.user_created.avatar ? reply.user_created.first_name : undefined" size="xs"
-                class="uppercase" />
+                :alt="!reply.user_created.avatar ? reply.user_created.first_name : undefined"
+                size="xs" class="uppercase" />
             </UChip>
           </div>
           <div class="flex-1 mb-1">
@@ -54,13 +56,13 @@
 </template>
 
 <script setup lang="ts">
-import type { Comments } from "~/types";
+import type { CommentItem } from "~/types";
 
 const { user } = useAuth();
 const { deleteComment } = useComments();
 
 const props = defineProps<{
-  reply: Comments.Item;
+  reply: CommentItem;
   showArrow?: boolean;
 }>();
 

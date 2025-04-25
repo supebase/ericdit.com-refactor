@@ -24,8 +24,8 @@ watch(
 
 useSeo({
   site_name: "注册新用户",
-  site_description: '',
-  seo_keywords: '',
+  site_description: "",
+  seo_keywords: "",
   maintenance_mode: false,
   noindex: true,
   donate_images: [],

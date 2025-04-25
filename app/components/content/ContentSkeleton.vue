@@ -1,6 +1,6 @@
 <template>
-    <UCard :ui="{ body: '!p-0 border-none', footer: '!px-4' }" variant="soft" class="select-none my-5" v-for="item in 5"
-        :key="item">
+    <UCard :ui="{ body: '!p-0 border-none', footer: '!px-4' }" variant="soft"
+        class="select-none my-5" v-for="item in 5" :key="item">
         <!-- 图片区域骨架 -->
         <div class="relative overflow-hidden">
             <USkeleton class="aspect-[16/7] w-full rounded-b-none" />

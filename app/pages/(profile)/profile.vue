@@ -35,8 +35,8 @@
     </div>
 
     <!-- 退出按钮 -->
-    <UButton @click="handleLogout" size="xl" color="error" variant="soft" block :disabled="isLoading"
-      :loading="isLoading" class="mt-10">
+    <UButton @click="handleLogout" size="xl" color="error" variant="soft" block
+      :disabled="isLoading" :loading="isLoading" class="mt-10">
       <span>{{ isLoading ? "正在处理" : "退出登录" }}</span>
     </UButton>
   </div>

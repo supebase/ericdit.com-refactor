@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Comments } from "~/types";
+import type { CommentItem } from "~/types";
 const CommentReplyItem = defineAsyncComponent(() => import("~/components/comment/ReplyItem.vue"));
 
 const props = defineProps<{
@@ -21,7 +21,7 @@ const props = defineProps<{
 }>();
 
 const { getCommentsList } = useComments();
-const replies = ref<Comments.Item[]>([]);
+const replies = ref<CommentItem[]>([]);
 const isExpanded = ref(false);
 const isLoading = ref(false);
 

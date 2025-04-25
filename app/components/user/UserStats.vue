@@ -2,7 +2,8 @@
     <div class="py-2 px-4">
         <div class="text-md font-bold text-center flex items-center justify-center h-6">
             <div v-if="isLoading" class="flex items-center justify-center">
-                <UIcon name="svg-spinners:ring-resize" class="size-3.5 text-neutral-400 dark:text-neutral-500" />
+                <UIcon name="svg-spinners:ring-resize"
+                    class="size-3.5 text-neutral-400 dark:text-neutral-500" />
             </div>
             <SharedAnimateNumber v-else :value="totalUsers" class="justify-center" />
         </div>

@@ -2,13 +2,14 @@
   <div class="flex justify-end items-center">
     <button @click="handleLike" :disabled="isProcessing"
       class="text-base flex items-center space-x-1.5 text-neutral-400 dark:text-neutral-500 cursor-pointer disabled:cursor-not-allowed">
-      <UIcon name="svg-spinners:ring-resize" :size="iconSize" class="text-neutral-400 dark:text-neutral-500"
-        v-if="isProcessing" />
+      <UIcon name="svg-spinners:ring-resize" :size="iconSize"
+        class="text-neutral-400 dark:text-neutral-500" v-if="isProcessing" />
       <UIcon v-else :name="getIconName || ''" :size="iconSize" :class="[
         { 'scale-effect': showScale },
         isLiked ? 'text-neutral-700 dark:text-neutral-300' : ''
       ]" />
-      <SharedAnimateNumber :value="likesCount" :class="isLiked ? 'text-neutral-700 dark:text-neutral-300' : ''" />
+      <SharedAnimateNumber :value="likesCount"
+        :class="isLiked ? 'text-neutral-700 dark:text-neutral-300' : ''" />
     </button>
   </div>
 </template>

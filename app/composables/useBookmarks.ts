@@ -1,4 +1,4 @@
-import type { Bookmarks } from "~/types";
+import type { BookmarkItem, BookmarkQueryOptions } from "~/types";
 
 /**
  * 书签功能组合式函数
@@ -17,9 +17,9 @@ export const useBookmarks = () => {
    * @param options 查询参数
    * @returns 书签项数组
    */
-  const getBookmarks = async (options?: Bookmarks.QueryOptions): Promise<Bookmarks.Item[]> => {
+  const getBookmarks = async (options?: BookmarkQueryOptions): Promise<BookmarkItem[]> => {
     try {
-      const response = await $directus.request<Bookmarks.Item[]>(
+      const response = await $directus.request<BookmarkItem[]>(
         $content.readItems("bookmarks", options)
       );
       return response;
@@ -33,9 +33,9 @@ export const useBookmarks = () => {
    * @param data 书签数据
    * @returns 创建后的书签项
    */
-  const createBookmark = async (data: Partial<Bookmarks.Item>): Promise<Bookmarks.Item> => {
+  const createBookmark = async (data: Partial<BookmarkItem>): Promise<BookmarkItem> => {
     try {
-      const response = await $directus.request<Bookmarks.Item>(
+      const response = await $directus.request<BookmarkItem>(
         $content.createItem("bookmarks", data)
       );
       return response;
@@ -92,7 +92,7 @@ export const useBookmarks = () => {
    * @returns 取消订阅的函数
    */
   const subscribeBookmarks = async (
-    query: Bookmarks.QueryOptions,
+    query: BookmarkQueryOptions,
     callback: (item: any) => void
   ): Promise<() => void> => {
     let subscription: any;
@@ -109,7 +109,7 @@ export const useBookmarks = () => {
             callback(item);
           }
         } catch (error) {
-          console.error('Error in bookmarks subscription:', error);
+          console.error("Error in bookmarks subscription:", error);
         }
       })();
 

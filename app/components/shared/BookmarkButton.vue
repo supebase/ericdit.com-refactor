@@ -7,9 +7,11 @@
     </transition>
     <button @click="handleBookmark" :disabled="isProcessing"
       class="text-sm flex items-center space-x-2 text-neutral-400 dark:text-neutral-500 cursor-pointer disabled:cursor-not-allowed">
-      <UIcon name="svg-spinners:ring-resize" :size="iconSize" class="text-neutral-400 dark:text-neutral-500" v-if="isProcessing" />
-      <UIcon v-else :name="isBookmarked ? 'hugeicons:bookmark-minus-02' : 'hugeicons:bookmark-add-02'" :size="iconSize"
-        :class="[
+      <UIcon name="svg-spinners:ring-resize" :size="iconSize"
+        class="text-neutral-400 dark:text-neutral-500" v-if="isProcessing" />
+      <UIcon v-else
+        :name="isBookmarked ? 'hugeicons:bookmark-minus-02' : 'hugeicons:bookmark-add-02'"
+        :size="iconSize" :class="[
           { 'bookmark-animation': showAnimation },
           isBookmarked ? 'text-neutral-700 dark:text-neutral-300' : ''
         ]" />

@@ -15,20 +15,23 @@
       <ContentSkeleton />
     </div>
     <div v-else-if="error" class="flex items-center justify-center min-h-[50vh]">
-      <UAlert color="error" variant="soft" icon="hugeicons:alert-02" :description="error?.message || '加载失败，请稍后重试'">
+      <UAlert color="error" variant="soft" icon="hugeicons:alert-02"
+        :description="error?.message || '加载失败，请稍后重试'">
       </UAlert>
     </div>
     <template v-else>
       <div ref="el" class="my-2">
-        <SharedFadeIn v-for="(content, index) in contents" :key="content.id" :delay="index * 50" class="py-3"
-          enter-active-class="transition-all duration-500 ease-in-out"
-          enter-from-class="transform translate-y-3 opacity-0" enter-to-class="transform translate-y-0 opacity-100">
+        <SharedFadeIn v-for="(content, index) in contents" :key="content.id" :delay="index * 50"
+          class="py-3" enter-active-class="transition-all duration-500 ease-in-out"
+          enter-from-class="transform translate-y-3 opacity-0"
+          enter-to-class="transform translate-y-0 opacity-100">
           <ContentCard :content="content" />
         </SharedFadeIn>
       </div>
       <div v-if="contents?.length === 0"
         class="flex flex-col items-center justify-center space-y-4 min-h-[calc(100vh-14rem)] pt-16">
-        <UIcon name="hugeicons:ai-content-generator-01" class="text-4xl text-neutral-300 dark:text-neutral-700" />
+        <UIcon name="hugeicons:ai-content-generator-01"
+          class="text-4xl text-neutral-300 dark:text-neutral-700" />
         <p class="text-neutral-400 dark:text-neutral-700 text-sm font-medium">信息矩阵仍处待填充态</p>
       </div>
 

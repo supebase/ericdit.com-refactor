@@ -1,11 +1,13 @@
 <template>
-    <UModal :dismissible="false" :open="isMaintenanceMode" title="维护提示" description="维护模式开启/关闭后将自动显示/隐藏"
+    <UModal :dismissible="false" :open="isMaintenanceMode" title="维护提示"
+        description="维护模式开启/关闭后将自动显示/隐藏"
         :ui="{ overlay: 'backdrop-blur-sm backdrop-grayscale-100' }">
         <template #content>
             <UCard class="p-6 select-none bg-neutral-100 dark:bg-neutral-900">
                 <div class="flex flex-col items-center">
                     <div class="mb-6 flex justify-center">
-                        <UIcon name="hugeicons:computer-settings" class="size-10 text-primary-500 animate-pulse" />
+                        <UIcon name="hugeicons:computer-settings"
+                            class="size-10 text-primary-500 animate-pulse" />
                     </div>
                     <div class="text-xl font-extrabold mb-2">
                         维护模式

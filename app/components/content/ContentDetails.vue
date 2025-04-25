@@ -1,10 +1,12 @@
 <template>
   <article class="py-5 space-y-5">
     <div class="text-2xl font-bold">{{ content.title }}</div>
-    <div class="flex justify-between items-center text-sm text-neutral-500 tabular-nums select-none">
+    <div
+      class="flex justify-between items-center text-sm text-neutral-500 tabular-nums select-none">
       <div class="flex items-center space-x-3">
         <div>
-          <SharedAvatar :src="userAvatarUrl || undefined" size="2sm" :alt="content.user_created.first_name" />
+          <SharedAvatar :src="userAvatarUrl || undefined" size="2sm"
+            :alt="content.user_created.first_name" />
         </div>
         <div class="flex flex-col">
           <div class="text-[15px] text-neutral-900 dark:text-neutral-50 font-bold">
@@ -39,11 +41,13 @@
       </div>
       <div class="flex-1 flex justify-center">
         <Donate>
-          <UIcon name="hugeicons:qr-code" class="size-5 text-neutral-400 dark:text-neutral-500 cursor-pointer" />
+          <UIcon name="hugeicons:qr-code"
+            class="size-5 text-neutral-400 dark:text-neutral-500 cursor-pointer" />
         </Donate>
       </div>
       <div class="flex-1 flex justify-end">
-        <UIcon name="hugeicons:share-05" class="size-5 text-neutral-400 dark:text-neutral-500 cursor-pointer"
+        <UIcon name="hugeicons:share-05"
+          class="size-5 text-neutral-400 dark:text-neutral-500 cursor-pointer"
           @click="shareButton(content.title, getPreviewText(content.body))" />
       </div>
     </div>
@@ -52,14 +56,14 @@
 
 <script setup lang="ts">
 import { isClient } from "@vueuse/shared";
-import type { Contents } from "~/types";
+import type { ContentItem } from "~/types";
 import Donate from '~/components/shared/Donate.vue';
 
 const { incrementContentViews } = useContents();
 const toast = useToast();
 
 const props = defineProps<{
-  content: Contents.Item;
+  content: ContentItem;
 }>();
 
 const { getUserAvatarUrl } = useUserMeta();

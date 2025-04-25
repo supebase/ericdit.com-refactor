@@ -6,13 +6,7 @@ export default defineNuxtConfig({
   compatibilityDate: "2024-11-01",
   devtools: { enabled: false },
   ssr: false,
-  modules: [
-    "@nuxt/ui",
-    "@nuxt/image",
-    "@vueuse/nuxt",
-    "@nuxtjs/mdc",
-    "nuxt-emoji-picker",
-  ],
+  modules: ["@nuxt/ui", "@nuxt/image", "@vueuse/nuxt", "@nuxtjs/mdc", "nuxt-emoji-picker"],
 
   future: {
     compatibilityVersion: 4,
@@ -21,7 +15,6 @@ export default defineNuxtConfig({
   experimental: {
     payloadExtraction: false,
     renderJsonPayloads: true,
-    treeshakeClientOnly: true, // 优化客户端代码
     crossOriginPrefetch: true, // 启用跨域预取优化
   },
 
@@ -37,7 +30,6 @@ export default defineNuxtConfig({
 
   app: {
     keepalive: true,
-    buildAssetsDir: "static",
     head: {
       htmlAttrs: {
         lang: "zh-CN",
@@ -67,8 +59,6 @@ export default defineNuxtConfig({
           },
         },
       },
-      minify: true,
-      cssMinify: true,
       modulePreload: {
         polyfill: false,
       },
@@ -95,13 +85,6 @@ export default defineNuxtConfig({
         maxAge: 60 * 60 * 24 * 90,
       },
     ],
-    routeRules: {
-      "/static/**": {
-        headers: {
-          "Cache-Control": "public, max-age=31536000, immutable",
-        },
-      },
-    },
   },
 
   routeRules: {
@@ -131,9 +114,6 @@ export default defineNuxtConfig({
         default: "github-light",
         dark: "github-dark",
       },
-    },
-    components: {
-      prose: true,
     },
   },
 

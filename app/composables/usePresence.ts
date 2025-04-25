@@ -1,4 +1,4 @@
-import type { User } from "~/types";
+import type { UserProfile, UserStatus } from "~/types";
 
 // 添加返回类型接口
 interface UserStatusComposable {
@@ -18,7 +18,7 @@ interface UserStatusComposable {
 export const usePresence = (): UserStatusComposable => {
   const { $directus, $content, $realtimeClient } = useNuxtApp();
   // 当前登录用户信息
-  const user = useState<User.Profile | null>("auth:user");
+  const user = useState<UserProfile | null>("auth:user");
   // 所有用户的在线状态映射表
   const usersStatus = useState<Record<string, boolean>>("users:status", () => ({}));
 
@@ -80,7 +80,7 @@ export const usePresence = (): UserStatusComposable => {
    */
   const checkUserStatus = async (userId: string): Promise<boolean> => {
     try {
-      const response = await $directus.request<User.Status[]>(
+      const response = await $directus.request<UserStatus[]>(
         $content.readItems("users_status", {
           filter: {
             user_created: { _eq: userId },

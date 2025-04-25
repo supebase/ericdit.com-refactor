@@ -1,14 +1,15 @@
 <template>
   <footer class="flex-none">
     <hr />
-    <div class="py-4 select-none flex justify-center items-center gap-3">
-      <div class="text-center text-sm text-neutral-500 space-x-2">
+    <div class="py-4 select-none flex justify-center items-center gap-4">
+      <div class="text-center text-sm text-neutral-500 space-x-1.5">
         <span>{{ new Date().getFullYear() }} &copy; {{ settings?.site_name }}</span>
         <span class="text-neutral-300 dark:text-neutral-700 text-xs">&bull;</span>
         <span>v{{ version }}（{{ useDateFormatter(buildTime) }}构建）</span>
       </div>
 
-      <UPopover arrow :ui="{ content: 'bg-white dark:bg-neutral-950', arrow: 'fill-white dark:fill-neutral-950' }">
+      <UPopover arrow
+        :ui="{ content: 'bg-white dark:bg-neutral-950', arrow: 'fill-neutral-200 dark:fill-neutral-800' }">
         <UIcon :name="wsStatus === 'OPEN' ? 'hugeicons:gps-signal-01' : 'hugeicons:gps-signal-02'"
           class="size-4 cursor-pointer"
           :class="missingConfig ? 'text-red-500' : (wsStatus === 'OPEN' ? 'text-green-500' : 'text-neutral-500 animate-pulse')" />
@@ -29,7 +30,8 @@
         </template>
       </UPopover>
 
-      <UPopover arrow :ui="{ content: 'bg-white dark:bg-neutral-950', arrow: 'fill-white dark:fill-neutral-950' }">
+      <UPopover arrow
+        :ui="{ content: 'bg-white dark:bg-neutral-950', arrow: 'fill-neutral-200 dark:fill-neutral-800' }">
         <UIcon name="hugeicons:user-status" class="size-4 text-neutral-500 cursor-pointer"
           @click="() => { if (!totalUsers) fetchTotalUsers() }" />
         <template #content>

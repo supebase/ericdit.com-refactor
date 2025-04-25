@@ -1,4 +1,4 @@
-import type { Likes } from "~/types";
+import type { LikeItem, LikeQueryOptions } from "~/types";
 
 /**
  * 点赞功能组合式函数
@@ -17,9 +17,9 @@ export const useLikes = () => {
    * @returns Promise<Likes.Item[]> 点赞列表
    * @throws Error 当 API 请求失败时抛出错误
    */
-  const getLikes = async (options?: Likes.QueryOptions): Promise<Likes.Item[]> => {
+  const getLikes = async (options?: LikeQueryOptions): Promise<LikeItem[]> => {
     try {
-      const response = await $directus.request<Likes.Item[]>($content.readItems("likes", options));
+      const response = await $directus.request<LikeItem[]>($content.readItems("likes", options));
       return response;
     } catch (error: any) {
       throw new Error(error.errors?.[0]?.message || "获取点赞列表失败");
@@ -32,9 +32,9 @@ export const useLikes = () => {
    * @returns Promise<Likes.Item> 创建成功的点赞记录
    * @throws Error 当 API 请求失败时抛出错误
    */
-  const createLike = async (data: Partial<Likes.Item>): Promise<Likes.Item> => {
+  const createLike = async (data: Partial<LikeItem>): Promise<LikeItem> => {
     try {
-      const response = await $directus.request<Likes.Item>($content.createItem("likes", data));
+      const response = await $directus.request<LikeItem>($content.createItem("likes", data));
       return response;
     } catch (error: any) {
       throw new Error(error.errors?.[0]?.message || "创建点赞失败");
@@ -61,7 +61,7 @@ export const useLikes = () => {
    * @returns 取消订阅的清理函数
    */
   const subscribeLikes = async (
-    query: Likes.QueryOptions,
+    query: LikeQueryOptions,
     callback: (item: any) => void
   ): Promise<() => void> => {
     const { subscription } = await $realtimeClient.subscribe("likes", { query });

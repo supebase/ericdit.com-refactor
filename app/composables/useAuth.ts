@@ -1,4 +1,4 @@
-import type { User } from "~/types";
+import type { UserProfile } from "~/types";
 
 /**
  * 用户认证管理组合式函数
@@ -15,7 +15,7 @@ export const useAuth = () => {
    * 用户信息状态
    * null 表示未登录或登录失效
    */
-  const user = useState<User.Profile | null>("auth:user", () => null);
+  const user = useState<UserProfile | null>("auth:user", () => null);
 
   /**
    * 用户认证状态
@@ -106,7 +106,7 @@ export const useAuth = () => {
    */
   const refreshUser = async (): Promise<void> => {
     try {
-      const response = await $directus.request<User.Profile>($user.readMe());
+      const response = await $directus.request<UserProfile>($user.readMe());
       user.value = response;
     } catch (error: any) {
       // 只在用户之前是登录状态，且遇到认证失败（401）或权限不足（403）时处理
@@ -144,7 +144,7 @@ export const useAuth = () => {
     const interval = 30 * 60 * 1000;
     const checkInterval = setInterval(() => {
       if (isAuthenticated.value) {
-        refreshUser().catch(() => { });
+        refreshUser().catch(() => {});
       }
     }, interval);
     addCleanup(() => clearInterval(checkInterval));
@@ -152,7 +152,7 @@ export const useAuth = () => {
     // 监听可见性变化
     watch(isVisible, (visible) => {
       if (visible && isAuthenticated.value) {
-        refreshUser().catch(() => { });
+        refreshUser().catch(() => {});
       }
     });
 
