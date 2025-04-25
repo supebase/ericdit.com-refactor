@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
 
 @import "tailwindcss";
 @import "@nuxt/ui";
@@ -21,7 +21,7 @@
 }
 
 html {
-  font-family: "Ubuntu";
+  font-family: "Roboto";
 }
 
 body {
@@ -144,10 +144,6 @@ body {
 /* 应用对勾路径的动画，延迟0.9s开始 */
 .check {
   animation: drawCheck 0.5s 0.9s forwards;
-}
-
-.nums {
-  font-family: "Ubuntu";
 }
 
 .mdc-prose {

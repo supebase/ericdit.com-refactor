@@ -11,7 +11,7 @@
             <UBadge variant="soft" color="neutral" size="lg">{{ user?.email }}</UBadge>
           </div>
           <div class="flex items-center justify-center gap-2">
-            <UIcon name="hugeicons:location-04" class="size-4" />
+            <UIcon name="hugeicons:location-04" class="size-5" />
             <span>最近的登录活动发生在{{ user?.location }}</span>
           </div>
         </div>
@@ -24,13 +24,13 @@
         <div class="flex justify-center">
           <SharedAnimateNumber :value="commentsCount" class="text-3xl font-bold" />
         </div>
-        <div class="text-neutral-500 font-medium text-center mt-2">评论数</div>
+        <div class="text-neutral-400 dark:text-neutral-500 font-medium text-center mt-2">评论数</div>
       </div>
       <div class="p-6 rounded-sm bg-white/50 dark:bg-neutral-950/50">
         <div class="flex justify-center">
           <SharedAnimateNumber :value="likesCount" class="text-3xl font-bold" />
         </div>
-        <div class="text-neutral-500 font-medium text-center mt-2">点赞数</div>
+        <div class="text-neutral-400 dark:text-neutral-500 font-medium text-center mt-2">点赞数</div>
       </div>
     </div>
 

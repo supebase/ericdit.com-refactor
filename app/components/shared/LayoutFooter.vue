@@ -11,7 +11,7 @@
       <UPopover arrow :ui="{ content: 'bg-white dark:bg-neutral-950', arrow: 'fill-white dark:fill-neutral-950' }">
         <UIcon :name="wsStatus === 'OPEN' ? 'hugeicons:gps-signal-01' : 'hugeicons:gps-signal-02'"
           class="size-4 cursor-pointer"
-          :class="missingConfig ? 'text-red-500' : (wsStatus === 'OPEN' ? 'text-green-500' : 'text-neutral-500')" />
+          :class="missingConfig ? 'text-red-500' : (wsStatus === 'OPEN' ? 'text-green-500' : 'text-neutral-500 animate-pulse')" />
         <template #content>
           <div class="py-2 px-4">
             <div class="text-neutral-500 text-xs text-center flex items-center justify-center">

@@ -30,7 +30,7 @@
           :style="{ transform: `translateX(${offsets[index] || 0}px)` }">
           <UCard variant="soft" class="relative">
             <div class="flex items-center space-x-3">
-              <SharedAvatar :src="bookmark.user_created.avatar" :alt="bookmark.user_created.first_name" size="sm" />
+              <SharedAvatar :src="bookmark.user_created.avatar" :alt="bookmark.user_created.first_name" size="2sm" />
               <div class="flex-1 min-w-0">
                 <NuxtLink :to="{ name: 'article-id', params: { id: getContentId(bookmark.content_id) } }"
                   @click.stop="handleLinkClick(index, $event)">

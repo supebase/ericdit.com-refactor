@@ -23,8 +23,7 @@
           base: 'rounded-[calc(var(--ui-radius)*2)] transition-all duration-300 ease-out hover:bg-white dark:hover:bg-neutral-950',
         }" color="neutral" variant="ghost" size="lg" class="cursor-pointer"
           :class="showBackToTop ? 'w-auto opacity-100' : 'w-0 p-1 opacity-0 overflow-hidden'" @click="scrollToTop">
-          <UIcon name="hugeicons:circle-arrow-up-02"
-            class="size-5 text-primary-500 transition-transform duration-500"
+          <UIcon name="hugeicons:circle-arrow-up-02" class="size-5 text-primary-500 transition-transform duration-500"
             :class="showBackToTop ? 'rotate-0' : 'rotate-180'" />
         </UButton>
       </UButtonGroup>
@@ -62,7 +61,7 @@
         </div>
 
         <div class="flex items-center justify-center gap-2 text-neutral-400 dark:text-neutral-600 animate-pulse my-5"
-          v-if="allowComments && totalComments">
+          v-if="isAuthenticated && allowComments && totalComments">
           <UIcon name="hugeicons:swipe-left-09" class="size-5" />
           <span class="text-sm">向左滑动删除评论或回复</span>
         </div>
@@ -82,6 +81,7 @@
 
 <script setup lang="ts">
 import { AUTH_ERROR_MESSAGES } from "~/types/auth";
+const { isAuthenticated } = useAuth();
 
 const CommentThreadItem = defineAsyncComponent(() => import("~/components/comment/ThreadItem.vue"));
 

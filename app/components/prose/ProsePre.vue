@@ -1,6 +1,5 @@
 <template>
   <div class="relative">
-    <!-- 固定 Header -->
     <div class="absolute top-0 left-0 right-0 z-10 flex justify-between items-center p-3">
       <div class="text-xs text-neutral-400 dark:text-neutral-600 select-none uppercase truncate">
         {{ $props.language }}
@@ -29,10 +28,7 @@
         </span>
       </div>
     </div>
-
-    <!-- 代码块区域 -->
-    <pre :class="$props.class" class="mt-8 overflow-x-auto p-3">
-      <slot /></pre>
+    <pre :class="$props.class" class="mt-8 overflow-x-auto px-3 pt-9"><slot /></pre>
   </div>
 </template>
 

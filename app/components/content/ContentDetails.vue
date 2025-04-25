@@ -1,7 +1,7 @@
 <template>
   <article class="py-5 space-y-5">
     <div class="text-2xl font-bold">{{ content.title }}</div>
-    <div class="flex justify-between items-center text-sm text-neutral-500 nums tabular-nums select-none">
+    <div class="flex justify-between items-center text-sm text-neutral-500 tabular-nums select-none">
       <div class="flex items-center space-x-3">
         <div>
           <SharedAvatar :src="userAvatarUrl || undefined" size="2sm" :alt="content.user_created.first_name" />
@@ -25,7 +25,8 @@
         <MDCCached :value="content.body" class="prose dark:prose-invert mdc-prose" />
       </template>
       <template #fallback>
-        <div class="flex justify-center items-center text-neutral-400 dark:text-neutral-700 space-x-2 h-42 animate-pulse">
+        <div
+          class="flex justify-center items-center text-neutral-400 dark:text-neutral-700 space-x-2 h-42 animate-pulse">
           <UIcon name="hugeicons:ai-content-generator-01" class="size-6" />
           <div class="text-sm">正在渲染，请稍等。</div>
         </div>
@@ -34,16 +35,16 @@
 
     <div class="flex justify-between items-center select-none py-2">
       <div class="flex-1 flex justify-start">
-        <UIcon name="hugeicons:share-05" class="size-5 text-neutral-400 dark:text-neutral-600 cursor-pointer"
-          @click="shareButton(content.title, getPreviewText(content.body))" />
+        <SharedContentViews :content-id="content.id" :icon-size="20" />
       </div>
       <div class="flex-1 flex justify-center">
         <Donate>
-          <UIcon name="hugeicons:qr-code" class="size-5 text-neutral-400 dark:text-neutral-600 cursor-pointer" />
+          <UIcon name="hugeicons:qr-code" class="size-5 text-neutral-400 dark:text-neutral-500 cursor-pointer" />
         </Donate>
       </div>
       <div class="flex-1 flex justify-end">
-        <SharedContentViews :content-id="content.id" :icon-size="20" />
+        <UIcon name="hugeicons:share-05" class="size-5 text-neutral-400 dark:text-neutral-500 cursor-pointer"
+          @click="shareButton(content.title, getPreviewText(content.body))" />
       </div>
     </div>
   </article>
@@ -53,7 +54,6 @@
 import { isClient } from "@vueuse/shared";
 import type { Contents } from "~/types";
 import Donate from '~/components/shared/Donate.vue';
-import { MDCCached } from "#components";
 
 const { incrementContentViews } = useContents();
 const toast = useToast();

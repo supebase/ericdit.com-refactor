@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center nums tabular-nums">
+  <div class="flex items-center tabular-nums">
     <div v-for="(digit, index) in displayDigits" :key="index" :class="[digit === ',' ? 'comma' : 'number-column']">
       <template v-if="digit === ','"> , </template>
       <template v-else>

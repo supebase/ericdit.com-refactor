@@ -21,8 +21,8 @@
             </div>
             <div class="flex-1 mb-1">
               <div class="flex justify-between items-center">
-                <div class="flex items-center space-x-2 text-[13px] nums tabular-nums">
-                  <div class="text-sm font-medium">{{ comment.user_created.first_name }}</div>
+                <div class="flex items-center space-x-2 text-[13px] tabular-nums">
+                  <div class="text-sm font-medium pr-1">{{ comment.user_created.first_name }}</div>
                   <div class="text-neutral-500">
                     {{ useDateFormatter(comment.date_created) }}
                   </div>
@@ -39,7 +39,7 @@
             {{ safeComment }}
           </div>
           <div class="mt-1" :class="isReplying ? 'hidden' : ''">
-            <button @click="handleReply" class="text-[13px] text-neutral-500 nums tabular-nums cursor-pointer">
+            <button @click="handleReply" class="text-[13px] text-neutral-500 tabular-nums cursor-pointer">
               {{ replyCount > 0 ? `${replyCount} 条回复` : "回复" }}
             </button>
           </div>

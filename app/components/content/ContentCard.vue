@@ -8,7 +8,7 @@
           class="aspect-[16/7] object-cover w-full transition-transform duration-500" />
         <!-- 标题叠加在图片下方，带模糊背景 -->
         <div class="absolute bottom-0 left-0 w-full px-4 py-3 bg-neutral-900/40 backdrop-blur-sm">
-          <div class="font-bold text-white">
+          <div class="font-bold text-white text-shadow-md/30">
             {{ content.title }}
           </div>
         </div>
@@ -22,14 +22,14 @@
               class="aspect-[16/7] object-cover w-full rounded-t-sm transition-transform duration-500" />
             <!-- 当前图片序号/总数 -->
             <UBadge color="neutral" size="sm"
-              class="absolute top-3 right-3 text-white nums tabular-nums rounded-full bg-neutral-900/40 backdrop-blur-sm">
+              class="absolute top-3 right-3 text-white tabular-nums rounded-full bg-neutral-900/40 backdrop-blur-sm">
               {{ index + 1 }} / {{ content.images.length }}
             </UBadge>
           </div>
         </UCarousel>
         <!-- 标题叠加在图片下方，带模糊背景 -->
         <div class="absolute bottom-0 left-0 w-full px-4 py-2 bg-neutral-900/40 backdrop-blur-sm">
-          <div class="font-bold text-white">
+          <div class="font-bold text-white text-shadow-md/30">
             {{ content.title }}
           </div>
         </div>
@@ -41,7 +41,7 @@
         <div class="flex items-center gap-1.5">
           <SharedAvatar :src="userAvatarUrl || undefined" size="2xs" :alt="content.user_created.first_name"
             class="mr-0.5" />
-          <span class="text-[15px] text-neutral-400 dark:text-neutral-600 font-medium">{{
+          <span class="text-[15px] text-neutral-400 dark:text-neutral-500 font-medium">{{
             content.user_created.first_name }}</span>
           <span class="mx-1 text-neutral-300 dark:text-neutral-700">&bull;</span>
           <span class="text-sm text-neutral-400 dark:text-neutral-600">{{ useDateFormatter(content.date_created)

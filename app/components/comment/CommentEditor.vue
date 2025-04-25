@@ -13,7 +13,7 @@
           :class="!validation.isValid ? 'translate-x-0 opacity-100' : '-translate-x-3 opacity-0'" />
       </div>
       <div class="flex items-center space-x-6">
-        <span class="text-[13px] nums tabular-nums select-none" :class="content.length >= COMMENT_MAX_LENGTH
+        <span class="text-[13px] tabular-nums select-none" :class="content.length >= COMMENT_MAX_LENGTH
           ? 'text-red-600'
           : 'text-neutral-400 dark:text-neutral-600'
           ">

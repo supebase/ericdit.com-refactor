@@ -1,12 +1,12 @@
 <template>
     <div class="flex justify-end items-center space-x-1.5">
-        <UIcon name="hugeicons:tinder" :size="iconSize" class="text-neutral-400 dark:text-neutral-600" />
-        <span class="text-base text-neutral-400 dark:text-neutral-600 flex items-center">
+        <UIcon name="hugeicons:tinder" :size="iconSize" class="text-neutral-400 dark:text-neutral-500" />
+        <span class="text-neutral-400 dark:text-neutral-500 flex items-center">
             <template v-if="viewsCount < 1000">
                 <SharedAnimateNumber :value="viewsCount" />
             </template>
             <template v-else>
-                <span class="nums tabular-nums">{{ formattedViewsCount }}</span>
+                <span class="tabular-nums">{{ formattedViewsCount }}</span>
             </template>
         </span>
     </div>
