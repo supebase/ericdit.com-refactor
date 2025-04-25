@@ -3,6 +3,7 @@ import colors from 'tailwindcss/colors'
 import { omit } from '#ui/utils'
 
 const appConfig = useAppConfig()
+const colorMode = useColorMode()
 
 const neutralColors = ['slate', 'gray', 'zinc', 'neutral', 'stone']
 const neutral = computed({
@@ -26,12 +27,27 @@ const primary = computed({
         safeSetItem('nuxt-ui-primary', appConfig.ui.colors.primary)
     }
 })
+
+const modes = [
+    { label: 'light', icon: 'hugeicons:sun-02', text: '浅色' },
+    { label: 'dark', icon: 'hugeicons:moon-02', text: '深色' },
+    { label: 'system', icon: 'hugeicons:computer', text: '系统' }
+]
+const mode = computed({
+    get() {
+        return colorMode.value
+    },
+    set(option) {
+        colorMode.preference = option
+    }
+})
 </script>
 
 <template>
-    <UPopover arrow :ui="{ content: 'w-72 px-6 py-4 flex flex-col gap-4 bg-white dark:bg-neutral-950', arrow: 'fill-white dark:fill-neutral-950' }">
+    <UPopover arrow
+        :ui="{ content: 'w-72 px-6 py-4 flex flex-col gap-4 bg-white dark:bg-neutral-950', arrow: 'fill-white dark:fill-neutral-950' }">
         <template #default>
-            <UIcon name="hugeicons:paint-brush-04" class="size-5 text-neutral-500 cursor-pointer" />
+            <UIcon name="hugeicons:computer-settings" class="size-5 text-neutral-500 cursor-pointer" />
         </template>
 
         <template #content>
@@ -54,6 +70,17 @@ const primary = computed({
                 <div class="grid grid-cols-3 gap-1 -mx-2.5">
                     <ThemePickerButton v-for="color in neutralColors" :key="color" :label="color" :chip="color"
                         :selected="neutral === color" @click="neutral = color" />
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend class="text-sm text-center leading-none font-semibold mb-2">
+                    主题色
+                </legend>
+
+                <div class="grid grid-cols-3 gap-1 -mx-2">
+                    <ThemePickerButton v-for="m in modes" :key="m.label" v-bind="m"
+                        :selected="colorMode.preference === m.label" :text="m.text" @click="mode = m.label" />
                 </div>
             </fieldset>
         </template>

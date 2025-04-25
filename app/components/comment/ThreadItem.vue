@@ -13,7 +13,7 @@
           :style="{ transform: `translateX(${offsets[0] || 0}px)` }">
           <div class="flex items-center">
             <div class="mr-3">
-              <UChip inset size="sm" position="bottom-right" :color="userStatus ? 'success' : 'neutral'">
+              <UChip :show="userStatus" inset size="sm" position="bottom-right" color="success">
                 <SharedAvatar :src="userAvatarUrl || undefined"
                   :alt="!comment.user_created.avatar ? comment.user_created.first_name : undefined" size="xs"
                   class="uppercase" />
@@ -63,10 +63,10 @@
         <div>
           <CommentEditor :placeholder="`回复：${comment.user_created.first_name}`" :is-submitting="isSubmitting"
             :clear-input="clearInput" @submit="handleSubmit" />
-            <div class=" absolute -top-2 -right-1 bg-white dark:bg-neutral-950 h-5 rounded-full">
-              <UIcon v-if="isReplying" @click="cancelReply" name="hugeicons:cancel-circle"
-            class="size-5 text-neutral-500 cursor-pointer" />
-            </div>
+          <div class=" absolute -top-2 -right-1 bg-white dark:bg-neutral-950 h-5 rounded-full">
+            <UIcon v-if="isReplying" @click="cancelReply" name="hugeicons:cancel-circle"
+              class="size-5 text-neutral-500 cursor-pointer" />
+          </div>
         </div>
       </div>
     </template>

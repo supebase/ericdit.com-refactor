@@ -10,7 +10,6 @@
         <SharedBookmarkCounter v-if="isAuthenticated" class="translate-y-[3px]" />
         <SearchModal />
         <ThemePicker />
-        <SharedColorMode />
         <AuthUserStatus />
       </div>
     </div>
