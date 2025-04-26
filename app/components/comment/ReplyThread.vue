@@ -1,8 +1,10 @@
 <template>
   <div>
     <div class="space-y-6">
-      <CommentReplyItem v-for="(reply, index) in displayReplies" :key="reply.id" :reply="reply"
-        :show-arrow="index === 0" />
+      <div class="divide-y divide-dashed divide-neutral-300/70 dark:divide-neutral-800">
+        <CommentReplyItem v-for="(reply, index) in displayReplies" :key="reply.id" :reply="reply"
+          :show-arrow="index === 0" class="py-4 first:pt-0 last:pb-0" />
+      </div>
       <div v-if="replies.length > 1" class="text-[13px] ml-10">
         <button class="text-neutral-500 tabular-nums cursor-pointer" @click="toggleExpand">
           {{ isExpanded ? "收起回复" : `查看全部回复` }}

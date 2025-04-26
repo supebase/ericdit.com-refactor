@@ -1,6 +1,6 @@
 {
   "name": "eric-app",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "private": true,
   "type": "module",
   "scripts": {
@@ -27,6 +27,6 @@
     "@types/node": "^22.15.2",
     "nuxt": "^3.16.2",
     "typescript": "^5.8.3",
-    "vue-router": "^4.5.0"
+    "vue-router": "^4.5.1"
   }
 }

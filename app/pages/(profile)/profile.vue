@@ -73,8 +73,10 @@ const loadUserStats = async (forceRefresh = false) => {
       } catch (error) {
         retries++;
         if (retries >= maxRetries) throw error;
-        // 指数退避策略
-        await new Promise((resolve) => setTimeout(resolve, 1000 * Math.pow(2, retries - 1)));
+        // 指数退避策略，使用 useTimeoutFn
+        await new Promise((resolve) => {
+          useTimeoutFn(resolve, 1000 * Math.pow(2, retries - 1))
+        });
       }
     }
   } catch (error) {

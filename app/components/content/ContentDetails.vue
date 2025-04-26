@@ -9,7 +9,7 @@
             :alt="content.user_created.first_name" />
         </div>
         <div class="flex flex-col">
-          <div class="text-[15px] text-neutral-900 dark:text-neutral-50 font-bold">
+          <div class="text-[15px] text-neutral-700 dark:text-neutral-300 font-bold">
             {{ content.user_created.first_name }}
           </div>
           <div class="flex items-center text-[13px] space-x-2">

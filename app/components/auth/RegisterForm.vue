@@ -29,7 +29,7 @@
 
     <UButton type="submit" size="xl" color="primary" block :disabled="isSubmitting"
       :loading="isSubmitting">
-      {{ isSubmitting ? "正在处理" : "完成注册" }}
+      {{ isSubmitting ? "正在登录" : "完成注册" }}
     </UButton>
 
     <USeparator><span class="text-neutral-400 dark:text-neutral-600 text-sm">或者</span></USeparator>
