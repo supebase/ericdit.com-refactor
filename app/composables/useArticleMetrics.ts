@@ -30,6 +30,8 @@ const READ_SPEED_CONFIG = {
  * @returns 预计阅读时间（分钟）
  */
 export const useArticleMetrics = (content: string, images?: Array<ImageMeta>): string => {
+  const safeContent = content || "";
+
   /**
    * 计算代码块阅读时间
    * @param content - 文章内容
@@ -92,7 +94,7 @@ export const useArticleMetrics = (content: string, images?: Array<ImageMeta>): s
   };
 
   // 计算文章中的总图片数（包括 Markdown 内联图片和外部图片）
-  const totalImages = (images?.length || 0) + (content.match(/!\[.*?\]\(.*?\)/g) || []).length;
+  const totalImages = (images?.length || 0) + (safeContent.match(/!\[.*?\]\(.*?\)/g) || []).length;
 
-  return `${calculateReadingTime(content, totalImages)} 分钟`;
+  return `${calculateReadingTime(safeContent, totalImages)} 分钟`;
 };

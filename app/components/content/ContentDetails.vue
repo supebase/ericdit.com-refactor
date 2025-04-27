@@ -19,7 +19,7 @@
           </div>
         </div>
       </div>
-      <SharedBookmarkButton :content-id="content.id" :icon-size="19" />
+      <SharedBookmarkButton :content-id="content.id" :icon-size="19" v-if="content.title" />
     </div>
 
     <Suspense>
