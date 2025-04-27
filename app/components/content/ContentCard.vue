@@ -3,9 +3,8 @@
     <NuxtLink :to="{ name: 'article-id', params: { id: content.id } }">
       <!-- 单图显示 -->
       <div v-if="displayType === 'single'" class="relative overflow-hidden rounded-t-sm">
-        <NuxtImg provider="directus" :src="content.images[0].directus_files_id" loading="eager"
-          fetchpriority="high" preload placeholder format="webp" quality="80"
-          sizes="(max-width: 768px) 100vw, 768px"
+        <NuxtImg provider="directus" :src="content.images[0].directus_files_id" loading="eager" fetchpriority="high"
+          preload placeholder format="webp" quality="80" sizes="(max-width: 768px) 100vw, 768px"
           class="aspect-[16/7] object-cover w-full transition-transform duration-500" />
         <!-- 标题叠加在图片下方，带模糊背景 -->
         <div class="absolute bottom-0 left-0 w-full px-4 py-3 bg-neutral-900/40 backdrop-blur-sm">
@@ -16,8 +15,8 @@
       </div>
       <!-- 图库轮播显示 -->
       <div v-else class="relative overflow-hidden rounded-t-sm">
-        <UCarousel v-slot="{ item, index }: { item: any, index: number }" autoplay class-names
-          wheel-gestures :items="carouselImages">
+        <UCarousel v-slot="{ item, index }: { item: any, index: number }" autoplay class-names wheel-gestures
+          :items="carouselImages">
           <div class="relative">
             <NuxtImg provider="directus" :src="item.directus_files_id" loading="lazy" placeholder
               class="aspect-[16/7] object-cover w-full rounded-t-sm transition-transform duration-500" />
@@ -40,19 +39,18 @@
     <template #footer>
       <div class="flex items-center justify-between mb-3">
         <div class="flex items-center gap-1.5">
-          <SharedAvatar :src="userAvatarUrl || undefined" size="2xs"
-            :alt="content.user_created.first_name" class="mr-0.5" />
+          <SharedAvatar :src="userAvatarUrl || undefined" size="2xs" :alt="content.user_created.first_name"
+            class="mr-0.5" />
           <span class="text-[15px] text-neutral-400 dark:text-neutral-500 font-medium">{{
             content.user_created.first_name }}</span>
-          <span class="mx-1 text-neutral-300 dark:text-neutral-700">&bull;</span>
-          <span class="text-sm text-neutral-400 dark:text-neutral-600">{{
+          <span class="mx-1 text-neutral-300 dark:text-neutral-700 pt-[2px]">&bull;</span>
+          <span class="text-sm text-neutral-400 dark:text-neutral-600 pt-[2px]">{{
             useDateFormatter(content.date_created)
-          }}</span>
+            }}</span>
         </div>
         <SharedBookmarkButton :content-id="content.id" :icon-size="19" />
       </div>
-      <NuxtLink :to="{ name: 'article-id', params: { id: content.id } }"
-        class="block hover:no-underline">
+      <NuxtLink :to="{ name: 'article-id', params: { id: content.id } }" class="block hover:no-underline">
         <div class="text-neutral-500 dark:text-neutral-400 line-clamp-3 mb-4">
           {{ cleanBody }}
         </div>
@@ -63,8 +61,7 @@
             <SharedLikeButton :content-id="content.id" :icon-size="21" likeType="clap" />
           </div>
           <div class="flex items-center gap-1">
-            <SharedCommentCounter :content-id="content.id" :allow-comments="content.allow_comments"
-              :icon-size="18" />
+            <SharedCommentCounter :content-id="content.id" :allow-comments="content.allow_comments" :icon-size="18" />
           </div>
           <div class="flex items-center gap-1">
             <SharedContentViews :content-id="content.id" :icon-size="19" />
@@ -97,17 +94,14 @@ const cleanBody = computed(() => cleanMarkdown(props.content.body));
 const displayType = computed(() => {
   const { images, content_type_id } = props.content;
 
-  // 如果没有图片，显示文本
-  if (!images?.length) return "text";
-
   // 如果只有一张图片，显示单图
   if (images.length === 1) return "single";
 
   // 如果是图库类型且有多张图片，显示轮播
   if (content_type_id.name === "pictures" && images.length > 1) return "carousel";
 
-  // 默认显示文本
-  return "text";
+  // 默认显示
+  return "single";
 });
 
 const carouselImages = computed(() =>

@@ -6,8 +6,10 @@
     </div>
 
     <template v-if="src">
-      <NuxtImg provider="directus" :src="src" :alt="alt"
+      <NuxtImg v-if="!isExternal" :provider="provider" :src="src" :alt="alt"
         :class="[sizeClass, 'rounded-full object-cover']" @load="onImageLoad" v-bind="$attrs" />
+      <NuxtImg v-else :src="src" :alt="alt" :class="[sizeClass, 'rounded-full object-cover']" @load="onImageLoad"
+        v-bind="$attrs" />
     </template>
     <template v-else>
       <div :class="[
@@ -27,12 +29,14 @@
 <script setup lang="ts">
 const props = withDefaults(
   defineProps<{
+    provider?: string;
     src?: string;
     alt?: string;
     size?: "2xs" | "xs" | "sm" | "2sm" | "md" | "lg" | "xl";
     loadingIcon?: string;
   }>(),
   {
+    provider: "directus",
     size: "md",
     loadingIcon: "svg-spinners:ring-resize",
   }
@@ -90,6 +94,10 @@ const textSizeClass = computed(() => {
     xl: "w-14 h-14",
   };
   return sizes[props.size] || sizes.md;
+});
+
+const isExternal = computed(() => {
+  return !!props.src && /^https?:\/\//.test(props.src);
 });
 
 const onImageLoad = () => {

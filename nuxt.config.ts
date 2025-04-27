@@ -26,6 +26,7 @@ export default defineNuxtConfig({
       directusWebSocketUrl: import.meta.env.DIRECTUS_WEBSOCKET_URL,
       ipDataApiUrl: import.meta.env.PUBLIC_IPDATA_API_URL,
     },
+    privateGitHubToken: process.env.PRIVATE_GITHUB_ACCESS_TOKENS,
   },
 
   app: {

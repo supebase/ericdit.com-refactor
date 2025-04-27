@@ -17,6 +17,7 @@ export interface ContentItem {
   date_created: string;
   date_updated: string;
   views: number;
+  github_repo?: string;
 }
 
 export interface ContentQueryOptions {
