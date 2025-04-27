@@ -26,7 +26,8 @@
           enter-from-class="transform translate-y-3 opacity-0"
           enter-to-class="transform translate-y-0 opacity-100">
           <template #default>
-            <component :is="getContentComponent(content)" v-bind="getContentProps(content)" />
+            <component v-bind="getContentComponentAndProps(content).props"
+              :is="getContentComponentAndProps(content).is" />
           </template>
         </SharedFadeIn>
       </div>
@@ -55,23 +56,16 @@
 </template>
 
 <script setup lang="ts">
-function getContentComponent(content: any) {
+import type { ContentItem } from '~/types';
+
+function getContentComponentAndProps(content: any) {
   if (content.github_repo) {
-    return resolveComponent('ContentGithubCard');
+    return { is: resolveComponent('ContentGithubCard'), props: { 'github-repo': content.github_repo } };
   }
   if (!content.title) {
-    return resolveComponent('ContentTalkCard');
+    return { is: resolveComponent('ContentTalkCard'), props: { talk: content } };
   }
-  return resolveComponent('ContentCard');
-}
-function getContentProps(content: any) {
-  if (content.github_repo) {
-    return { 'github-repo': content.github_repo };
-  }
-  if (!content.title) {
-    return { talk: content };
-  }
-  return { content };
+  return { is: resolveComponent('ContentCard'), props: { content } };
 }
 
 const { getContents, subscribeContents } = useContents();
@@ -114,7 +108,7 @@ const {
   refresh,
   status,
   error,
-} = await useLazyAsyncData("contents", () =>
+} = await useLazyAsyncData<ContentItem[] | null>("contents", () =>
   getContents({
     fields: [...CONTENT_FIELDS],
     sort: ["-date_created"],

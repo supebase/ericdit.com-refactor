@@ -16,6 +16,8 @@
 </template>
 
 <script setup lang="ts">
+import type { ContentItem } from "~/types";
+
 const CommentThread = defineAsyncComponent(() => import("~/components/comment/CommentThread.vue"));
 
 const route = useRoute();
@@ -37,7 +39,7 @@ const {
   refresh,
   status,
   error,
-} = await useLazyAsyncData(
+} = await useLazyAsyncData<ContentItem | null>(
   `content-${route.params.id}`,
   () =>
     getContent(route.params.id as string, {

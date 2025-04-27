@@ -17,7 +17,7 @@
                     </span>
                 </div>
             </div>
-            <div v-if="talk.images.length" class="w-full flex justify-center pt-3">
+            <div v-if="talk.images?.length" class="w-full flex justify-center pt-3">
                 <NuxtImg provider="directus" :src="talk.images?.[0]?.directus_files_id"
                     loading="eager" fetchpriority="high" preload placeholder format="webp"
                     quality="80" sizes="(max-width: 768px) 100vw, 768px"
@@ -58,10 +58,14 @@ const userAvatarUrl = computed(() =>
 const cleanBody = computed(() => cleanMarkdown(props.talk.body));
 
 // 预加载图片
-onMounted(() => {
-    if (props.talk.images?.[0]) {
-        const img = new Image();
-        img.src = props.talk.images[0].directus_files_id;
-    }
-});
+watch(
+    () => props.talk.images?.[0]?.directus_files_id,
+    (imgSrc) => {
+        if (imgSrc) {
+            const img = new window.Image();
+            img.src = imgSrc;
+        }
+    },
+    { immediate: true }
+);
 </script>

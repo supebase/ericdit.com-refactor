@@ -29,7 +29,7 @@
                                 {{ projectInfo.projectDescription }}</span>
                             <span class="text-sm text-neutral-400 dark:text-neutral-500">#{{
                                 projectInfo.prNumber
-                            }} {{ projectInfo.description }}</span>
+                                }} {{ projectInfo.description || '项目暂无描述' }}</span>
                         </div>
                     </div>
                 </div>
@@ -37,7 +37,7 @@
                     <div
                         class="flex items-center space-x-1.5 text-neutral-400 dark:text-neutral-500">
                         <UIcon name="hugeicons:star" class="size-[18px]" />
-                        <div class="tabular-nums text-sm mt-[3px]">{{ projectInfo.stargazersCount }}
+                        <div class="tabular-nums mt-[3px]">{{ projectInfo.stargazersCount }}
                         </div>
                     </div>
                     <UBadge variant="soft" color="primary" class="z-2">
@@ -47,7 +47,7 @@
                         {{ projectInfo.watchersCount }} 人关注
                     </UBadge>
                     <UBadge variant="soft" color="neutral" class="z-2">
-                        {{ useDateFormatter(projectInfo.projectUpdatedAt) }}更新
+                        {{ formattedDate }}更新
                     </UBadge>
                 </div>
 
@@ -64,6 +64,12 @@ const props = defineProps<{
 }>();
 
 const { isLoaded, projectInfo, error, fetchProjectInfo } = useGithubRepo(props.githubRepo);
+
+const formattedDate = computed(() => {
+    return projectInfo.value?.projectUpdatedAt
+        ? useDateFormatter(projectInfo.value.projectUpdatedAt)
+        : ""
+})
 
 onMounted(() => {
     fetchProjectInfo();

@@ -57,7 +57,7 @@
           {{ cleanBody }}
         </div>
       </NuxtLink>
-      <div class="flex justify-between items-center text-sm text-neutral-400 dark:text-neutral-600">
+      <div class="flex justify-between items-center text-neutral-400 dark:text-neutral-600">
         <div class="flex gap-10">
           <div class="flex items-center gap-1">
             <SharedLikeButton :content-id="content.id" :icon-size="21" likeType="clap" />
@@ -70,7 +70,7 @@
             <SharedContentViews :content-id="content.id" :icon-size="19" />
           </div>
         </div>
-        <div>阅读约 {{ useArticleMetrics(content.body) }}</div>
+        <div class="text-sm">阅读约 {{ useArticleMetrics(content.body) }}</div>
       </div>
     </template>
   </UCard>
@@ -93,19 +93,12 @@ const userAvatarUrl = computed(() =>
 // 处理后的文本内容
 const cleanBody = computed(() => cleanMarkdown(props.content.body));
 
-// 计算显示类型
-const displayType = computed(() => {
-  const { images } = props.content;
+// 计算显示类型（简化）
+const displayType = computed(() =>
+  props.content.images?.length === 1 ? "single" : "carousel"
+);
 
-  // 如果只有一张图片，显示单图
-  if (images.length === 1) {
-    return "single";
-  } else {
-    // 如果有多张图片，显示轮播
-    return "carousel";
-  }
-});
-
+// 过滤有效图片
 const carouselImages = computed(() =>
   (props.content.images ?? []).filter(
     (img): img is { directus_files_id: string } =>
@@ -114,10 +107,14 @@ const carouselImages = computed(() =>
 );
 
 // 预加载图片
-onMounted(() => {
-  if (displayType.value === "single" && props.content.images?.[0]) {
-    const img = new Image();
-    img.src = props.content.images[0].directus_files_id;
-  }
-});
+watch(
+  () => [displayType.value, props.content.images?.[0]?.directus_files_id],
+  ([type, imgSrc]) => {
+    if (type === "single" && imgSrc) {
+      const img = new window.Image();
+      img.src = imgSrc;
+    }
+  },
+  { immediate: true }
+);
 </script>

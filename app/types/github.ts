@@ -2,17 +2,17 @@ export interface GitHubProjectInfo {
     owner: string;
     repo: string;
     title: string;
-    prNumber: number;
-    stage: string;
-    description: string;
+    stage?: string | null;
+    description: string | null;
+    prNumber?: number | null;
     prAuthor: string;
     avatarUrl: string;
     projectAuthor: string;
     projectAvatarUrl: string;
+    projectDescription: string;
+    projectUpdatedAt: string | null;
     forksCount: number;
     stargazersCount: number;
     watchersCount: number;
-    projectDescription: string;
-    projectUpdatedAt: string;
-    mainLanguage: string;
+    mainLanguage?: string | null;
 }
