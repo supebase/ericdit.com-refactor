@@ -13,7 +13,7 @@ export default defineNuxtConfig({
   },
 
   experimental: {
-    payloadExtraction: false,
+    payloadExtraction: true,
     renderJsonPayloads: true,
     crossOriginPrefetch: true, // 启用跨域预取优化
   },
@@ -51,6 +51,8 @@ export default defineNuxtConfig({
   vite: {
     build: {
       target: "esnext",
+      minify: "esbuild",
+      sourcemap: false,
       rollupOptions: {
         output: {
           manualChunks: {
@@ -63,8 +65,8 @@ export default defineNuxtConfig({
       modulePreload: {
         polyfill: false,
       },
-      reportCompressedSize: true,
-      chunkSizeWarningLimit: 1000,
+      reportCompressedSize: false,
+      chunkSizeWarningLimit: 700,
     },
     optimizeDeps: {
       include: ["vue", "vue-router", "@vueuse/core", "@directus/sdk"],
