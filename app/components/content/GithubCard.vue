@@ -27,9 +27,6 @@
                         <div class="text-neutral-400 dark:text-neutral-500 space-y-1">
                             <span class="text-neutral-500 dark:text-neutral-400 line-clamp-2">
                                 {{ projectInfo.projectDescription }}</span>
-                            <span class="text-sm text-neutral-400 dark:text-neutral-500">#{{
-                                projectInfo.prNumber
-                                }} {{ projectInfo.description || '项目暂无描述' }}</span>
                         </div>
                     </div>
                 </div>
@@ -37,7 +34,8 @@
                     <div
                         class="flex items-center space-x-1.5 text-neutral-400 dark:text-neutral-500">
                         <UIcon name="hugeicons:star" class="size-[18px]" />
-                        <div class="tabular-nums mt-[3px]">{{ projectInfo.stargazersCount }}
+                        <div class="tabular-nums text-sm mt-[3px]">{{
+                            formatStarCount(projectInfo.stargazersCount) }}
                         </div>
                     </div>
                     <UBadge variant="soft" color="primary" class="z-2">
@@ -70,6 +68,13 @@ const formattedDate = computed(() => {
         ? useDateFormatter(projectInfo.value.projectUpdatedAt)
         : ""
 })
+
+const formatStarCount = (num: number) => {
+    if (num >= 1000) {
+        return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+    }
+    return num.toString();
+};
 
 onMounted(() => {
     fetchProjectInfo();

@@ -77,7 +77,7 @@ export default defineEventHandler(async (event) => {
         projectAvatarUrl: repoData.owner.avatar_url,
         forksCount: repoData.forks_count,
         stargazersCount: repoData.stargazers_count,
-        watchersCount: repoData.watchers_count,
+        watchersCount: repoData.subscribers_count,
         projectDescription: repoData.description,
         projectUpdatedAt: repoData.updated_at,
         mainLanguage: mainLanguage,

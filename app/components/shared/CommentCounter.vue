@@ -6,10 +6,10 @@
         ? 'hugeicons:comment-01'
         : 'hugeicons:comment-02'
       " :size="iconSize" class="text-neutral-400 dark:text-neutral-500" />
-    <span class="text-base text-neutral-400 dark:text-neutral-500"
+    <span class="text-sm text-neutral-400 dark:text-neutral-500"
       :class="{ 'flex items-center': !allowComments }">
       <template v-if="!allowComments">
-        <span class="text-base tabular-nums">0</span>
+        <span class="tabular-nums">0</span>
       </template>
       <template v-else>
         <SharedAnimateNumber :value="commentsCount" />

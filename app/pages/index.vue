@@ -26,8 +26,14 @@
           enter-from-class="transform translate-y-3 opacity-0"
           enter-to-class="transform translate-y-0 opacity-100">
           <template #default>
-            <component v-bind="getContentComponentAndProps(content).props"
-              :is="getContentComponentAndProps(content).is" />
+            <div class="relative overflow-hidden">
+              <span v-if="content.pinned"
+                class="absolute top-3 -right-8 z-10 rotate-45 px-8 py-0.5 font-medium text-[11px] uppercase bg-primary-500 backdrop-blur-sm text-highlighted">
+                pinned
+              </span>
+              <component v-bind="getContentComponentAndProps(content).props"
+                :is="getContentComponentAndProps(content).is" />
+            </div>
           </template>
         </SharedFadeIn>
       </div>
@@ -76,6 +82,7 @@ const CONTENT_FIELDS = [
   "body",
   "images.*",
   "allow_comments",
+  "pinned",
   "github_repo",
   "user_created.*",
   "date_created",
@@ -111,7 +118,7 @@ const {
 } = await useLazyAsyncData<ContentItem[] | null>("contents", () =>
   getContents({
     fields: [...CONTENT_FIELDS],
-    sort: ["-date_created"],
+    sort: ["-pinned", "-date_created"],
     filter: {
       status: { _eq: "published" },
     },
@@ -131,7 +138,7 @@ async function loadMore() {
     const nextPage = page.value + 1;
     const newContents = await getContents({
       fields: [...CONTENT_FIELDS],
-      sort: ["-date_created"],
+      sort: ["-pinned", "-date_created"],
       filter: {
         status: { _eq: "published" },
       },

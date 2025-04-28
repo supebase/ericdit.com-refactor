@@ -10,6 +10,7 @@ export interface ContentItem {
   date_created: string;
   date_updated: string;
   views: number;
+  pinned: boolean;
   github_repo?: string;
 }
 

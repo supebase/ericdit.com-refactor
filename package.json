@@ -1,6 +1,6 @@
 {
   "name": "eric-app",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "private": true,
   "type": "module",
   "scripts": {
@@ -24,7 +24,7 @@
     "@iconify-json/svg-spinners": "^1.2.2",
     "@nuxtjs/mdc": "^0.17.0",
     "@tailwindcss/typography": "^0.5.16",
-    "@types/node": "^22.15.2",
+    "@types/node": "^22.15.3",
     "nuxt": "^3.17.0",
     "typescript": "^5.8.3",
     "vue-router": "^4.5.1"
