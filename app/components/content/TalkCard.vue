@@ -6,7 +6,7 @@
                 <NuxtImg provider="directus" :src="talk.images?.[0]?.directus_files_id"
                     loading="eager" fetchpriority="high" preload placeholder format="webp"
                     quality="80" sizes="(max-width: 768px) 100vw, 768px"
-                    class="aspect-[16/3] object-cover rounded-t-sm w-full mask-b-from-0" />
+                    class="aspect-[16/4] object-cover rounded-t-sm w-full mask-b-from-0" />
                 <!-- 悬浮头像（有图片时带outline） -->
                 <div
                     class="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-1/2 z-10 rounded-full outline-3 outline-neutral-100/50 dark:outline-neutral-800/50">
@@ -24,7 +24,7 @@
             <div class="px-4 flex flex-col justify-center items-center w-full"
                 :class="talk.images?.length ? 'pt-6' : 'pt-1'">
                 <div class="flex flex-col items-center mt-2">
-                    <div class="text-neutral-500 dark:text-neutral-400 text-lg text-center italic">
+                    <div class="text-neutral-500 dark:text-neutral-400 text-base text-center italic">
                         {{ cleanBody }}
                     </div>
                     <div

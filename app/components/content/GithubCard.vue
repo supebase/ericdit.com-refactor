@@ -1,5 +1,5 @@
 <template>
-    <div v-if="!isLoaded" class="flex flex-col items-center justify-center mx-auto pt-3 space-y-3">
+    <div v-if="!isLoaded" class="flex flex-col items-center justify-center mx-auto pt-3 space-y-3 h-[100px] bg-white/50 dark:bg-neutral-800/50 rounded-sm">
         <UProgress animation="swing" color="primary" size="sm" class="max-w-[130px]" />
         <div class="text-sm text-neutral-400 dark:text-neutral-600">正在获取 GitHub 数据</div>
     </div>
