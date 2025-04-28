@@ -1,21 +1,19 @@
 <template>
   <article class="py-5 space-y-5">
-    <div class="text-2xl font-bold">{{ content.title }}</div>
-    <div
-      class="flex justify-between items-center text-sm text-neutral-500 tabular-nums select-none">
+    <div class="text-2xl font-bold" v-if="content.title">{{ content.title }}</div>
+    <div class="flex justify-between items-center text-sm text-neutral-500 tabular-nums select-none">
       <div class="flex items-center space-x-3">
         <div>
-          <SharedAvatar :src="userAvatarUrl || undefined" size="2sm"
-            :alt="content.user_created.first_name" />
+          <SharedAvatar :src="userAvatarUrl || undefined" size="2sm" :alt="content.user_created.first_name" />
         </div>
         <div class="flex flex-col">
           <div class="text-[15px] text-neutral-700 dark:text-neutral-300 font-bold">
             {{ content.user_created.first_name }}
           </div>
           <div class="flex items-center text-[13px] space-x-2">
-            <div>{{ useDateFormatter(content.date_created) }}发布</div>
-            <span class="text-neutral-400 dark:text-neutral-600">&bull;</span>
-            <div>阅读约 {{ useArticleMetrics(content.body) }}</div>
+            <div>{{ useDateFormatter(content.date_created) }}{{ content.title ? '发布' : '甩出这么一句话' }}</div>
+            <span v-if="content.title" class="text-neutral-400 dark:text-neutral-600">&bull;</span>
+            <div v-if="content.title">阅读约 {{ useArticleMetrics(content.body) }}</div>
           </div>
         </div>
       </div>
@@ -41,13 +39,11 @@
       </div>
       <div class="flex-1 flex justify-center">
         <Donate>
-          <UIcon name="hugeicons:qr-code"
-            class="size-5 text-neutral-400 dark:text-neutral-500 cursor-pointer" />
+          <UIcon name="hugeicons:qr-code" class="size-5 text-neutral-400 dark:text-neutral-500 cursor-pointer" />
         </Donate>
       </div>
       <div class="flex-1 flex justify-end">
-        <UIcon name="hugeicons:share-05"
-          class="size-5 text-neutral-400 dark:text-neutral-500 cursor-pointer"
+        <UIcon name="hugeicons:share-05" class="size-5 text-neutral-400 dark:text-neutral-500 cursor-pointer"
           @click="shareButton(content.title, getPreviewText(content.body))" />
       </div>
     </div>

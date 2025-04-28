@@ -61,6 +61,15 @@ export default defineAppConfig({
         content: "rounded-[calc(var(--ui-radius)*1)]", // 弹出框内容圆角大小
       },
     },
+    carousel: {
+      variants: {
+        active: {
+          true: {
+            dot: "bg-primary-500" // 激活的轮播点颜色
+          }
+        }
+      }
+    },
   },
 
   // 消息提示配置
