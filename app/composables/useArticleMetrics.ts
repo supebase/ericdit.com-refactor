@@ -1,9 +1,4 @@
-/**
- * 文章图片元数据接口
- */
-interface ImageMeta {
-  directus_files_id: string;
-}
+import type { ImageMeta } from "~/types";
 
 /**
  * 阅读速度配置常量

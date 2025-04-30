@@ -14,3 +14,8 @@ export interface CommentQueryOptions {
   sort?: string[];
   filter?: Record<string, any>;
 }
+
+export interface ReplyData {
+  commentId: string;
+  content: string;
+}

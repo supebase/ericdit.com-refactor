@@ -1,14 +1,4 @@
-import type { UserProfile, UserStatus } from "~/types";
-
-// 添加返回类型接口
-interface UserStatusComposable {
-  usersStatus: Ref<Record<string, boolean>>;
-  updateUserStatus: () => Promise<void>;
-  checkUserStatus: (userId: string) => Promise<boolean>;
-  updateLastActivity: () => void;
-  subscribeUserStatus: (userId: string) => Promise<(() => void) | undefined>;
-  cleanup: () => void;
-}
+import type { UserStatusComposable, UserProfile, UserStatus } from "~/types";
 
 /**
  * 用户状态管理组合式函数

@@ -4,6 +4,10 @@ export interface ProfileAvatarReturn {
   uploadAvatar: (file: File) => Promise<void>;
 }
 
+export interface ImageMeta {
+  directus_files_id: string;
+}
+
 export interface UserStatsReturn {
   totalUsers: Ref<number>;
   fetchTotalUsers: () => Promise<void>;

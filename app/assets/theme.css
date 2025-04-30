@@ -1,0 +1,14 @@
+:root {
+  --ui-bg: var(--color-neutral-200);
+  --ui-bg-elevated: var(--color-white);
+  --ui-border: var(--ui-color-neutral-300);
+  --ui-radius: 0.5rem;
+  --animation-duration: 0.3s;
+  --animation-timing: ease;
+}
+
+.dark {
+  --ui-bg: var(--color-neutral-900);
+  --ui-bg-elevated: var(--ui-color-neutral-800);
+  --ui-border: var(--ui-color-neutral-800);
+}

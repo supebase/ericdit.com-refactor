@@ -11,3 +11,12 @@ export interface UserStatus {
   user_created: UserProfile;
   last_activity_at: string | null;
 }
+
+export interface UserStatusComposable {
+  usersStatus: Ref<Record<string, boolean>>;
+  updateUserStatus: () => Promise<void>;
+  checkUserStatus: (userId: string) => Promise<boolean>;
+  updateLastActivity: () => void;
+  subscribeUserStatus: (userId: string) => Promise<(() => void) | undefined>;
+  cleanup: () => void;
+}

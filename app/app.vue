@@ -63,6 +63,11 @@ const settings = ref<any>(null);
 
 // 组件挂载时初始化用户会话
 onMounted(async () => {
+  if (typeof window !== 'undefined') {
+    useEventListener(document, 'gesturestart', (e) => e.preventDefault())
+    useEventListener(document, 'dblclick', (e) => e.preventDefault())
+  }
+
   settings.value = await getSettings();
 
   try {

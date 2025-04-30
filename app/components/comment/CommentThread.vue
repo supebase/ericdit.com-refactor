@@ -86,15 +86,11 @@
 </template>
 
 <script setup lang="ts">
+import type { ReplyData } from "~/types";
 import { AUTH_ERROR_MESSAGES } from "~/types/auth";
 const { isAuthenticated } = useAuth();
 
 const CommentThreadItem = defineAsyncComponent(() => import("~/components/comment/ThreadItem.vue"));
-
-interface ReplyData {
-  commentId: string;
-  content: string;
-}
 
 const props = defineProps<{
   contentId: string;

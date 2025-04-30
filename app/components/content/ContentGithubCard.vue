@@ -1,5 +1,6 @@
 <template>
-    <div v-if="!isLoaded" class="flex flex-col items-center justify-center mx-auto pt-3 space-y-3 h-[100px] bg-white/50 dark:bg-neutral-800/50 rounded-sm">
+    <div v-if="!isLoaded"
+        class="flex flex-col items-center justify-center mx-auto pt-3 space-y-3 h-[100px] bg-white/50 dark:bg-neutral-800/50 rounded-sm">
         <UProgress animation="swing" color="primary" size="sm" class="max-w-[130px]" />
         <div class="text-sm text-neutral-400 dark:text-neutral-600">正在获取 GitHub 数据</div>
     </div>
@@ -69,14 +70,19 @@ const formattedDate = computed(() => {
         : ""
 })
 
+// 使用 Intl.NumberFormat 优雅格式化星标数量
 const formatStarCount = (num: number) => {
     if (num >= 1000) {
-        return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+        return new Intl.NumberFormat('en-US', {
+            notation: 'compact',
+            maximumFractionDigits: 1
+        }).format(num);
     }
     return num.toString();
 };
 
-onMounted(() => {
+// 使用 watchEffect 监听 githubRepo 变化自动刷新
+watchEffect(() => {
     fetchProjectInfo();
 });
 </script>

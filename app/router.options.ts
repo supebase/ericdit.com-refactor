@@ -1,5 +1,21 @@
 import type { RouterConfig } from "@nuxt/schema";
 
+function isAuthPage(path: string) {
+  return path.includes("/login") || path.includes("/register");
+}
+
+function getPreviousValidPath(history: string[], currentPath: string): string {
+  let previousPath = "/";
+  while (history.length > 0) {
+    const candidate = history.pop();
+    if (typeof candidate === "string" && !isAuthPage(candidate) && candidate !== currentPath) {
+      previousPath = candidate;
+      break;
+    }
+  }
+  return previousPath;
+}
+
 // 添加安全导航函数
 export const safeBack = () => {
   const route = useRoute();
@@ -9,8 +25,8 @@ export const safeBack = () => {
     const originalPath = safeGetItem("originalPath");
 
     // 如果是从登录/注册页面返回
-    if (route.path.includes("/login") || route.path.includes("/register")) {
-      if (originalPath && !originalPath.includes("/login") && !originalPath.includes("/register")) {
+    if (isAuthPage(route.path)) {
+      if (originalPath && !isAuthPage(originalPath)) {
         safeRemoveItem("originalPath");
         return navigateTo(originalPath);
       }
@@ -23,19 +39,7 @@ export const safeBack = () => {
     }
 
     // 获取上一个有效路径
-    let previousPath = "/";
-    while (history.length > 0) {
-      const candidate = history.pop();
-      if (
-        typeof candidate === "string" &&
-        !candidate.includes("/login") &&
-        !candidate.includes("/register") &&
-        candidate !== route.path
-      ) {
-        previousPath = candidate;
-        break;
-      }
-    }
+    const previousPath = getPreviousValidPath(history, route.path);
 
     safeSetItem("routeHistory", JSON.stringify(history));
     return navigateTo(previousPath);
@@ -46,7 +50,8 @@ export const safeBack = () => {
 };
 
 export default <RouterConfig>{
-  scrollBehavior(to, from, savedPosition) {
+  // 可选优化：支持异步滚动
+  async scrollBehavior(to, from, savedPosition) {
     const scrollContainer = document.querySelector(".overflow-y-auto");
     if (!scrollContainer) return;
 

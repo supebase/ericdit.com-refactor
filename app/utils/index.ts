@@ -1,6 +1,120 @@
+import type { CleanupController } from "~/types";
 import type { ValidationResult } from "~/types/auth";
 import { AUTH_VALIDATION_RULES } from "~/types/auth";
 import forbiddenUsernames from "~/data/forbidden_usernames.json";
+
+/**
+ * createCleanup
+ * 创建清理控制器，用于统一管理组件/模块中的清理逻辑
+ * - 支持注册多个清理函数（自动去重）
+ * - 支持批量执行并自动清空
+ * @returns CleanupController 实例
+ */
+export const createCleanup = (): CleanupController => {
+  // 使用 Set 存储所有注册的清理函数，避免重复
+  const cleanupFns = new Set<() => void>();
+
+  /**
+   * 注册清理函数
+   * @param fn 清理回调
+   */
+  const addCleanup = (fn: () => void) => {
+    cleanupFns.add(fn);
+  };
+
+  /**
+   * 执行所有清理函数，并清空队列
+   */
+  const runCleanup = () => {
+    cleanupFns.forEach((fn) => fn());
+    cleanupFns.clear();
+  };
+
+  return {
+    addCleanup,
+    runCleanup,
+  };
+};
+
+/**
+ * debounce
+ * 防抖函数：在指定延迟时间内只执行最后一次调用
+ * - 常用于输入、滚动等高频事件的性能优化
+ * @param fn 需要防抖处理的函数
+ * @param delay 延迟时间（毫秒）
+ * @returns 防抖后的新函数
+ */
+export const debounce = <T extends (...args: any[]) => any>(
+  fn: T,
+  delay: number
+): ((...args: Parameters<T>) => void) => {
+  return useDebounceFn(fn, delay);
+};
+
+/**
+ * escapeHtml
+ * HTML 转义函数：将特殊字符转为安全的 HTML 实体，防止 XSS 攻击
+ * @param text 待转义的字符串
+ * @returns 转义后的安全字符串
+ */
+export const escapeHtml = (text: string): string => {
+  // 类型和边界检查：只处理字符串类型
+  if (typeof text !== "string" || !text) return "";
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+};
+
+/**
+ * 安全设置 localStorage 项
+ * - 支持隐私模式或本地存储不可用时的异常捕获
+ * @param key 键名
+ * @param value 键值
+ * @returns 是否设置成功
+ */
+export function safeSetItem(key: string, value: string) {
+  try {
+    localStorage.setItem(key, value);
+    return true;
+  } catch (error) {
+    console.warn("无法访问本地存储，可能处于隐私模式:", error);
+    return false;
+  }
+}
+
+/**
+ * 安全获取 localStorage 项
+ * - 支持隐私模式或本地存储不可用时的异常捕获
+ * @param key 键名
+ * @returns 获取到的值或 null
+ */
+export function safeGetItem(key: string): string | null {
+  try {
+    return localStorage.getItem(key);
+  } catch (error) {
+    console.warn("无法访问本地存储，可能处于隐私模式:", error);
+    return null;
+  }
+}
+
+/**
+ * 安全移除 localStorage 项
+ * - 支持隐私模式或本地存储不可用时的异常捕获
+ * @param key 键名
+ * @returns 是否移除成功
+ */
+export function safeRemoveItem(key: string) {
+  try {
+    localStorage.removeItem(key);
+    return true;
+  } catch (error) {
+    console.warn("无法访问本地存储，可能处于隐私模式:", error);
+    return false;
+  }
+}
 
 /**
  * 校验邮箱格式是否合法
@@ -26,7 +140,7 @@ export const validateUsername = (name: string): ValidationResult => {
 
   // 先进行敏感词检查
   const normalizedName = name.toLowerCase();
-  if (forbiddenUsernames.some(forbidden => normalizedName.includes(forbidden))) {
+  if (forbiddenUsernames.some((forbidden) => normalizedName.includes(forbidden))) {
     return { valid: false, message: "该名字包含系统保留字或敏感词，请使用其他名字。" };
   }
 
@@ -76,7 +190,7 @@ export const validatePassword = (password: string): ValidationResult => {
   if (!(hasUpperCase && hasLowerCase && hasNumbers && hasSpecialChar)) {
     return {
       valid: false,
-      message: "密码必须包含大小写字母、数字和特殊字符"
+      message: "密码必须包含大小写字母、数字和特殊字符",
     };
   }
 

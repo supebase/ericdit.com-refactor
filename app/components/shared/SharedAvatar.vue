@@ -2,14 +2,14 @@
   <div class="relative">
     <div v-if="avatarLoading && src"
       class="absolute inset-0 ring-1 ring-neutral-100 dark:ring-neutral-800 flex items-center justify-center bg-neutral-50 dark:bg-neutral-800 rounded-full">
-      <UIcon :name="loadingIcon" :class="[`size-${iconSize}`, 'text-neutral-500']" />
+      <UIcon :name="loadingIcon" :class="[sizeClass, 'text-neutral-500 scale-50']" />
     </div>
 
     <template v-if="src">
       <NuxtImg v-if="!isExternal" :provider="provider" :src="src" :alt="alt"
         :class="[sizeClass, 'rounded-full object-cover']" @load="onImageLoad" v-bind="$attrs" />
-      <NuxtImg v-else :src="src" :alt="alt" :class="[sizeClass, 'rounded-full object-cover']" @load="onImageLoad"
-        v-bind="$attrs" />
+      <NuxtImg v-else :src="src" :alt="alt" :class="[sizeClass, 'rounded-full object-cover']"
+        @load="onImageLoad" v-bind="$attrs" />
     </template>
     <template v-else>
       <div :class="[

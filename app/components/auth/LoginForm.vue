@@ -28,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-import { validateEmail } from "~/utils/validation";
+import { validateEmail } from "~/utils";
 import { AUTH_ERROR_MESSAGES } from "~/types/auth";
 import { safeBack } from "~/router.options";
 
