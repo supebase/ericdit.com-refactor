@@ -6,7 +6,8 @@
     <template #content>
       <UCommandPalette v-model:search-term="searchQuery" :loading="isLoading" :groups="groups"
         icon="hugeicons:search-01" :placeholder="'请输入至少 ' + MIN_SEARCH_LENGTH + ' 个字符'"
-        class="h-[30vh]" close @update:open="isOpen = $event" @update:model-value="onSelect">
+        class="h-[30vh]" close @update:open="isOpen = $event" @update:model-value="onSelect"
+        @compositionstart="handleCompositionStart" @compositionend="handleCompositionEnd">
         <template #item="{ item }">
           <div class="flex items-center justify-between mr-2 rounded-sm w-full">
             <div class="flex items-center gap-3 flex-1 min-w-0">
@@ -21,7 +22,7 @@
                 <span class="text-sm font-medium line-clamp-1">{{ item.label }}</span>
                 <span class="text-xs text-neutral-400 dark:text-neutral-600 shrink-0">{{
                   item.suffix
-                  }}</span>
+                }}</span>
               </div>
             </div>
           </div>
@@ -30,7 +31,8 @@
           <div
             class="flex flex-col items-center justify-center py-4 gap-2 text-neutral-400 dark:text-neutral-600">
             <p v-if="error">{{ error }}</p>
-            <p v-else-if="searchQuery && searchQuery.length < MIN_SEARCH_LENGTH" class="animate-pulse">请继续输入</p>
+            <p v-else-if="searchQuery && searchQuery.length < MIN_SEARCH_LENGTH"
+              class="animate-pulse">请继续输入</p>
             <p v-else-if="searchQuery && !isLoading && !searchResults.length">检索记录中无对应关键词数据</p>
             <p v-else>请开始输入相关关键词，进行信息检索操作。</p>
           </div>
@@ -47,6 +49,17 @@ const searchQuery = ref("");
 const isLoading = ref(false);
 const searchResults = ref<any[]>([]);
 const error = ref<string | null>(null);
+
+const isComposing = ref(false);
+
+function handleCompositionStart() {
+  isComposing.value = true;
+}
+function handleCompositionEnd() {
+  isComposing.value = false;
+  // 组合输入结束后，立即触发一次搜索
+  debouncedSearch();
+}
 
 const { getContents } = useContents();
 
@@ -86,9 +99,10 @@ const performSearch = async () => {
   }
 };
 
-const debouncedSearch = useThrottleFn(performSearch, 500);
+const debouncedSearch = useThrottleFn(performSearch, 200);
 
 watch(searchQuery, (newVal) => {
+  if (isComposing.value) return; // 输入法组合中不触发搜索
   if (!newVal.trim()) {
     searchResults.value = [];
     error.value = null;

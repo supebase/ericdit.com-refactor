@@ -1,6 +1,6 @@
 {
   "name": "eric-app",
-  "version": "1.2.7",
+  "version": "1.2.8",
   "private": true,
   "type": "module",
   "scripts": {
@@ -14,13 +14,13 @@
   "dependencies": {
     "@directus/sdk": "^19.1.0",
     "@nuxt/image": "^1.10.0",
-    "@nuxt/ui": "^3.1.0",
+    "@nuxt/ui": "^3.1.1",
     "@vueuse/nuxt": "^13.1.0",
     "nuxt-emoji-picker": "^1.1.0",
     "vue": "^3.5.13"
   },
   "devDependencies": {
-    "@iconify-json/hugeicons": "^1.2.4",
+    "@iconify-json/hugeicons": "^1.2.5",
     "@iconify-json/svg-spinners": "^1.2.2",
     "@nuxtjs/mdc": "^0.17.0",
     "@tailwindcss/typography": "^0.5.16",

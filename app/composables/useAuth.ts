@@ -133,6 +133,29 @@ export const useAuth = () => {
     }
   };
 
+  /**
+   * 通过邮箱获取用户状态
+   * @param email - 用户邮箱
+   * @returns {Promise<"active" | "suspended" | null>} 用户状态
+   */
+  const getUserStatusByEmail = async (email: string): Promise<"active" | "suspended" | null> => {
+    try {
+      const users = await $directus.request(
+        $user.readUsers({
+          filter: { email: { _eq: email } },
+          fields: ["status"],
+          limit: 1,
+        })
+      );
+      if (users && users.length > 0) {
+        return users[0]?.status as "active" | "suspended";
+      }
+      return null;
+    } catch (error) {
+      return null;
+    }
+  };
+
   // 添加自动检查机制
   const startSessionCheck = () => {
     if (typeof window === "undefined") return;
@@ -170,6 +193,7 @@ export const useAuth = () => {
     register,
     updateUserLocation,
     refreshUser,
+    getUserStatusByEmail,
     startSessionCheck,
     validateEmail,
   };

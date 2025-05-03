@@ -10,8 +10,8 @@
     <div class="flex justify-between items-center px-3" v-if="isAuthenticated">
       <div class="flex items-center space-x-4">
         <ReactionsEmojiSelector @emoji="insertEmoji" />
-        <UBadge label="禁止输入特殊字符" color="error" variant="soft" size="lg"
-          class="transform duration-500 ease-in-out"
+        <UBadge :label="validation.commentMessage || '禁止输入特殊字符'" color="error" variant="soft"
+          size="lg" class="transform duration-500 ease-in-out"
           :class="!validation.isValid ? 'translate-x-0 opacity-100' : '-translate-x-3 opacity-0'" />
       </div>
       <div class="flex items-center space-x-6">
@@ -48,11 +48,16 @@ const INVALID_CHARS_REGEX = /[<>\/&"'`=;(){}[\]]/;
 const content = ref("");
 const commentInput = ref<{ $el: HTMLElement } | null>(null);
 
-const validation = computed(() => ({
-  isEmpty: !content.value.trim(),
-  isExceedLimit: content.value.length >= COMMENT_MAX_LENGTH,
-  isValid: !INVALID_CHARS_REGEX.test(content.value),
-}));
+const validation = computed(() => {
+  const baseValid = !INVALID_CHARS_REGEX.test(content.value);
+  const commentCheck = validateComment(content.value);
+  return {
+    isEmpty: !content.value.trim(),
+    isExceedLimit: content.value.length >= COMMENT_MAX_LENGTH,
+    isValid: baseValid && commentCheck.valid,
+    commentMessage: commentCheck.message,
+  };
+});
 
 const canSubmit = computed(() => {
   const { isEmpty, isExceedLimit, isValid } = validation.value;

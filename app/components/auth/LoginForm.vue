@@ -10,10 +10,6 @@
         :disabled="isSubmitting" />
     </div>
 
-    <div v-if="error" class="text-red-500 text-sm">
-      {{ error }}
-    </div>
-
     <UButton type="submit" size="xl" color="success" block :disabled="isSubmitting"
       :loading="isSubmitting">
       {{ isSubmitting ? "正在登录" : "立即登录" }}
@@ -32,12 +28,11 @@ import { validateEmail } from "~/utils";
 import { AUTH_ERROR_MESSAGES } from "~/types/auth";
 import { safeBack } from "~/router.options";
 
-const { login, updateUserLocation } = useAuth();
+const { login, updateUserLocation, getUserStatusByEmail } = useAuth();
 const toast = useToast();
 
 const email = ref("");
 const password = ref("");
-const error = ref("");
 const isSubmitting = ref(false);
 
 const handleSubmit = async () => {
@@ -57,6 +52,17 @@ const handleSubmit = async () => {
       description: "电子邮件地址格式不正确，请检查。",
       icon: "hugeicons:alert-02",
       color: "warning",
+    });
+    return;
+  }
+
+  const status = await getUserStatusByEmail(email.value);
+  if (status === "suspended") {
+    toast.add({
+      title: "登录提示",
+      description: "尝试登录次数太多已被停用，请联系管理员。",
+      icon: "hugeicons:alert-02",
+      color: "error",
     });
     return;
   }

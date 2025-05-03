@@ -2,6 +2,7 @@ import type { CleanupController } from "~/types";
 import type { ValidationResult } from "~/types/auth";
 import { AUTH_VALIDATION_RULES } from "~/types/auth";
 import forbiddenUsernames from "~/data/forbidden_usernames.json";
+import forbiddenCommentKeywords from "~/data/forbidden_comment_keywords.json";
 
 /**
  * createCleanup
@@ -194,5 +195,18 @@ export const validatePassword = (password: string): ValidationResult => {
     };
   }
 
+  return { valid: true, message: "" };
+};
+
+/**
+ * 校验评论内容是否包含敏感词
+ * @param comment 评论内容
+ * @returns 校验结果对象
+ */
+export const validateComment = (comment: string): { valid: boolean; message: string } => {
+  const normalizedComment = comment.toLowerCase();
+  if (forbiddenCommentKeywords.some((keyword) => normalizedComment.includes(keyword))) {
+    return { valid: false, message: "评论中包含敏感词" };
+  }
   return { valid: true, message: "" };
 };
