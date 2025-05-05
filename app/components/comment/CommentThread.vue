@@ -32,7 +32,8 @@
     </div>
 
     <UAlert v-if="!allowComments" :ui="{ wrapper: 'flex items-center' }" color="neutral"
-      variant="soft" description="本评论区已启动勿扰模式" class="mb-8 text-neutral-500">
+      variant="soft" description="本评论区已启动勿扰模式"
+      class="mb-8 text-neutral-500 relative overflow-hidden alert-diagonal-bg">
     </UAlert>
 
     <template v-else>
@@ -48,7 +49,8 @@
 
       <template v-else>
         <UAlert v-if="!totalComments" :ui="{ wrapper: 'flex items-center' }" color="neutral"
-          variant="soft" description="评论区竟无人类交互记录" class="mb-8 text-neutral-500">
+          variant="soft" description="评论区竟无人类交互记录"
+          class="mb-8 text-neutral-500 relative overflow-hidden alert-diagonal-bg">
         </UAlert>
 
         <div id="comments">

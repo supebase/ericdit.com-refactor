@@ -49,6 +49,23 @@ hr {
          prose-a:decoration-[1px];
 }
 
+.alert-diagonal-bg::before {
+  content: "";
+  position: absolute;
+  left: -40%;
+  top: 0;
+  width: 180%;
+  height: 100%;
+  background: repeating-linear-gradient(120deg, var(--ui-bg) 0 4px, transparent 4px 12px);
+  opacity: 0.4;
+  pointer-events: none;
+  z-index: 0;
+}
+.alert-diagonal-bg {
+  position: relative;
+  z-index: 1;
+}
+
 .v3-emojis button {
   flex-basis: 16.6% !important;
   max-width: 16.6% !important;

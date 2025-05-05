@@ -4,6 +4,9 @@ export interface UserProfile {
   email: string;
   avatar: string;
   location: string;
+  role: {
+    name: string;
+  };
 }
 
 export interface UserStatus {

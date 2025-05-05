@@ -13,7 +13,7 @@
     <div class="form-group">
       <AuthSecurityInput v-model="password" placeholder="输入密码" icon="hugeicons:square-lock-password"
         :disabled="isSubmitting">
-        <UChip :color="color" size="lg" class=" transform duration-300"
+        <UChip :color="color" size="lg" class="transform duration-300 animate-pulse"
           :class="score > 0 ? 'opacity-100 scale-100' : 'opacity-0 scale-0'" />
       </AuthSecurityInput>
     </div>

@@ -9,7 +9,7 @@ import type { UserProfile } from "~/types";
  * - 认证状态管理
  */
 export const useAuth = () => {
-  const { $directus, $user, $authClient } = useNuxtApp();
+  const { $directus, $content, $user, $authClient } = useNuxtApp();
 
   /**
    * 用户信息状态
@@ -185,6 +185,24 @@ export const useAuth = () => {
     };
   };
 
+  /**
+   * 获取当前用户角色名称
+   * @returns {Promise<string | null>} 角色名称
+   */
+  const getUserRoleName = async (): Promise<string | null> => {
+    if (isAuthenticated.value) {
+      try {
+        const response = await $directus.request<UserProfile>(
+          $user.readMe({ fields: ["role.name"] })
+        );
+        return response?.role?.name ?? null;
+      } catch (error: any) {
+        throw new Error(error.errors?.[0]?.message || "获取角色数据失败");
+      }
+    }
+    return null;
+  };
+
   return {
     user,
     isAuthenticated,
@@ -196,5 +214,6 @@ export const useAuth = () => {
     getUserStatusByEmail,
     startSessionCheck,
     validateEmail,
+    getUserRoleName,
   };
 };

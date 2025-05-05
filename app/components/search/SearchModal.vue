@@ -22,7 +22,7 @@
                 <span class="text-sm font-medium line-clamp-1">{{ item.label }}</span>
                 <span class="text-xs text-neutral-400 dark:text-neutral-600 shrink-0">{{
                   item.suffix
-                }}</span>
+                  }}</span>
               </div>
             </div>
           </div>
@@ -32,9 +32,9 @@
             class="flex flex-col items-center justify-center py-4 gap-2 text-neutral-400 dark:text-neutral-600">
             <p v-if="error">{{ error }}</p>
             <p v-else-if="searchQuery && searchQuery.length < MIN_SEARCH_LENGTH"
-              class="animate-pulse">请继续输入</p>
+              class="animate-pulse">请继续输入关键字</p>
             <p v-else-if="searchQuery && !isLoading && !searchResults.length">检索记录中无对应关键词数据</p>
-            <p v-else>请开始输入相关关键词，进行信息检索操作。</p>
+            <p v-else>输入关键词，进行信息检索操作。</p>
           </div>
         </template>
       </UCommandPalette>
@@ -61,7 +61,7 @@ function handleCompositionEnd() {
   debouncedSearch();
 }
 
-const { getContents } = useContents();
+const { getContents, cleanMarkdown } = useContents();
 
 const performSearch = async () => {
   const query = searchQuery.value.trim();
@@ -116,7 +116,7 @@ const groups = computed(() => [
     id: "articles",
     items: searchResults.value.map((article) => ({
       id: article.id,
-      label: article.title,
+      label: article.title ? article.title : cleanMarkdown(article.body),
       suffix: useDateFormatter(article.date_created).value,
       to: `/article/${article.id}`,
       avatar: article.images?.[0]?.directus_files_id
