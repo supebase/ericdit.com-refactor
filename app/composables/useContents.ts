@@ -51,6 +51,21 @@ export const useContents = () => {
   };
 
   /**
+   * 创建新内容
+   * @param data - 内容信息
+   * @returns Promise<Content.Item> 创建成功的内容
+   * @throws Error 当 API 请求失败时抛出错误
+   */
+  const createContent = async (data: Partial<ContentItem>): Promise<ContentItem> => {
+    try {
+      const response = await $directus.request<ContentItem>($content.createItem("contents", data));
+      return response;
+    } catch (error: any) {
+      throw new Error(error.errors?.[0]?.message || "创建内容失败");
+    }
+  };
+
+  /**
    * 清理 Markdown 语法，返回纯文本
    * @param text - 包含 Markdown 语法的文本
    * @returns 清理后的纯文本
@@ -167,6 +182,7 @@ export const useContents = () => {
   return {
     getContents,
     getContent,
+    createContent,
     cleanMarkdown,
     subscribeContents,
     getUserAvatarUrl,

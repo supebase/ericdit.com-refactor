@@ -12,6 +12,7 @@ export interface ContentItem {
   views: number;
   pinned: boolean;
   github_repo?: string;
+  status: string;
 }
 
 export interface ContentQueryOptions {

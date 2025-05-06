@@ -1,6 +1,6 @@
 <template>
-    <UIcon v-if="canPublish" name="hugeicons:quill-write-02"
-        class="size-5 text-neutral-500 cursor-pointer" />
+    <UButton v-if="canPublish" variant="link" icon="hugeicons:quill-write-02" to="/publish"
+        class="size-5 text-neutral-500 cursor-pointer p-0 hover:text-neutral-500" />
 </template>
 
 <script setup lang="ts">
