@@ -66,11 +66,11 @@ export const useContents = () => {
   };
 
   /**
- * 创建 contents_files 关联记录
- * @param contents_id - 内容ID
- * @param directus_files_id - 文件ID
- * @returns Promise<{ id: string }> 新建的 contents_files 记录
- */
+   * 创建 contents_files 关联记录
+   * @param contents_id - 内容ID
+   * @param directus_files_id - 文件ID
+   * @returns Promise<{ id: string }> 新建的 contents_files 记录
+   */
   const createContentFiles = async (contents_id: string, directus_files_id: string) => {
     try {
       const response = await $directus.request(
@@ -99,6 +99,19 @@ export const useContents = () => {
       return response;
     } catch (error: any) {
       throw new Error(error.errors?.[0]?.message || "更新内容失败");
+    }
+  };
+
+  /**
+   * 删除内容
+   * @param id - 内容ID
+   * @returns Promise<void>
+   */
+  const deleteContent = async (id: string): Promise<void> => {
+    try {
+      await $directus.request($content.deleteItem("contents", id));
+    } catch (error: any) {
+      throw new Error(error.errors?.[0]?.message || "删除内容失败");
     }
   };
 
@@ -222,6 +235,7 @@ export const useContents = () => {
     createContent,
     createContentFiles,
     updateContent,
+    deleteContent,
     cleanMarkdown,
     subscribeContents,
     getUserAvatarUrl,

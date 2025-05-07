@@ -8,7 +8,7 @@ export default defineAppConfig({
   ui: {
     // 颜色主题配置
     colors: {
-      primary: "cyan", // 主色调：青色
+      primary: "violet", // 主色调：紫色
       neutral: "zinc", // 中性色：灰色
     },
     // 图标配置
@@ -52,7 +52,7 @@ export default defineAppConfig({
         fullscreen: {
           false: {
             content: "rounded-md", // 模态框内内容圆角大小
-          }
+          },
         },
       },
     },
@@ -65,10 +65,17 @@ export default defineAppConfig({
       variants: {
         active: {
           true: {
-            dot: "bg-primary-500" // 激活的轮播点颜色
-          }
-        }
-      }
+            dot: "bg-primary-500", // 激活的轮播点颜色
+          },
+        },
+      },
+    },
+    switch: {
+      slots: {
+        base: [
+          "data-[state=unchecked]:bg-neutral-400/70 dark:data-[state=unchecked]:bg-neutral-600/70", // 未选中状态下的背景颜色
+        ],
+      },
     },
   },
 

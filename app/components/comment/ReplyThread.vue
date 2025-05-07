@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="space-y-6">
-      <div class="divide-y divide-dashed divide-neutral-300/70 dark:divide-neutral-800">
+      <div class="divide-y divide-dashed divide-neutral-300/70 dark:divide-neutral-700/30">
         <CommentReplyItem v-for="(reply, index) in displayReplies" :key="reply.id" :reply="reply"
           :show-arrow="index === 0" class="py-4 first:pt-0 last:pb-0" />
       </div>

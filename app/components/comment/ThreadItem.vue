@@ -25,11 +25,11 @@
               <div class="flex justify-between items-center">
                 <div class="flex items-center space-x-2 text-[13px] tabular-nums">
                   <div class="text-sm font-medium pr-1">{{ comment.user_created.first_name }}</div>
-                  <div class="text-neutral-500">
+                  <div class="text-neutral-400 dark:text-neutral-600">
                     {{ useDateFormatter(comment.date_created) }}
                   </div>
                   <span class="text-neutral-300 dark:text-neutral-700">&bull;</span>
-                  <div class="text-neutral-500">
+                  <div class="text-neutral-400 dark:text-neutral-600">
                     {{ userLocation }}
                   </div>
                 </div>
