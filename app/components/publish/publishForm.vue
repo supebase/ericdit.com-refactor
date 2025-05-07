@@ -13,7 +13,7 @@
                     :maxlength="BODY_MAX_LENGTH" :disabled="isSubmitting" placeholder="说点什么 ..." />
                 <div class="flex justify-between items-center p-3">
                     <div class="flex items-center space-x-3">
-                        <USwitch v-model="allowComments" color="primary" label="允许其他用户发表评论" />
+                        <USwitch v-model="allowComments" color="neutral" label="允许其他用户发表评论" />
                     </div>
                     <div class="flex items-center">
                         <span class="text-sm tabular-nums select-none" :class="body.length >= BODY_MAX_LENGTH
@@ -25,6 +25,7 @@
                     </div>
                 </div>
             </div>
+            <PublishAttachment @uploaded="onImageUploaded" @removed="onImageRemoved" />
         </template>
         <template v-else-if="publishType === 'github'">
             <UInput :ui="{
@@ -55,7 +56,7 @@ const publishTypeItems: RadioGroupItem[] = [
     { label: 'GitHub 项目', value: 'github', description: '可通过链接地址分享内容' }
 ];
 
-const { createContent } = useContents();
+const { createContent, createContentFiles, updateContent } = useContents();
 const toast = useToast();
 
 const body = ref("");
@@ -78,6 +79,16 @@ function resetForm() {
     body.value = "";
     githubLink.value = "";
     allowComments.value = true;
+    imageFileId.value = null;
+}
+
+const imageFileId = ref<string | null>(null);
+
+function onImageUploaded(id: string) {
+    imageFileId.value = id;
+}
+function onImageRemoved() {
+    imageFileId.value = null;
 }
 
 const handlePublish = async () => {
@@ -114,13 +125,20 @@ const handlePublish = async () => {
 
     try {
         isSubmitting.value = true;
+        let content;
         switch (publishType.value) {
             case 'status':
-                await createContent({
+                content = await createContent({
                     body: body.value,
                     allow_comments: allowComments.value,
                     status: 'published'
                 });
+                if (imageFileId.value) {
+                    // 创建 contents_files 关联
+                    const fileRel = await createContentFiles(content.id, imageFileId.value);
+                    // 更新内容 images 字段为 contents_files 的 id
+                    await updateContent(content.id, { images: [fileRel.id] });
+                }
                 break;
             case 'github':
                 await createContent({

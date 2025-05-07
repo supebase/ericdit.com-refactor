@@ -24,7 +24,7 @@
     "@iconify-json/svg-spinners": "^1.2.2",
     "@nuxtjs/mdc": "^0.17.0",
     "@tailwindcss/typography": "^0.5.16",
-    "@types/node": "^22.15.12",
+    "@types/node": "^22.15.14",
     "nuxt": "^3.17.2",
     "typescript": "^5.8.3",
     "vue-router": "^4.5.1"

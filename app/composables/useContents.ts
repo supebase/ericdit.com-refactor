@@ -66,6 +66,43 @@ export const useContents = () => {
   };
 
   /**
+ * 创建 contents_files 关联记录
+ * @param contents_id - 内容ID
+ * @param directus_files_id - 文件ID
+ * @returns Promise<{ id: string }> 新建的 contents_files 记录
+ */
+  const createContentFiles = async (contents_id: string, directus_files_id: string) => {
+    try {
+      const response = await $directus.request(
+        $content.createItem("contents_files", {
+          contents_id,
+          directus_files_id,
+        })
+      );
+      return response; // response.id 即为 contents_files 的 id
+    } catch (error: any) {
+      throw new Error(error.errors?.[0]?.message || "创建 contents_files 失败");
+    }
+  };
+
+  /**
+   * 更新内容
+   * @param id - 内容ID
+   * @param data - 更新的数据
+   * @returns Promise<ContentItem>
+   */
+  const updateContent = async (id: string, data: Partial<ContentItem>): Promise<ContentItem> => {
+    try {
+      const response = await $directus.request<ContentItem>(
+        $content.updateItem("contents", id, data)
+      );
+      return response;
+    } catch (error: any) {
+      throw new Error(error.errors?.[0]?.message || "更新内容失败");
+    }
+  };
+
+  /**
    * 清理 Markdown 语法，返回纯文本
    * @param text - 包含 Markdown 语法的文本
    * @returns 清理后的纯文本
@@ -183,6 +220,8 @@ export const useContents = () => {
     getContents,
     getContent,
     createContent,
+    createContentFiles,
+    updateContent,
     cleanMarkdown,
     subscribeContents,
     getUserAvatarUrl,
