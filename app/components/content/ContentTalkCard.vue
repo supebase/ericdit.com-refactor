@@ -1,12 +1,12 @@
 <template>
-    <div class="relative flex flex-col items-center bg-white/50 dark:bg-neutral-800/50 rounded-sm">
+    <div class="relative flex flex-col items-center bg-white/50 dark:bg-neutral-800/50 rounded-md">
         <NuxtLink :to="{ name: 'article-id', params: { id: talk.id } }"
             class="w-full flex-1 flex flex-col items-center">
             <div v-if="talk.images?.length" class="w-full flex justify-center relative">
                 <NuxtImg provider="directus" :src="talk.images?.[0]?.directus_files_id"
                     loading="eager" fetchpriority="high" preload placeholder format="webp"
                     quality="80" sizes="(max-width: 768px) 100vw, 768px"
-                    class="aspect-[16/4] object-cover rounded-t-sm w-full mask-b-from-0" />
+                    class="aspect-[16/4] object-cover rounded-t-md w-full mask-b-from-0" />
                 <!-- 悬浮头像（有图片时带outline） -->
                 <div
                     class="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-1/2 z-10 rounded-full outline-3 outline-neutral-100/50 dark:outline-neutral-800/50">

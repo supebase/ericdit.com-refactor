@@ -3,11 +3,11 @@
         <UAlert color="neutral" variant="soft" icon="hugeicons:alert-02" description="目前仅支持发布一句话状态和 GitHub 项目"
             class="text-neutral-500 relative overflow-hidden alert-diagonal-bg" />
         <URadioGroup
-            :ui="{ item: 'bg-white dark:bg-neutral-800 rounded-sm border-2', label: 'text-base', description: 'text-muted/80', fieldset: 'flex justify-between' }"
+            :ui="{ item: 'bg-white dark:bg-neutral-950 rounded-md border-2', label: 'text-base', description: 'text-muted/80', fieldset: 'flex justify-between' }"
             v-model="publishType" :items="publishTypeItems" size="md" indicator="hidden" orientation="horizontal"
             color="primary" variant="card" />
         <template v-if="publishType === 'status'">
-            <div class="bg-white dark:bg-neutral-800 rounded-sm p-1">
+            <div class="bg-white dark:bg-neutral-950 rounded-md p-1">
                 <UTextarea :ui="{ base: 'placeholder:text-base' }" v-model="body" color="neutral" variant="none"
                     autoresize :rows="3" :maxrows="6" :padded="false" size="xl" class="w-full"
                     :maxlength="BODY_MAX_LENGTH" :disabled="isSubmitting" placeholder="说点什么 ..." />
@@ -29,7 +29,7 @@
         </template>
         <template v-else-if="publishType === 'github'">
             <UInput :ui="{
-                base: 'pl-[151px]',
+                base: 'pl-[151px] rounded-md bg-white dark:bg-neutral-950 placeholder:text-neutral-300 dark:placeholder:text-neutral-600',
                 leading: 'pointer-events-none'
             }" v-model="githubLink" variant="soft" size="xl" class="w-full" placeholder="owner/repo"
                 :disabled="isSubmitting">
@@ -66,20 +66,18 @@ const publishType = ref<'status' | 'github'>('status');
 const githubLink = ref('');
 
 const canSubmit = computed(() => {
-    if (publishType.value === 'status') {
-        return !!body.value.trim();
-    }
-    if (publishType.value === 'github') {
-        return !!githubLink.value.trim();
-    }
-    return false;
+    return (publishType.value === 'status' && !!body.value.trim())
+        || (publishType.value === 'github' && !!githubLink.value.trim());
 });
 
 function resetForm() {
-    body.value = "";
-    githubLink.value = "";
-    allowComments.value = true;
-    imageFileId.value = null;
+    if (publishType.value === 'status') {
+        body.value = "";
+        allowComments.value = true;
+        imageFileId.value = null;
+    } else if (publishType.value === 'github') {
+        githubLink.value = "";
+    }
 }
 
 const imageFileId = ref<string | null>(null);

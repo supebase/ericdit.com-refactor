@@ -18,7 +18,7 @@ export default defineAppConfig({
     // 按钮组件配置
     button: {
       slots: {
-        base: "rounded-[calc(var(--ui-radius)*1)]", // 按钮圆角大小
+        base: "rounded-[calc(var(--ui-radius)*1.5)]", // 按钮圆角大小
       },
       compoundVariants: [
         {
@@ -30,12 +30,12 @@ export default defineAppConfig({
     },
     card: {
       slots: {
-        root: "rounded-[calc(var(--ui-radius)*1)]", // 卡片圆角大小
+        root: "rounded-[calc(var(--ui-radius)*1.5)]", // 卡片圆角大小
       },
     },
     alert: {
       slots: {
-        root: "rounded-[calc(var(--ui-radius)*1)]", // 警告框圆角大小
+        root: "rounded-[calc(var(--ui-radius)*1.5)]", // 警告框圆角大小
       },
     },
     drawer: {
@@ -51,14 +51,14 @@ export default defineAppConfig({
       variants: {
         fullscreen: {
           false: {
-            content: "rounded-sm", // 模态框内内容圆角大小
+            content: "rounded-md", // 模态框内内容圆角大小
           }
         },
       },
     },
     popover: {
       slots: {
-        content: "rounded-[calc(var(--ui-radius)*1)]", // 弹出框内容圆角大小
+        content: "rounded-[calc(var(--ui-radius)*1.5)]", // 弹出框内容圆角大小
       },
     },
     carousel: {

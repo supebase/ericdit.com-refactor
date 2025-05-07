@@ -1,7 +1,7 @@
 <template>
   <UCard :ui="{ body: '!p-0 border-none', footer: '!px-4' }" variant="soft" class="select-none">
     <!-- 单图显示 -->
-    <div v-if="displayType === 'single'" class="relative overflow-hidden rounded-t-sm">
+    <div v-if="displayType === 'single'" class="relative overflow-hidden rounded-t-md">
       <NuxtLink :to="{ name: 'article-id', params: { id: content.id } }">
         <NuxtImg provider="directus" :src="content.images[0].directus_files_id" loading="eager" fetchpriority="high"
           preload placeholder format="webp" quality="80" sizes="(max-width: 768px) 100vw, 768px"

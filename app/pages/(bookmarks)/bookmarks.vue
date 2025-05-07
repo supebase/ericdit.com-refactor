@@ -56,7 +56,7 @@
 
         <div class="absolute top-0 right-0 h-full">
           <button
-            class="bg-red-500 h-full px-6 rounded-sm flex items-center justify-center cursor-pointer text-white transition-all duration-200 ease-out origin-right"
+            class="bg-red-500 h-full px-6 rounded-md flex items-center justify-center cursor-pointer text-white transition-all duration-200 ease-out origin-right"
             :style="{
               opacity: Math.min(Math.abs(offsets[index] || 0) / 75, 1),
               transform: `translateX(${75 - Math.abs(offsets[index] || 0)}px)`,

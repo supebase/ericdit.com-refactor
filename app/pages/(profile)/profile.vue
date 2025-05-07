@@ -20,13 +20,13 @@
 
     <!-- 数据统计卡片 -->
     <div class="grid grid-cols-2 gap-4 mt-8">
-      <div class="p-6 rounded-sm bg-white/50 dark:bg-neutral-950/50">
+      <div class="p-6 rounded-md bg-white/50 dark:bg-neutral-950/50">
         <div class="flex justify-center">
           <SharedAnimateNumber :value="commentsCount" class="text-3xl font-bold" />
         </div>
         <div class="text-neutral-400 dark:text-neutral-500 font-medium text-center mt-2">评论数</div>
       </div>
-      <div class="p-6 rounded-sm bg-white/50 dark:bg-neutral-950/50">
+      <div class="p-6 rounded-md bg-white/50 dark:bg-neutral-950/50">
         <div class="flex justify-center">
           <SharedAnimateNumber :value="likesCount" class="text-3xl font-bold" />
         </div>

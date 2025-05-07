@@ -1,6 +1,6 @@
 <template>
     <div v-if="!isLoaded"
-        class="flex flex-col items-center justify-center mx-auto pt-3 space-y-3 h-[100px] bg-white/50 dark:bg-neutral-800/50 rounded-sm">
+        class="flex flex-col items-center justify-center mx-auto pt-3 space-y-3 h-[100px] bg-white/50 dark:bg-neutral-800/50 rounded-md">
         <UProgress animation="swing" color="primary" size="sm" class="max-w-[130px]" />
         <div class="text-sm text-neutral-400 dark:text-neutral-600">正在获取 GitHub 数据</div>
     </div>
@@ -11,7 +11,7 @@
     </div>
     <div v-else-if="projectInfo">
         <div
-            class="flex flex-col bg-white/50 dark:bg-neutral-800/50 relative w-full justify-center rounded-sm overflow-hidden">
+            class="flex flex-col bg-white/50 dark:bg-neutral-800/50 relative w-full justify-center rounded-md overflow-hidden">
             <div class="p-4 flex flex-col justify-between relative">
                 <div class="flex justify-between items-center mb-1.5 z-2">
                     <div class="flex flex-col gap-2.5">

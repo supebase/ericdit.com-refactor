@@ -31,8 +31,8 @@ hr {
 }
 
 .mdc-prose {
-  @apply prose-img:rounded-sm 
-         prose-pre:rounded-sm 
+  @apply prose-img:rounded-md 
+         prose-pre:rounded-md 
          prose-pre:bg-white/50 
          dark:prose-pre:bg-neutral-950 
          prose-code:text-[0.8rem] 

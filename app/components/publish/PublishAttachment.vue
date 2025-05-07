@@ -1,19 +1,20 @@
 <template>
-    <div>
-        <div class="flex justify-center items-center space-x-3">
-            <UButton size="md" color="neutral" variant="soft" icon="hugeicons:image-upload-01" @click="openFileInput"
-                :loading="isUploading" :disabled="isUploading">
-                上传图片
-            </UButton>
-            <div v-if="previewUrl">
-                <UButton size="md" color="error" variant="soft" icon="hugeicons:image-delete-01" @click="removeImage"
-                    :loading="isDeleting" :disabled="isDeleting">移除图片</UButton>
+    <div class="relative w-full max-w-md mx-auto">
+        <div
+            class="relative w-full aspect-[16/7] outline-2 outline-dashed outline-offset-1 outline-neutral-100 dark:outline-neutral-800 rounded-md flex items-center justify-center overflow-hidden">
+            <img v-if="previewUrl" :src="previewUrl" alt="预览" class="absolute inset-0 w-full h-full object-cover z-0" />
+            <div class="absolute inset-0 flex items-center justify-center space-x-3 z-10">
+                <UButton size="md" color="neutral" variant="solid" @click="openFileInput" :loading="isUploading"
+                    :disabled="isUploading">
+                    上传图片
+                </UButton>
+                <UButton v-if="previewUrl" size="md" color="error" variant="solid" @click="removeImage"
+                    :loading="isDeleting" :disabled="isDeleting">
+                    移除图片
+                </UButton>
             </div>
         </div>
         <input type="file" ref="fileInput" accept="image/*" class="hidden" @change="handleFileChange" />
-        <div v-if="previewUrl" class="mt-4">
-            <img :src="previewUrl" alt="预览" class="aspect-[16/7] object-cover w-full rounded-sm" />
-        </div>
     </div>
 </template>
 

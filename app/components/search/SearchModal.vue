@@ -9,7 +9,7 @@
         class="h-[30vh]" close @update:open="isOpen = $event" @update:model-value="onSelect"
         @compositionstart="handleCompositionStart" @compositionend="handleCompositionEnd">
         <template #item="{ item }">
-          <div class="flex items-center justify-between mr-2 rounded-sm w-full">
+          <div class="flex items-center justify-between mr-2 rounded-md w-full">
             <div class="flex items-center gap-3 flex-1 min-w-0">
               <div
                 class="w-8 h-8 shrink-0 rounded-sm overflow-hidden bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center">
