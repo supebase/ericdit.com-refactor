@@ -12,8 +12,9 @@
                     autoresize :rows="3" :maxrows="6" :padded="false" size="xl" class="w-full"
                     :maxlength="BODY_MAX_LENGTH" :disabled="isSubmitting" placeholder="说点什么 ..." />
                 <div class="flex justify-between items-center p-3">
-                    <div class="flex items-center space-x-3">
-                        <USwitch v-model="allowComments" color="neutral" label="允许其他用户发表评论" />
+                    <div class="flex items-center space-x-6">
+                        <USwitch v-model="statusPinned" color="neutral" label="置顶" />
+                        <USwitch v-model="allowComments" color="neutral" label="允许发表评论" />
                     </div>
                     <div class="flex items-center">
                         <span class="text-sm tabular-nums select-none" :class="body.length >= BODY_MAX_LENGTH
@@ -37,6 +38,9 @@
                     <p class="text-muted">
                         https://github.com/
                     </p>
+                </template>
+                <template #trailing>
+                    <UCheckbox v-model="githubPinned" color="neutral" label="置顶" />
                 </template>
             </UInput>
         </template>
@@ -64,6 +68,8 @@ const allowComments = ref(true);
 const isSubmitting = ref(false);
 const publishType = ref<'status' | 'github'>('status');
 const githubLink = ref('');
+const statusPinned = ref(false);
+const githubPinned = ref(false);
 
 const canSubmit = computed(() => {
     return (publishType.value === 'status' && !!body.value.trim())
@@ -74,9 +80,11 @@ function resetForm() {
     if (publishType.value === 'status') {
         body.value = "";
         allowComments.value = true;
+        statusPinned.value = false;
         imageFileId.value = null;
     } else if (publishType.value === 'github') {
         githubLink.value = "";
+        githubPinned.value = false;
     }
 }
 
@@ -129,6 +137,7 @@ const handlePublish = async () => {
                 content = await createContent({
                     body: body.value,
                     allow_comments: allowComments.value,
+                    pinned: statusPinned.value,
                     status: 'published'
                 });
                 if (imageFileId.value) {
@@ -141,6 +150,7 @@ const handlePublish = async () => {
             case 'github':
                 await createContent({
                     github_repo: githubLink.value,
+                    pinned: githubPinned.value,
                     status: 'published'
                 });
                 break;
