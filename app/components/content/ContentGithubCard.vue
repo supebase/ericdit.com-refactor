@@ -26,7 +26,7 @@
                             <span class="text-primary-500 font-bold">{{ projectInfo.repo }}</span>
                         </a>
                         <div class="text-neutral-400 dark:text-neutral-500 space-y-1">
-                            <span class="text-neutral-500 dark:text-neutral-400 line-clamp-2">
+                            <span class="text-neutral-500 dark:text-neutral-400 line-clamp-3">
                                 {{ projectInfo.projectDescription }}</span>
                         </div>
                     </div>

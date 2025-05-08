@@ -1,19 +1,17 @@
 <template>
   <article class="py-5 space-y-5">
     <div class="text-2xl font-bold" v-if="content.title">{{ content.title }}</div>
-    <div
-      class="flex justify-between items-center text-sm text-neutral-500 tabular-nums select-none">
+    <div class="flex justify-between items-center text-sm text-neutral-500 tabular-nums select-none">
       <div class="flex items-center space-x-3">
         <div>
-          <SharedAvatar :src="userAvatarUrl || undefined" size="2sm"
-            :alt="content.user_created.first_name" />
+          <SharedAvatar :src="userAvatarUrl || undefined" size="2sm" :alt="content.user_created.first_name" />
         </div>
         <div class="flex flex-col">
           <div class="text-[15px] text-neutral-700 dark:text-neutral-300 font-bold">
             {{ content.user_created.first_name }}
           </div>
           <div class="flex items-center text-[13px] space-x-2">
-            <div>{{ useDateFormatter(content.date_created) }}{{ content.title ? '发布' : '甩出这么一句话' }}
+            <div>{{ useDateFormatter(content.date_created) }}{{ content.title ? '发布' : '留下这条状态' }}
             </div>
             <span v-if="content.title" class="text-neutral-400 dark:text-neutral-600">&bull;</span>
             <div v-if="content.title">阅读约 {{ useArticleMetrics(content.body) }}</div>
@@ -42,22 +40,19 @@
       </div>
       <div class="flex-1 flex justify-center">
         <Donate>
-          <UIcon name="hugeicons:qr-code"
-            class="size-5 text-neutral-400 dark:text-neutral-500 cursor-pointer" />
+          <UIcon name="hugeicons:qr-code" class="size-5 text-neutral-400 dark:text-neutral-500 cursor-pointer" />
         </Donate>
       </div>
       <div class="flex-1 flex justify-end">
-        <UIcon name="hugeicons:share-05"
-          class="size-5 text-neutral-400 dark:text-neutral-500 cursor-pointer"
+        <UIcon name="hugeicons:share-05" class="size-5 text-neutral-400 dark:text-neutral-500 cursor-pointer"
           @click="shareButton(content.title, getPreviewText(content.body))" />
       </div>
     </div>
 
     <UModal v-model:open="showDeleteModal"
-      :ui="{ overlay: 'backdrop-blur-sm', content: 'bg-neutral-50 dark:bg-neutral-950' }"
-      title="Delete" description="删除内容">
-      <UButton v-if="isAdmin" block color="error" size="lg" variant="soft"
-        @click="showDeleteModal = true">
+      :ui="{ overlay: 'backdrop-blur-sm', content: 'bg-neutral-50 dark:bg-neutral-950' }" title="Delete"
+      description="删除内容">
+      <UButton v-if="isAdmin" block color="error" size="lg" variant="soft" @click="showDeleteModal = true">
         丢进垃圾桶</UButton>
       <template #content>
         <div class="p-6">
@@ -65,8 +60,7 @@
           <div class="mb-4 text-neutral-600 dark:text-neutral-400">确定要删除该内容吗？此操作不可恢复。</div>
           <div class="flex justify-end space-x-2">
             <UButton color="neutral" variant="soft" @click="showDeleteModal = false">取消</UButton>
-            <UButton color="error" :loading="isDeleting" :disabled="isDeleting"
-              @click="handleDelete">确认删除</UButton>
+            <UButton color="error" :loading="isDeleting" :disabled="isDeleting" @click="handleDelete">确认删除</UButton>
           </div>
         </div>
       </template>

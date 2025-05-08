@@ -1,6 +1,7 @@
 <template>
-    <div v-if="isLoading" class="fixed inset-0 flex justify-center items-center">
-        <UIcon name="svg-spinners:ring-resize" class="size-7 text-primary-500" />
+    <div v-if="isLoading" class="fixed inset-0 flex flex-col gap-3 justify-center items-center">
+        <UProgress animation="swing" color="primary" size="sm" class="max-w-[110px]" />
+        <div class="text-sm text-neutral-400 dark:text-neutral-600 select-none">正在检查权限状态</div>
     </div>
     <div v-else-if="!isAdmin" class="flex items-center justify-center min-h-[50vh]">
         <UAlert color="error" variant="soft" icon="hugeicons:alert-02" description="您没有权限访问该页面" />

@@ -25,20 +25,20 @@ export function useUserRole() {
   const isAdmin = computed(() => roleName.value === "Administrator");
 
   /**
-   * 异步更新当前用户角色名
+   * 异步更新当前用户角色名（防抖处理）
    */
-  const updateRoleName = async () => {
+  const updateRoleName = debounce(async () => {
     isLoading.value = true;
     roleName.value = await getUserRoleName();
     isLoading.value = false;
-  };
+  }, 300);
 
-  // 监听用户信息变化，自动更新角色名
+  // 监听用户 id 变化，自动更新角色名
   watch(
-    () => user.value,
-    async (val) => {
-      if (val) {
-        await updateRoleName();
+    () => user.value?.id,
+    async (id) => {
+      if (id) {
+        updateRoleName();
       } else {
         roleName.value = null;
         isLoading.value = false;
