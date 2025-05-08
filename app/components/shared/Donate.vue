@@ -1,5 +1,6 @@
 <template>
-    <UPopover v-model:open="isOpen">
+    <UPopover v-model:open="isOpen" arrow
+        :ui="{ content: 'bg-white dark:bg-neutral-950', arrow: 'fill-neutral-300 dark:fill-neutral-800' }">
         <slot />
         <template #content>
             <div class="flex flex-col items-center">

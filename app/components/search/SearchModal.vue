@@ -1,8 +1,9 @@
 <template>
   <UModal v-model:open="isOpen"
-    :ui="{ overlay: 'backdrop-blur-sm', content: 'bg-neutral-50 dark:bg-neutral-950' }"
+    :ui="{ overlay: 'backdrop-blur-xs', content: 'bg-neutral-50 dark:bg-neutral-950' }"
     title="Search" description="站内搜索">
-    <UIcon name="hugeicons:search-01" class="size-5 text-neutral-500 cursor-pointer" />
+    <UIcon name="hugeicons:search-01"
+      class="size-5 text-neutral-500 hover:text-primary-500 cursor-pointer" />
     <template #content>
       <UCommandPalette v-model:search-term="searchQuery" :loading="isLoading" :groups="groups"
         icon="hugeicons:search-01" :placeholder="'请输入至少 ' + MIN_SEARCH_LENGTH + ' 个字符'"
@@ -22,7 +23,7 @@
                 <span class="text-sm font-medium line-clamp-1">{{ item.label }}</span>
                 <span class="text-xs text-neutral-400 dark:text-neutral-600 shrink-0">{{
                   item.suffix
-                  }}</span>
+                }}</span>
               </div>
             </div>
           </div>

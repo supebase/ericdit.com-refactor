@@ -2,7 +2,7 @@
   <UPopover :ui="{ content: 'ring-0 shadow-none bg-transparent' }" v-model:open="isPickerVisible">
     <div class="mt-1.5">
       <UIcon name="hugeicons:smile" @click.stop="openPicker"
-        class="size-5 text-neutral-500 cursor-pointer transform duration-500" />
+        class="size-5 text-neutral-500 hover:text-primary-500 cursor-pointer" />
     </div>
 
     <template #content>

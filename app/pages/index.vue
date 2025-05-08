@@ -28,7 +28,7 @@
           <template #default>
             <div class="relative overflow-hidden">
               <span v-if="content.pinned"
-                class="absolute top-3 -right-8 z-10 rotate-45 px-8 py-0.5 font-medium text-[11px] uppercase bg-primary-500 backdrop-blur-sm text-highlighted">
+                class="absolute top-3 -right-8 z-10 rotate-45 px-8 py-0.5 font-medium text-[11px] text-inverted uppercase bg-primary-500 backdrop-blur-sm">
                 pinned
               </span>
               <component v-bind="getContentComponentAndProps(content).props"

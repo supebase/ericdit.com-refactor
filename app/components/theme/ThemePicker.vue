@@ -47,7 +47,8 @@ const mode = computed({
     <UPopover arrow
         :ui="{ content: 'w-72 px-6 py-4 flex flex-col gap-4 bg-white dark:bg-neutral-950', arrow: 'fill-neutral-100 dark:fill-neutral-800' }">
         <template #default>
-            <UIcon name="hugeicons:computer-settings" class="size-5 text-neutral-500 cursor-pointer" />
+            <UIcon name="hugeicons:computer-settings"
+                class="size-5 text-neutral-500 hover:text-primary-500 cursor-pointer" />
         </template>
 
         <template #content>
@@ -58,8 +59,8 @@ const mode = computed({
                 </legend>
 
                 <div class="grid grid-cols-3 gap-1.5 -mx-2.5">
-                    <ThemePickerButton v-for="color in primaryColors" :key="color" :label="color" :chip="color"
-                        :selected="primary === color" @click="primary = color" />
+                    <ThemePickerButton v-for="color in primaryColors" :key="color" :label="color"
+                        :chip="color" :selected="primary === color" @click="primary = color" />
                 </div>
             </fieldset>
 
@@ -70,8 +71,8 @@ const mode = computed({
                 </legend>
 
                 <div class="grid grid-cols-3 gap-1.5 -mx-2.5">
-                    <ThemePickerButton v-for="color in neutralColors" :key="color" :label="color" :chip="color"
-                        :selected="neutral === color" @click="neutral = color" />
+                    <ThemePickerButton v-for="color in neutralColors" :key="color" :label="color"
+                        :chip="color" :selected="neutral === color" @click="neutral = color" />
                 </div>
             </fieldset>
 
@@ -83,7 +84,8 @@ const mode = computed({
 
                 <div class="grid grid-cols-3 gap-1.5 -mx-2">
                     <ThemePickerButton v-for="m in modes" :key="m.label" v-bind="m"
-                        :selected="colorMode.preference === m.label" :text="m.text" @click="mode = m.label" />
+                        :selected="colorMode.preference === m.label" :text="m.text"
+                        @click="mode = m.label" />
                 </div>
             </fieldset>
         </template>

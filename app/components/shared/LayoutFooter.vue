@@ -10,7 +10,8 @@
 
       <UPopover arrow
         :ui="{ content: 'bg-white dark:bg-neutral-950', arrow: 'fill-neutral-200 dark:fill-neutral-800' }">
-        <UIcon name="hugeicons:user-status" class="size-4 text-neutral-500 cursor-pointer"
+        <UIcon name="hugeicons:user-status"
+          class="size-4 text-neutral-500 hover:text-primary-500 cursor-pointer"
           @click="() => { if (!totalUsers) fetchTotalUsers() }" />
         <template #content>
           <UserStats />

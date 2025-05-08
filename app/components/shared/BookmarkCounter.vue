@@ -7,7 +7,7 @@
       :ui="{ base: 'py-[7px] px-[5px] font-bold' }"
       :show="bookmarksCount !== null && bookmarksCount > 0" :text="bookmarksCount ?? undefined">
       <NuxtLink to="/bookmarks">
-        <UIcon name="hugeicons:bookmark-02" class="size-5 text-neutral-500"
+        <UIcon name="hugeicons:bookmark-02" class="size-5 text-neutral-500 hover:text-primary-500"
           :class="{ 'bookmark-animation': showAnimation }" />
       </NuxtLink>
     </UChip>

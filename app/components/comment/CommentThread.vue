@@ -2,16 +2,16 @@
   <div class="select-none pb-10">
     <div class="fixed bottom-17 z-30 left-1/2 -translate-x-1/2">
       <UButtonGroup
-        class="shadow-lg rounded-2xl hover:shadow-xl ring-1 ring-neutral-300/70 dark:ring-neutral-800/70 transition-shadow duration-300 backdrop-blur-sm bg-white/80 dark:bg-neutral-950/80">
+        class="shadow-lg rounded-2xl hover:shadow-xl ring-1 ring-neutral-300/70 dark:ring-neutral-800/70 transition-shadow duration-300 bg-white/90 dark:bg-neutral-950/90">
         <UButton :ui="{
-          base: 'rounded-[calc(var(--ui-radius)*2)] transition-transform duration-200 hover:bg-white dark:hover:bg-neutral-950',
+          base: 'rounded-[calc(var(--ui-radius)*2)] transition-transform duration-200 hover:bg-white/10 dark:hover:bg-neutral-950/10',
         }" color="neutral" variant="ghost" size="lg">
           <SharedLikeButton :content-id="contentId" :icon-size="21" likeType="clap" />
         </UButton>
         <USeparator :ui="{ border: 'border-neutral-200 dark:border-neutral-700/70' }"
           class="h-4 w-2 my-auto" orientation="vertical" />
         <UButton :ui="{
-          base: 'rounded-[calc(var(--ui-radius)*2)] transition-transform duration-200 hover:bg-white dark:hover:bg-neutral-950',
+          base: 'rounded-[calc(var(--ui-radius)*2)] transition-transform duration-200 hover:bg-white/10 dark:hover:bg-neutral-950/10',
         }" color="neutral" variant="ghost" size="lg" class="cursor-pointer">
           <SharedCommentCounter :content-id="contentId" :allow-comments="allowComments"
             :icon-size="18" @click="scrollToComments" />
@@ -20,7 +20,7 @@
           class="h-4 w-2 my-auto transition-all duration-300 ease-out"
           :class="showBackToTop ? 'opacity-100' : 'opacity-0 w-0 p-0'" orientation="vertical" />
         <UButton :ui="{
-          base: 'rounded-[calc(var(--ui-radius)*2)] transition-all duration-300 ease-out hover:bg-white dark:hover:bg-neutral-950',
+          base: 'rounded-[calc(var(--ui-radius)*2)] transition-all duration-300 ease-out hover:bg-white/10 dark:hover:bg-neutral-950/10',
         }" color="neutral" variant="ghost" size="lg" class="cursor-pointer"
           :class="showBackToTop ? 'w-auto opacity-100' : 'w-0 p-1 opacity-0 overflow-hidden'"
           @click="scrollToTop">

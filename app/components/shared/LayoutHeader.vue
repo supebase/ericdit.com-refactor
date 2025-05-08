@@ -7,8 +7,8 @@
       </Transition>
 
       <div class="flex items-center space-x-8">
-        <PublishButton />
         <SharedBookmarkCounter v-if="isAuthenticated" class="translate-y-[3px]" />
+        <PublishButton />
         <SearchModal />
         <ThemePicker />
         <AuthUserStatus />

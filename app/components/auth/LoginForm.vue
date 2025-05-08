@@ -15,9 +15,11 @@
       {{ isSubmitting ? "正在登录" : "立即登录" }}
     </UButton>
 
-    <USeparator><span class="text-neutral-400 dark:text-neutral-600 text-sm">或者</span></USeparator>
+    <USeparator type="dashed">
+      <span class="text-neutral-400 dark:text-neutral-600 text-sm">或者</span>
+    </USeparator>
 
-    <UButton variant="soft" color="neutral" size="xl" block :disabled="isSubmitting" to="/register">
+    <UButton color="neutral" size="xl" block :disabled="isSubmitting" to="/register">
       注册新用户
     </UButton>
   </form>
