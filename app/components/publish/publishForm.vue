@@ -1,10 +1,10 @@
 <template>
-    <div class="space-y-8">
+    <div class="space-y-6">
         <UAlert color="neutral" variant="soft" icon="hugeicons:alert-02"
             description="目前仅支持发布状态卡片和 GitHub 卡片"
             class="text-neutral-500 relative overflow-hidden alert-diagonal-bg" />
         <URadioGroup
-            :ui="{ item: 'bg-white dark:bg-neutral-950 rounded-md border-2', label: 'text-base', description: 'text-muted/80', fieldset: 'flex justify-between' }"
+            :ui="{ item: 'bg-white dark:bg-neutral-950 rounded-md border-2', label: 'text-base', description: 'text-muted/80', fieldset: 'gap-4 justify-center' }"
             v-model="publishType" :items="publishTypeItems" size="md" indicator="hidden"
             orientation="horizontal" color="primary" variant="card" />
         <template v-if="publishType === 'status'">
