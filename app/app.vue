@@ -32,7 +32,7 @@ const isActivityTrackingEnabled = ref(false);
 let cleanupSession: (() => void) | undefined;
 
 // 用于存储所有事件监听的 stop 函数
-let activityListeners: Array<() => void> = [];
+let activityListeners = new Set<() => void>();
 
 /**
  * 启用用户活动追踪
@@ -41,9 +41,10 @@ let activityListeners: Array<() => void> = [];
 const enableActivityTracking = async () => {
   // 先移除旧的监听，避免重复
   activityListeners.forEach(stop => stop());
-  activityListeners = USER_ACTIVITY_EVENTS.map(event =>
-    useEventListener(window, event, updateLastActivity)
-  );
+  activityListeners.clear();
+  USER_ACTIVITY_EVENTS.forEach(event => {
+    activityListeners.add(useEventListener(window, event, updateLastActivity));
+  });
   isActivityTrackingEnabled.value = true;
   await updateUserStatus();
 };
@@ -54,7 +55,7 @@ const enableActivityTracking = async () => {
  */
 const disableActivityTracking = async () => {
   activityListeners.forEach(stop => stop());
-  activityListeners = [];
+  activityListeners.clear();
   isActivityTrackingEnabled.value = false;
 };
 

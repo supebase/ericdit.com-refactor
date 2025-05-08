@@ -27,6 +27,19 @@ export const useAppSettings = () => {
     };
 
     /**
+     * 处理设置更新的异步函数
+     */
+    const handleSettingsUpdates = async (settingsSubscription: any, callback: (item: any) => void) => {
+        try {
+            for await (const item of settingsSubscription) {
+                callback(item);
+            }
+        } catch (error) {
+            console.error('Error in settings subscription:', error);
+        }
+    };
+
+    /**
      * 订阅应用设置更新
      * @param callback - 数据变化时的回调函数
      * @returns 取消订阅的清理函数
@@ -48,19 +61,9 @@ export const useAppSettings = () => {
             addCleanup(() => settingsSubscription?.return());
 
             // 处理设置更新
-            (async () => {
-                try {
-                    for await (const item of settingsSubscription) {
-                        callback(item);
-                    }
-                } catch (error) {
-                    console.error('Error in settings subscription:', error);
-                }
-            })();
+            handleSettingsUpdates(settingsSubscription, callback);
 
-            return (): void => {
-                runCleanup();
-            };
+            return runCleanup;
         } catch (error) {
             // 确保在发生错误时清理订阅
             runCleanup();

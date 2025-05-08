@@ -34,7 +34,7 @@
         @mouseleave="handleDragEnd(index)">
         <div class="relative transform transition-transform duration-200 ease-out"
           :style="{ transform: `translateX(${offsets[index] || 0}px)` }">
-          <UCard :ui="{ body: 'py-3' }" variant="soft" class="relative">
+          <UCard :ui="{ body: 'py-3 sm:py-3' }" variant="soft" class="relative">
             <div class="flex items-center space-x-3">
               <SharedAvatar :src="bookmark.user_created.avatar"
                 :alt="bookmark.user_created.first_name" size="2sm" />

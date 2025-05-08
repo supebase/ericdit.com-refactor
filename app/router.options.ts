@@ -21,13 +21,13 @@ export const safeBack = () => {
   const route = useRoute();
 
   try {
-    let history = JSON.parse(safeGetItem("routeHistory") || "[]");
-    const originalPath = safeGetItem("originalPath");
+    let history = JSON.parse(safeStorage.get("routeHistory") || "[]");
+    const originalPath = safeStorage.get("originalPath");
 
     // 如果是从登录/注册页面返回
     if (isAuthPage(route.path)) {
       if (originalPath && !isAuthPage(originalPath)) {
-        safeRemoveItem("originalPath");
+        safeStorage.remove("originalPath");
         return navigateTo(originalPath);
       }
       return navigateTo("/");
@@ -41,7 +41,7 @@ export const safeBack = () => {
     // 获取上一个有效路径
     const previousPath = getPreviousValidPath(history, route.path);
 
-    safeSetItem("routeHistory", JSON.stringify(history));
+    safeStorage.set("routeHistory", JSON.stringify(history));
     return navigateTo(previousPath);
   } catch (error) {
     console.warn("无法访问本地存储，可能处于隐私模式:", error);

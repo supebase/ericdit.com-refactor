@@ -48,7 +48,7 @@ export const useAuth = () => {
     try {
       await $authClient.logout();
       // 清除存储的原始路径
-      safeRemoveItem("originalPath");
+      safeStorage.remove("originalPath");
       user.value = null;
     } catch (error: any) {
       throw new Error(error.errors?.[0]?.message || "登出失败");

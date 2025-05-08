@@ -11,7 +11,7 @@ export default defineNuxtPlugin({
        * @param type 颜色类型（primary 或 neutral）
        */
       function updateColor(type: 'primary' | 'neutral') {
-        const color = safeGetItem(`nuxt-ui-${type}`)
+        const color = safeStorage.get(`nuxt-ui-${type}`)
         if (color) {
           appConfig.ui.colors[type] = color
         }

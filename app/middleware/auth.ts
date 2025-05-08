@@ -17,7 +17,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
     if (!isAuthenticated.value && to.path !== "/login") {
       // 保存原始访问路径，以便登录后返回
       if (import.meta.client) {
-        safeSetItem("originalPath", to.fullPath);
+        safeStorage.set("originalPath", to.fullPath);
       }
       return navigateTo("/login", { replace: true });
     }

@@ -44,12 +44,12 @@ export const useVersionCheck = () => {
       if (!response.ok) return;
 
       const { buildHash, version } = await response.json();
-      const currentHash = safeGetItem('app-version-hash');
+      const currentHash = safeStorage.get('app-version-hash');
 
       if (isFirstCheck) {
         // 首次加载或刷新页面，直接写入最新 hash 和 version，不弹提示
-        safeSetItem('app-version-hash', buildHash);
-        safeSetItem('app-version', version);
+        safeStorage.set('app-version-hash', buildHash);
+        safeStorage.set('app-version', version);
         needsUpdate.value = false;
         isFirstCheck = false;
         return;
@@ -98,8 +98,8 @@ export const useVersionCheck = () => {
     confirmUpdate: () => {
       // 只有检测到新版本时才写入
       if (pendingVersionInfo) {
-        safeSetItem('app-version-hash', pendingVersionInfo.buildHash);
-        safeSetItem('app-version', pendingVersionInfo.version);
+        safeStorage.set('app-version-hash', pendingVersionInfo.buildHash);
+        safeStorage.set('app-version', pendingVersionInfo.version);
         needsUpdate.value = false;
         pendingVersionInfo = null;
       }

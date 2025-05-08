@@ -16,10 +16,12 @@ export const useUserMetrics = (): UserMetricsReturn => {
   const likesCount = ref<number>(0);
 
   /**
-   * 获取指定用户的评论数和点赞数
-   * @param userId 用户ID
-   */
-  const fetchStats = async (userId: string) => {
+ * 获取指定用户的评论数和点赞数
+ * @param userId 用户ID
+ * @returns {Promise<void>}
+ * @throws {Error} 当 API 请求失败时抛出错误
+ */
+  const fetchStats = async (userId: string): Promise<void> => {
     if (!userId) return;
 
     try {

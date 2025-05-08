@@ -11,35 +11,36 @@ export const useAuthGuard = () => {
   const toast = useToast();
 
   /**
+   * 未登录时的处理逻辑
+   */
+  const handleUnauthenticated = (message?: string) => {
+    toast.add({
+      title: "访问受限",
+      description: message || "该功能需要登录账号后使用",
+      color: "warning",
+    });
+
+    try {
+      if (import.meta.client) {
+        safeStorage.set("originalPath", window.location.pathname);
+      }
+    } catch (error) {
+      console.warn('无法访问本地存储，可能处于隐私模式');
+    }
+
+    navigateTo("/login");
+  };
+
+  /**
    * 权限守卫执行器
    * @param action 需要鉴权的操作
    * @param message 未登录时的自定义提示
    */
   const guardAction = (action: () => void, message?: string) => {
     if (!isAuthenticated.value) {
-      // 未登录时弹出提示
-      toast.add({
-        title: "访问受限",
-        description: message || "该功能需要登录账号后使用",
-        color: "warning",
-      });
-
-      try {
-        // 客户端环境下记录原始路径，便于登录后跳转回来
-        if (import.meta.client) {
-          safeSetItem("originalPath", window.location.pathname);
-        }
-      } catch (error) {
-        // 兼容隐私模式下本地存储不可用的情况
-        console.warn('无法访问本地存储，可能处于隐私模式');
-      }
-
-      // 跳转到登录页
-      navigateTo("/login");
+      handleUnauthenticated(message);
       return;
     }
-
-    // 已登录则执行原操作
     action();
   };
 

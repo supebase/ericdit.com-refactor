@@ -21,9 +21,6 @@ export function useUserRole() {
 
   const isLoading = ref(true);
 
-  // 是否为管理员
-  const isAdmin = computed(() => roleName.value === "Administrator");
-
   /**
    * 异步更新当前用户角色名（防抖处理）
    */
@@ -48,7 +45,7 @@ export function useUserRole() {
   );
 
   return {
-    isAdmin,
+    isAdmin: computed(() => roleName.value === "Administrator"),
     roleName,
     updateRoleName,
     isLoading,

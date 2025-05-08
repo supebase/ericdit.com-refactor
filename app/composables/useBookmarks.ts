@@ -29,10 +29,11 @@ export const useBookmarks = () => {
   };
 
   /**
-   * 创建新的书签
-   * @param data 书签数据
-   * @returns 创建后的书签项
-   */
+ * 创建新的书签
+ * @param data 书签数据
+ * @returns {Promise<BookmarkItem>} 创建后的书签项
+ * @throws {Error} 当 API 请求失败时抛出错误
+ */
   const createBookmark = async (data: Partial<BookmarkItem>): Promise<BookmarkItem> => {
     try {
       const response = await $directus.request<BookmarkItem>(
@@ -45,9 +46,11 @@ export const useBookmarks = () => {
   };
 
   /**
-   * 删除指定书签
-   * @param id 书签ID
-   */
+ * 删除指定书签
+ * @param id 书签ID
+ * @returns {Promise<void>}
+ * @throws {Error} 当 API 请求失败时抛出错误
+ */
   const deleteBookmark = async (id: string): Promise<void> => {
     try {
       await $directus.request($content.deleteItem("bookmarks", id));
@@ -57,10 +60,12 @@ export const useBookmarks = () => {
   };
 
   /**
-   * 若未收藏则添加书签，已收藏则提示
-   * @param contentId 内容ID
-   */
-  const addBookmarkIfNotExists = async (contentId: string) => {
+ * 若未收藏则添加书签，已收藏则提示
+ * @param contentId 内容ID
+ * @returns {Promise<BookmarkItem>} 新增的书签项
+ * @throws {Error} 已收藏时抛出错误
+ */
+  const addBookmarkIfNotExists = async (contentId: string): Promise<BookmarkItem> => {
     // 查询当前用户是否已收藏该内容
     const existing = await getBookmarks({
       fields: ["id"],
