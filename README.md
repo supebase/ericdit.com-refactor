@@ -1,7 +1,13 @@
 # ericdit.com Nuxt 4 重构版 / Nuxt 4 Refactor for ericdit.com
 
+[![](screenshot/s-1.png)](screenshot/s-1.png)
+
 这是基于 [Nuxt 4](https://nuxt.com/) 的个人网站重构项目，支持内容收藏、评论、点赞、用户在线或离线状态、更新提示、实时订阅等功能。  
 This is a personal website refactor project based on [Nuxt 4](https://nuxt.com/), featuring content bookmarks, comments, likes, user online/offline status, notifications, realtime, and more.
+
+[![](screenshot/s-2.png)](screenshot/s-2.png)
+
+[![](screenshot/s-3.png)](screenshot/s-3.png)
 
 ---
 
