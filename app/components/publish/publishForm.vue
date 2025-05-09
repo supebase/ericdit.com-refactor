@@ -1,18 +1,16 @@
 <template>
     <div class="space-y-6">
-        <UAlert color="neutral" variant="soft" icon="hugeicons:alert-02"
-            description="目前仅支持发布状态卡片和 GitHub 卡片"
+        <UAlert color="neutral" variant="soft" icon="hugeicons:alert-02" description="目前仅支持发布状态卡片和 GitHub 卡片"
             class="text-neutral-500 relative overflow-hidden alert-diagonal-bg" />
         <URadioGroup
-            :ui="{ item: 'bg-white dark:bg-neutral-950 rounded-md border-2', label: 'text-base', description: 'text-muted/80', fieldset: 'gap-4 justify-center' }"
-            v-model="publishType" :items="publishTypeItems" size="md" indicator="hidden"
-            orientation="horizontal" color="primary" variant="card" />
+            :ui="{ item: 'bg-white dark:bg-neutral-950 rounded-md border has-data-[state=checked]:shadow-lg has-data-[state=checked]:shadow-primary-500/30 w-full', label: 'text-base', description: 'text-muted/80', fieldset: 'gap-4 justify-center' }"
+            v-model="publishType" :items="publishTypeItems" size="md" indicator="hidden" orientation="horizontal"
+            color="primary" variant="card" />
         <template v-if="publishType === 'status'">
             <div class="bg-white dark:bg-neutral-950 rounded-md p-1">
-                <UTextarea :ui="{ base: 'placeholder:text-base' }" v-model="body" color="neutral"
-                    variant="none" autoresize :rows="3" :maxrows="6" :padded="false" size="xl"
-                    class="w-full" :maxlength="BODY_MAX_LENGTH" :disabled="isSubmitting"
-                    placeholder="说点什么 ..." />
+                <UTextarea :ui="{ base: 'placeholder:text-base' }" v-model="body" color="neutral" variant="none"
+                    autoresize :rows="3" :maxrows="6" :padded="false" size="xl" class="w-full"
+                    :maxlength="BODY_MAX_LENGTH" :disabled="isSubmitting" placeholder="说点什么 ..." />
                 <div class="flex justify-between items-center p-3">
                     <div class="flex items-center space-x-6">
                         <USwitch v-model="statusPinned" color="neutral" label="置顶" />
@@ -34,8 +32,8 @@
             <UInput :ui="{
                 base: 'pl-[151px] pr-[80px] rounded-md bg-white dark:bg-neutral-950 placeholder:text-neutral-300 dark:placeholder:text-neutral-700',
                 leading: 'pointer-events-none'
-            }" v-model="githubLink" variant="soft" size="xl" class="w-full"
-                placeholder="owner/repo" :disabled="isSubmitting">
+            }" v-model="githubLink" variant="soft" size="xl" class="w-full" placeholder="owner/repo"
+                :disabled="isSubmitting">
                 <template #leading>
                     <p class="text-muted">
                         https://github.com/
@@ -47,8 +45,7 @@
             </UInput>
         </template>
         <UButton block size="xl" color="primary" :loading="isSubmitting"
-            :disabled="body.length >= BODY_MAX_LENGTH || isSubmitting || !canSubmit"
-            @click="handlePublish">
+            :disabled="body.length >= BODY_MAX_LENGTH || isSubmitting || !canSubmit" @click="handlePublish">
             {{ isSubmitting ? '正在发布' : '立即发布' }}
         </UButton>
     </div>
@@ -57,7 +54,7 @@
 <script setup lang="ts">
 import type { RadioGroupItem } from '@nuxt/ui';
 
-const BODY_MAX_LENGTH = 200;
+const BODY_MAX_LENGTH = 100;
 const publishTypeItems: RadioGroupItem[] = [
     { label: '状态卡片', value: 'status', description: '近期有没有可分享的内容' },
     { label: 'GitHub 卡片', value: 'github', description: '可通过链接地址分享项目' }

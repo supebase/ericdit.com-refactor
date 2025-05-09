@@ -19,7 +19,7 @@ const slots = defineSlots<{
         :class="[selected ? 'bg-neutral-300/70 dark:bg-neutral-700/70 outline-1 outline-offset-1 outline-neutral-100 dark:outline-neutral-900' : 'bg-neutral-100 dark:bg-neutral-900']">
         <template v-if="chip || !!slots.leading" #leading>
             <slot name="leading">
-                <span class="inline-block size-2 rounded-full" :class="`bg-${chip}-500`" />
+                <span class="inline-block size-[9px] rounded-full" :class="`bg-${chip}-500`" />
             </slot>
         </template>
     </UButton>

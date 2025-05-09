@@ -53,39 +53,35 @@ const mode = computed({
 
         <template #content>
             <fieldset>
-                <legend
-                    class="text-[13px] text-center leading-none font-medium mb-2 select-none -mx-1.5 text-neutral-500">
+                <legend class="text-[13px] text-center leading-none font-medium mb-2 select-none text-neutral-500">
                     主色调
                 </legend>
 
                 <div class="grid grid-cols-3 gap-1.5 -mx-2.5">
-                    <ThemePickerButton v-for="color in primaryColors" :key="color" :label="color"
-                        :chip="color" :selected="primary === color" @click="primary = color" />
+                    <ThemePickerButton v-for="color in primaryColors" :key="color" :label="color" :chip="color"
+                        :selected="primary === color" @click="primary = color" />
                 </div>
             </fieldset>
 
             <fieldset>
-                <legend
-                    class="text-[13px] text-center leading-none font-medium mb-2 select-none -mx-1.5 text-neutral-500">
+                <legend class="text-[13px] text-center leading-none font-medium mb-2 select-none text-neutral-500">
                     中性色
                 </legend>
 
                 <div class="grid grid-cols-3 gap-1.5 -mx-2.5">
-                    <ThemePickerButton v-for="color in neutralColors" :key="color" :label="color"
-                        :chip="color" :selected="neutral === color" @click="neutral = color" />
+                    <ThemePickerButton v-for="color in neutralColors" :key="color" :label="color" :chip="color"
+                        :selected="neutral === color" @click="neutral = color" />
                 </div>
             </fieldset>
 
             <fieldset>
-                <legend
-                    class="text-[13px] text-center leading-none font-medium mb-2 select-none -mx-1.5 text-neutral-500">
+                <legend class="text-[13px] text-center leading-none font-medium mb-2 select-none text-neutral-500">
                     主题色
                 </legend>
 
                 <div class="grid grid-cols-3 gap-1.5 -mx-2">
                     <ThemePickerButton v-for="m in modes" :key="m.label" v-bind="m"
-                        :selected="colorMode.preference === m.label" :text="m.text"
-                        @click="mode = m.label" />
+                        :selected="colorMode.preference === m.label" :text="m.text" @click="mode = m.label" />
                 </div>
             </fieldset>
         </template>

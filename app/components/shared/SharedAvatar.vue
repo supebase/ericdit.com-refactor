@@ -19,7 +19,7 @@
         'ring-1 ring-neutral-50 dark:ring-neutral-800',
         'bg-neutral-50 dark:bg-neutral-800'
       ]">
-        <span class="text-neutral-500 dark:text-neutral-400 font-medium">{{ avatarText }}</span>
+        <span class="text-neutral-400 dark:text-neutral-600 font-medium">{{ avatarText }}</span>
       </div>
     </template>
     <slot />

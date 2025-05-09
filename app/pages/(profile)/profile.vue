@@ -12,7 +12,7 @@
           </div>
           <div class="flex items-center justify-center gap-2">
             <UIcon name="hugeicons:location-04" class="size-5" />
-            <span>最近的登录活动发生在{{ user?.location }}</span>
+            <span>最近登录活动发生在{{ user?.location }}</span>
           </div>
         </div>
       </div>

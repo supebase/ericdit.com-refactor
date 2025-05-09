@@ -1,17 +1,16 @@
 <template>
-    <div class="relative w-full max-w-md mx-auto">
+    <div class="relative w-full mx-auto">
         <div
-            class="relative w-full aspect-[16/7] outline-2 outline-dashed outline-offset-1 outline-neutral-100 dark:outline-neutral-800 rounded-md flex items-center justify-center overflow-hidden">
-            <img v-if="previewUrl" :src="previewUrl"
-                class="absolute inset-0 w-full h-full object-cover z-0" />
+            class="relative w-full aspect-[16/7] bg-white dark:bg-neutral-950 rounded-md flex items-center justify-center overflow-hidden">
+            <img v-if="previewUrl" :src="previewUrl" class="absolute inset-0 w-full h-full object-cover z-0" />
             <div class="absolute inset-0 flex items-center justify-center space-x-3 z-10"
                 :class="previewUrl ? 'backdrop-brightness-50' : ''">
-                <UButton size="md" color="neutral" variant="solid" @click="openFileInput"
-                    :loading="isUploading" :disabled="isUploading">
+                <UButton size="md" color="neutral" variant="solid" @click="openFileInput" :loading="isUploading"
+                    :disabled="isUploading">
                     上传图片
                 </UButton>
-                <UButton v-if="previewUrl" size="md" color="error" variant="solid"
-                    @click="removeImage" :loading="isDeleting" :disabled="isDeleting">
+                <UButton v-if="previewUrl" size="md" color="error" variant="solid" @click="removeImage"
+                    :loading="isDeleting" :disabled="isDeleting">
                     移除图片
                 </UButton>
             </div>
@@ -19,8 +18,7 @@
                 支持的格式：JPG、PNG、GIF，最大尺寸：1MB
             </div>
         </div>
-        <input type="file" ref="fileInput" accept="image/*" class="hidden"
-            @change="handleFileChange" />
+        <input type="file" ref="fileInput" accept="image/*" class="hidden" @change="handleFileChange" />
     </div>
 </template>
 
