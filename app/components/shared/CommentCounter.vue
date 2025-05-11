@@ -28,6 +28,27 @@ const props = defineProps<{
 const { getCommentsList, subscribeComments } = useComments();
 const commentsCount = ref(0);
 
+// 封装订阅逻辑
+function useCommentsSubscription(contentId: string, onUpdate: () => void) {
+  let unsubscribe: (() => void) | null = null;
+
+  const start = async () => {
+    if (unsubscribe) unsubscribe();
+    unsubscribe = await subscribeComments(contentId, async (event) => {
+      if (["create", "delete"].includes(event.event)) {
+        await onUpdate();
+      }
+    });
+  };
+
+  const stop = () => {
+    if (unsubscribe) unsubscribe();
+    unsubscribe = null;
+  };
+
+  return { start, stop };
+}
+
 const fetchCommentsCount = async () => {
   try {
     const comments = await getCommentsList("content", props.contentId, {
@@ -39,13 +60,26 @@ const fetchCommentsCount = async () => {
   }
 };
 
+let subscription = useCommentsSubscription(props.contentId, fetchCommentsCount);
+
 onMounted(async () => {
   await fetchCommentsCount();
-
-  subscribeComments(props.contentId, async (event) => {
-    if (["create", "delete"].includes(event.event)) {
-      await fetchCommentsCount();
-    }
-  });
+  subscription.start();
 });
+
+onUnmounted(() => {
+  subscription.stop();
+});
+
+watch(
+  () => props.contentId,
+  async (newId, oldId) => {
+    if (newId !== oldId) {
+      await fetchCommentsCount();
+      subscription.stop();
+      subscription = useCommentsSubscription(newId, fetchCommentsCount);
+      subscription.start();
+    }
+  }
+);
 </script>

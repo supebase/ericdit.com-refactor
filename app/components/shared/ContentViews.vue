@@ -22,6 +22,33 @@ const props = defineProps<{
 const { getContent, subscribeContents } = useContents();
 const viewsCount = ref(0);
 
+// 封装订阅逻辑
+function useContentSubscription(contentId: string, onUpdate: () => void) {
+    let unsubscribe: (() => void) | null = null;
+
+    const start = async () => {
+        if (unsubscribe) unsubscribe();
+        unsubscribe = await subscribeContents(
+            {
+                fields: ["id", "views"],
+                filter: { id: { _eq: contentId } },
+            },
+            async (event) => {
+                if (["update"].includes(event.event)) {
+                    await onUpdate();
+                }
+            }
+        );
+    };
+
+    const stop = () => {
+        if (unsubscribe) unsubscribe();
+        unsubscribe = null;
+    };
+
+    return { start, stop };
+}
+
 const formatViewsCount = (num: number) => {
     if (num >= 1000) {
         return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
@@ -40,19 +67,26 @@ const fetchViewsCount = async () => {
     }
 };
 
+let subscription = useContentSubscription(props.contentId, fetchViewsCount);
+
 onMounted(async () => {
     await fetchViewsCount();
-
-    subscribeContents(
-        {
-            fields: ["id", "views"],
-            filter: { id: { _eq: props.contentId } },
-        },
-        async (event) => {
-            if (["update"].includes(event.event)) {
-                await fetchViewsCount();
-            }
-        }
-    );
+    await subscription.start();
 });
+
+onUnmounted(() => {
+    subscription.stop();
+});
+
+watch(
+    () => props.contentId,
+    async (newId, oldId) => {
+        if (newId !== oldId) {
+            await fetchViewsCount();
+            subscription.stop();
+            subscription = useContentSubscription(newId, fetchViewsCount);
+            await subscription.start();
+        }
+    }
+);
 </script>

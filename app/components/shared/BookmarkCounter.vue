@@ -118,31 +118,3 @@ watch(() => user.value?.id, () => {
 });
 </script>
 
-<style scoped>
-.bookmark-animation {
-  animation: bookmark-effect 0.5s ease-in-out;
-  transform-origin: center;
-}
-
-@keyframes bookmark-effect {
-  0% {
-    transform: scale(1) rotate(0);
-  }
-
-  25% {
-    transform: scale(1.2) rotate(-15deg);
-  }
-
-  50% {
-    transform: scale(1.3) rotate(10deg);
-  }
-
-  75% {
-    transform: scale(1.2) rotate(-5deg);
-  }
-
-  100% {
-    transform: scale(1) rotate(0);
-  }
-}
-</style>

@@ -1,11 +1,20 @@
 <script setup lang="ts">
-import colors from 'tailwindcss/colors'
-import { omit } from '#ui/utils'
+import colors from "tailwindcss/colors";
+import { omit } from "#ui/utils";
 
-const appConfig = useAppConfig()
-const colorMode = useColorMode()
-
+// 常量提取到顶部，便于维护
 const neutralColors = ['slate', 'gray', 'zinc', 'neutral', 'stone']
+const colorsToOmit = ['inherit', 'current', 'transparent', 'black', 'white', ...neutralColors]
+const primaryColors = Object.keys(omit(colors, colorsToOmit as any))
+const modes = [
+    { label: 'light', icon: 'hugeicons:sun-02', text: '浅色' },
+    { label: 'dark', icon: 'hugeicons:moon-02', text: '深色' },
+    { label: 'system', icon: 'hugeicons:computer', text: '系统' }
+]
+
+const appConfig = useAppConfig();
+const colorMode = useColorMode();
+
 const neutral = computed({
     get() {
         return appConfig.ui.colors.neutral
@@ -16,8 +25,6 @@ const neutral = computed({
     }
 })
 
-const colorsToOmit = ['inherit', 'current', 'transparent', 'black', 'white', ...neutralColors]
-const primaryColors = Object.keys(omit(colors, colorsToOmit as any))
 const primary = computed({
     get() {
         return appConfig.ui.colors.primary
@@ -28,11 +35,6 @@ const primary = computed({
     }
 })
 
-const modes = [
-    { label: 'light', icon: 'hugeicons:sun-02', text: '浅色' },
-    { label: 'dark', icon: 'hugeicons:moon-02', text: '深色' },
-    { label: 'system', icon: 'hugeicons:computer', text: '系统' }
-]
 const mode = computed({
     get() {
         return colorMode.value
@@ -52,41 +54,49 @@ const mode = computed({
         </template>
 
         <template #content>
-            <fieldset>
-                <legend class="text-[13px] text-center leading-none font-medium mb-2 select-none text-neutral-500">
+            <fieldset aria-labelledby="primary-colors-legend">
+                <legend id="primary-colors-legend"
+                    class="text-[13px] text-center leading-none font-medium mb-2 select-none text-neutral-500">
                     主色调
                 </legend>
 
                 <div class="grid grid-cols-3 gap-1.5 -mx-2.5">
-                    <ThemePickerButton v-for="color in primaryColors" :key="color" :label="color" :chip="color"
-                        :selected="primary === color" @click="primary = color" />
+                    <ThemePickerButton v-for="color in primaryColors" :key="color" :label="color"
+                        :chip="color" :selected="primary === color" @click="primary = color" />
                 </div>
             </fieldset>
 
-            <fieldset>
-                <legend class="text-[13px] text-center leading-none font-medium mb-2 select-none text-neutral-500">
+            <fieldset aria-labelledby="neutral-colors-legend">
+                <legend id="neutral-colors-legend"
+                    class="text-[13px] text-center leading-none font-medium mb-2 select-none text-neutral-500">
                     中性色
                 </legend>
 
                 <div class="grid grid-cols-3 gap-1.5 -mx-2.5">
-                    <ThemePickerButton v-for="color in neutralColors" :key="color" :label="color" :chip="color"
-                        :selected="neutral === color" @click="neutral = color" />
+                    <ThemePickerButton v-for="color in neutralColors" :key="color" :label="color"
+                        :chip="color" :selected="neutral === color" @click="neutral = color" />
                 </div>
             </fieldset>
 
-            <fieldset>
-                <legend class="text-[13px] text-center leading-none font-medium mb-2 select-none text-neutral-500">
+            <fieldset aria-labelledby="theme-mode-legend">
+                <legend id="theme-mode-legend"
+                    class="text-[13px] text-center leading-none font-medium mb-2 select-none text-neutral-500">
                     主题色
                 </legend>
 
                 <div class="grid grid-cols-3 gap-1.5 -mx-2">
                     <ThemePickerButton v-for="m in modes" :key="m.label" v-bind="m"
-                        :selected="colorMode.preference === m.label" :text="m.text" @click="mode = m.label" />
+                        :selected="colorMode.preference === m.label" :text="m.text"
+                        @click="mode = m.label" />
                 </div>
             </fieldset>
         </template>
     </UPopover>
 
+    <!--
+      下面的隐藏 div 仅用于确保 Tailwind JIT 能生成所有主题色和中性色的 class。
+      若已开启 JIT 且确认无用，可安全移除。
+    -->
     <div class="hidden">
         <!-- Primary Colors -->
         <div class="bg-red-500 dark:bg-red-500"></div>

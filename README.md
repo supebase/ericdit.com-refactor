@@ -60,11 +60,3 @@ npm run bump && npm run build
 
 欢迎提出问题、提出建议、参与代码贡献等。
 Welcome to report issues, suggest improvements, and contribute code.
-
-<style>
-  img {
-    max-width: 300px;
-    height: auto;
-    border-radius: 10px;
-  }
-</style>

@@ -1,11 +1,16 @@
 <script setup lang="ts">
-defineProps<{
+const props = withDefaults(defineProps<{
     label: string
     icon?: string
     chip?: string
     text?: string
     selected?: boolean
-}>()
+}>(), {
+    icon: "",
+    chip: "",
+    text: "",
+    selected: false
+})
 
 const slots = defineSlots<{
     leading: () => any

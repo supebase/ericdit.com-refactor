@@ -42,63 +42,30 @@ const props = withDefaults(
   }
 );
 
-const avatarLoading = ref(!!props.src);
-
-// 根据不同size设置不同的图标大小
-const iconSize = computed(() => {
-  switch (props.size) {
-    case "2xs":
-      return "2";
-    case "xs":
-      return "3";
-    case "sm":
-      return "4";
-    case "md":
-      return "5";
-    case "lg":
-      return "6";
-    case "xl":
-      return "7";
-    default:
-      return "5";
-  }
-});
-
 // 添加尺寸类计算属性
-const sizeClass = computed(() => {
-  const sizes = {
-    "2xs": "w-6 h-6",
-    xs: "w-7 h-7",
-    sm: "w-8 h-8",
-    "2sm": "w-9 h-9",
-    md: "w-10 h-10",
-    lg: "w-12 h-12",
-    xl: "w-14 h-14",
-  };
-  return sizes[props.size] || sizes.md;
-});
+const sizeMap = {
+  "2xs": "w-6 h-6",
+  xs: "w-7 h-7",
+  sm: "w-8 h-8",
+  "2sm": "w-9 h-9",
+  md: "w-10 h-10",
+  lg: "w-12 h-12",
+  xl: "w-14 h-14",
+};
+
+const sizeClass = computed(() => sizeMap[props.size] || sizeMap.md);
+const textSizeClass = sizeClass;
 
 const avatarText = computed(() => {
   if (!props.alt) return '?';
   return props.alt.charAt(0).toUpperCase();
 });
 
-const textSizeClass = computed(() => {
-  const sizes = {
-    "2xs": "w-6 h-6",
-    xs: "w-7 h-7",
-    sm: "w-8 h-8",
-    "2sm": "w-9 h-9",
-    md: "w-10 h-10",
-    lg: "w-12 h-12",
-    xl: "w-14 h-14",
-  };
-  return sizes[props.size] || sizes.md;
-});
-
 const isExternal = computed(() => {
   return !!props.src && /^https?:\/\//.test(props.src);
 });
+
+const avatarLoading = ref(!!props.src);
 
 const onImageLoad = () => {
   avatarLoading.value = false;

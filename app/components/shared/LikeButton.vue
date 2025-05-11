@@ -98,7 +98,6 @@ const handleLikeAction = async () => {
 
 const handleLike = () => {
   const message = props.commentId ? "登录后即可为精彩评论点赞" : "登录后即可为喜欢的内容点赞";
-
   guardAction(() => handleLikeAction(), message);
 };
 
@@ -107,7 +106,6 @@ const getIconName = computed(() => {
   if (props.iconName || props.iconNameActive) {
     return isLiked.value ? props.iconNameActive : props.iconName;
   }
-
   // 根据点赞类型返回默认图标
   if (props.likeType === "heart") {
     return isLiked.value ? "hugeicons:heart-check" : "hugeicons:favourite";
@@ -116,19 +114,48 @@ const getIconName = computed(() => {
   }
 });
 
-onMounted(async () => {
-  subscribeLikes(
-    {
-      fields: ["id", "user_created.id"],
-    },
-    async (event) => {
-      if (["create", "delete"].includes(event.event)) {
-        await fetchLikes();
-      }
-    }
-  );
+// 封装订阅逻辑
+function useLikesSubscription(commentId: string | undefined, contentId: string | undefined, onUpdate: () => void) {
+  let unsubscribe: (() => void) | null = null;
 
+  const start = async () => {
+    if (unsubscribe) unsubscribe();
+    const filter: Record<string, any> = {};
+    if (commentId) {
+      filter.comment_id = { _eq: commentId };
+    } else if (contentId) {
+      filter.content_id = { _eq: contentId };
+    }
+    unsubscribe = await subscribeLikes(
+      {
+        fields: ["id", "user_created.id"],
+        filter,
+      },
+      async (event) => {
+        if (["create", "delete"].includes(event.event)) {
+          await onUpdate();
+        }
+      }
+    );
+  };
+
+  const stop = () => {
+    if (unsubscribe) unsubscribe();
+    unsubscribe = null;
+  };
+
+  return { start, stop };
+}
+
+let subscription = useLikesSubscription(props.commentId, props.contentId, fetchLikes);
+
+onMounted(async () => {
   await fetchLikes();
+  subscription.start();
+});
+
+onUnmounted(() => {
+  subscription.stop();
 });
 
 watch(isAuthenticated, (newValue) => {
@@ -139,24 +166,16 @@ watch(isAuthenticated, (newValue) => {
     fetchLikes();
   }
 });
+
+watch(
+  () => [props.commentId, props.contentId],
+  async ([newCommentId, newContentId], [oldCommentId, oldContentId]) => {
+    if (newCommentId !== oldCommentId || newContentId !== oldContentId) {
+      await fetchLikes();
+      subscription.stop();
+      subscription = useLikesSubscription(newCommentId, newContentId, fetchLikes);
+      subscription.start();
+    }
+  }
+);
 </script>
-
-<style scoped>
-.scale-effect {
-  animation: scale 0.3s ease-in-out;
-}
-
-@keyframes scale {
-  0% {
-    transform: scale(1);
-  }
-
-  50% {
-    transform: scale(1.3);
-  }
-
-  100% {
-    transform: scale(1);
-  }
-}
-</style>
