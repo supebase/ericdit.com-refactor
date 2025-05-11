@@ -1,6 +1,6 @@
 <template>
   <div class="flex justify-end items-center">
-    <button @click="handleLike" :disabled="isProcessing"
+    <button aria-label="likes" @click="handleLike" :disabled="isProcessing"
       class="text-sm flex items-center space-x-1.5 text-neutral-400 dark:text-neutral-500 cursor-pointer disabled:cursor-not-allowed">
       <UIcon name="svg-spinners:ring-resize" :size="iconSize"
         class="text-neutral-400 dark:text-neutral-500" v-if="isProcessing" />

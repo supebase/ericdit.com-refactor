@@ -5,7 +5,7 @@
         {{ messageText }}
       </UBadge>
     </transition>
-    <button @click="handleBookmark" :disabled="isProcessing"
+    <button aria-label="bookmarks" @click="handleBookmark" :disabled="isProcessing"
       class="text-sm flex items-center space-x-2 text-neutral-400 dark:text-neutral-500 cursor-pointer disabled:cursor-not-allowed">
       <UIcon name="svg-spinners:ring-resize" :size="iconSize"
         class="text-neutral-400 dark:text-neutral-500" v-if="isProcessing" />

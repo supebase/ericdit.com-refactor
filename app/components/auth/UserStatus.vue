@@ -2,14 +2,14 @@
   <div class="flex items-center select-none">
     <template v-if="isAuthenticated">
       <div class="flex items-center">
-        <NuxtLink to="/profile">
+        <NuxtLink to="/profile" aria-label="profile">
           <SharedAvatar :src="user?.avatar" :alt="!user?.avatar ? user?.first_name : undefined"
             size="sm" />
         </NuxtLink>
       </div>
     </template>
     <template v-else>
-      <NuxtLink to="/login">
+      <NuxtLink to="/login" aria-label="login">
         <UAvatar icon="hugeicons:lock-key" class="size-8" />
       </NuxtLink>
     </template>

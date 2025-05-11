@@ -6,10 +6,10 @@
     </div>
 
     <template v-if="src">
-      <NuxtImg v-if="!isExternal" :provider="provider" :src="src" :alt="alt"
+      <NuxtImg v-if="!isExternal" :provider="provider" :src="src" :alt="alt" preload
         :class="[sizeClass, 'rounded-full object-cover']" @load="onImageLoad" v-bind="$attrs" />
-      <NuxtImg v-else :src="src" :alt="alt" :class="[sizeClass, 'rounded-full object-cover']"
-        @load="onImageLoad" v-bind="$attrs" />
+      <NuxtImg v-else :src="src" :alt="alt" preload
+        :class="[sizeClass, 'rounded-full object-cover']" @load="onImageLoad" v-bind="$attrs" />
     </template>
     <template v-else>
       <div :class="[

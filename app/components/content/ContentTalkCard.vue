@@ -1,9 +1,9 @@
 <template>
     <div class="relative flex flex-col items-center bg-white/50 dark:bg-neutral-800/50 rounded-md">
-        <NuxtLink :to="{ name: 'article-id', params: { id: talk.id } }"
+        <NuxtLink :to="{ name: 'article-id', params: { id: talk.id } }" :aria-label="talk.id"
             class="w-full flex-1 flex flex-col items-center">
             <div v-if="talk.images?.length" class="w-full flex justify-center relative">
-                <NuxtImg provider="directus" :src="talk.images?.[0]?.directus_files_id"
+                <NuxtImg provider="directus" :src="talk.images?.[0]?.directus_files_id" alt="预览图片"
                     loading="eager" fetchpriority="high" preload placeholder format="webp"
                     quality="80" sizes="(max-width: 768px) 100vw, 768px"
                     class="aspect-[16/4] object-cover rounded-t-md w-full mask-b-from-0" />
@@ -24,7 +24,8 @@
             <div class="px-4 flex flex-col justify-center items-center w-full"
                 :class="talk.images?.length ? 'pt-6' : 'pt-1'">
                 <div class="flex flex-col items-center mt-2">
-                    <div class="text-neutral-500 dark:text-neutral-400 text-base text-center italic">
+                    <div
+                        class="text-neutral-500 dark:text-neutral-400 text-base text-center italic">
                         {{ cleanBody }}
                     </div>
                     <div
