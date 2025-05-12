@@ -1,5 +1,5 @@
 <template>
-  <header class="flex-none">
+  <header class="fixed top-0 left-0 w-full z-50 bg-neutral-200/75 dark:bg-neutral-900/75 backdrop-blur">
     <div class="max-w-md sm:max-w-lg mx-auto py-4 flex justify-between items-center px-5">
       <Transition name="fade" mode="out-in">
         <NavigationLogo v-if="$route.path === '/'" key="logo" />

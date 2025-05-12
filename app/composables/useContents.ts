@@ -208,26 +208,68 @@ export const useContents = () => {
    * 增加内容的浏览次数
    * @param id - 内容ID
    * @returns Promise<void>
-   * @description 先获取当前内容的浏览次数，然后加1后写回
+   * @description 先获取当前内容的浏览次数，使用队列来存储需要更新的内容ID，然后每30秒批量更新一次
    */
-  const incrementContentViews = async (id: string) => {
+  // 浏览量上报队列
+  const viewQueue: string[] = [];
+
+  // 统计队列中每个内容ID出现次数
+  const getViewBatch = () => {
+    const countMap: Record<string, number> = {};
+    viewQueue.forEach(id => {
+      countMap[id] = (countMap[id] || 0) + 1;
+    });
+    return Object.entries(countMap).map(([id, count]) => ({ id, count }));
+  };
+
+  // 增加内容浏览量（只入队，不直接请求后端）
+  const incrementContentViews = (id: string) => {
+    viewQueue.push(id);
+  };
+
+  // 批量上报函数
+  const flushViewQueue = async () => {
+    if (viewQueue.length === 0) return;
+    const batch = getViewBatch();
+    viewQueue.length = 0; // 清空队列
     try {
-      // 先获取当前 views
-      const content = await $directus.request<ContentItem>(
-        $content.readItem("contents", id, { fields: ["views"] })
-      );
-      const currentViews = content?.views ?? 0;
-      // 更新 views
-      await $directus.request(
-        $content.updateItem("contents", id, {
-          views: currentViews + 1,
-        })
-      );
-    } catch (error: any) {
-      // 可以选择静默失败
-      // console.warn("增加浏览次数失败", error);
+      await $fetch("/api/batch-increment-views", {
+        method: "POST",
+        body: batch,
+      });
+    } catch (e) {
+      // 失败时重新放回队列
+      batch.forEach(item => {
+        for (let i = 0; i < item.count; i++) {
+          viewQueue.push(item.id);
+        }
+      });
     }
   };
+
+  // 定时每30秒上报一次
+  setInterval(flushViewQueue, 30000);
+
+  // 页面关闭时兜底上报
+  if (import.meta.client) {
+    window.addEventListener("beforeunload", () => {
+      if (viewQueue.length > 0) {
+        try {
+          const batch = getViewBatch();
+          navigator.sendBeacon(
+            "/api/batch-increment-views",
+            JSON.stringify(batch)
+          );
+          viewQueue.length = 0;
+        } catch (e) {
+          // 忽略兜底上报异常
+        }
+      }
+    });
+  }
+
+  // 可选：暴露手动上报方法
+  const forceFlushViews = flushViewQueue;
 
   return {
     getContents,
@@ -240,5 +282,6 @@ export const useContents = () => {
     subscribeContents,
     getUserAvatarUrl,
     incrementContentViews,
+    forceFlushViews,
   };
 };

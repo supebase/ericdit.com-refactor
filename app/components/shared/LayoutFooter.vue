@@ -1,5 +1,5 @@
 <template>
-  <footer class="flex-none">
+  <footer class="fixed bottom-0 left-0 w-full z-50 bg-neutral-200/75 dark:bg-neutral-900/75 backdrop-blur">
     <hr />
     <div class="py-4 select-none flex justify-center items-center gap-4">
       <div class="text-center text-sm text-neutral-500 space-x-1.5">
@@ -10,8 +10,7 @@
 
       <UPopover arrow
         :ui="{ content: 'bg-white dark:bg-neutral-950', arrow: 'fill-neutral-200 dark:fill-neutral-800' }">
-        <UIcon name="hugeicons:user-status"
-          class="size-4 text-neutral-500 hover:text-primary-500 cursor-pointer"
+        <UIcon name="hugeicons:user-status" class="size-4 text-neutral-500 hover:text-primary-500 cursor-pointer"
           @click="() => { if (!totalUsers) fetchTotalUsers() }" />
         <template #content>
           <UserStats />

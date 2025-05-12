@@ -1,13 +1,11 @@
 <template>
   <div class="fixed inset-0 flex flex-col">
     <SharedLayoutHeader />
-
-    <div class="flex-1 overflow-y-auto overflow-x-hidden mask-y-from-[97%]" ref="scrollContainer">
-      <main class="max-w-md sm:max-w-lg mx-auto px-5 w-full">
+    <div class="flex-1 overflow-y-auto overflow-x-hidden" ref="scrollContainer">
+      <main class="max-w-md sm:max-w-lg mx-auto px-5 py-16 w-full">
         <slot :isNearBottom="isNearBottom" />
       </main>
     </div>
-
     <SharedLayoutFooter />
   </div>
 </template>
