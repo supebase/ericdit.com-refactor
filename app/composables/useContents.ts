@@ -210,57 +210,48 @@ export const useContents = () => {
    * @returns Promise<void>
    * @description 先获取当前内容的浏览次数，使用队列来存储需要更新的内容ID，然后每30秒批量更新一次
    */
-  // 浏览量上报队列
-  const viewQueue: string[] = [];
+  // 浏览量上报队列，使用 Map 结构更高效
+  const viewQueue: Map<string, number> = new Map();
 
-  // 统计队列中每个内容ID出现次数
-  const getViewBatch = () => {
-    const countMap: Record<string, number> = {};
-    viewQueue.forEach(id => {
-      countMap[id] = (countMap[id] || 0) + 1;
-    });
-    return Object.entries(countMap).map(([id, count]) => ({ id, count }));
+  // 增加内容浏览量（直接累计到 Map）
+  const incrementContentViews = (id: string) => {
+    viewQueue.set(id, (viewQueue.get(id) || 0) + 1);
   };
 
-  // 增加内容浏览量（只入队，不直接请求后端）
-  const incrementContentViews = (id: string) => {
-    viewQueue.push(id);
+  // 获取批量上报数据
+  const getViewBatch = () => {
+    return Array.from(viewQueue.entries()).map(([id, count]) => ({ id, count }));
   };
 
   // 批量上报函数
   const flushViewQueue = async () => {
-    if (viewQueue.length === 0) return;
+    if (viewQueue.size === 0) return;
     const batch = getViewBatch();
-    viewQueue.length = 0; // 清空队列
+    viewQueue.clear(); // 清空队列
     try {
       await $fetch("/api/batch-increment-views", {
         method: "POST",
         body: batch,
       });
     } catch (e) {
-      // 失败时重新放回队列
-      batch.forEach(item => {
-        for (let i = 0; i < item.count; i++) {
-          viewQueue.push(item.id);
-        }
+      // 失败时重新合并回队列
+      batch.forEach((item) => {
+        viewQueue.set(item.id, (viewQueue.get(item.id) || 0) + item.count);
       });
     }
   };
 
-  // 定时每30秒上报一次
-  setInterval(flushViewQueue, 30000);
+  // 定时每 15 秒上报一次
+  setInterval(flushViewQueue, 15000);
 
   // 页面关闭时兜底上报
   if (import.meta.client) {
     window.addEventListener("beforeunload", () => {
-      if (viewQueue.length > 0) {
+      if (viewQueue.size > 0) {
         try {
           const batch = getViewBatch();
-          navigator.sendBeacon(
-            "/api/batch-increment-views",
-            JSON.stringify(batch)
-          );
-          viewQueue.length = 0;
+          navigator.sendBeacon("/api/batch-increment-views", JSON.stringify(batch));
+          viewQueue.clear();
         } catch (e) {
           // 忽略兜底上报异常
         }

@@ -27,7 +27,7 @@ import {
 /**
  * Directus 插件初始化
  * @description 配置并提供 Directus 的核心功能，包括基础API、认证、实时通信等
- * @returns {Object} 包含所有 Directus API 的插件对象
+ * @returns {PluginProvideObject} Directus API 的插件对象
  */
 export default defineNuxtPlugin(() => {
   const { directus, authClient, realtimeClient } = useDirectus();
@@ -65,6 +65,6 @@ export default defineNuxtPlugin(() => {
         uploadFiles,
         deleteFile,
       },
-    },
+    } as const,
   };
 });

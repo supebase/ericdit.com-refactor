@@ -50,14 +50,16 @@ export const useArticleMetrics = (content: string, images?: Array<ImageMeta>): s
   const calculateTextTime = (content: string): number => {
     const contentWithoutCode = content.replace(/```[\s\S]*?```/g, "");
     const chineseChars = contentWithoutCode.match(/[\u4e00-\u9fa5]/g)?.length || 0;
-    const englishWords = contentWithoutCode
+    const englishWordsArr = contentWithoutCode
       .replace(/[\u4e00-\u9fa5]/g, "")
       .trim()
-      .split(/\s+/).length;
+      .split(/\s+/)
+      .filter(Boolean); // 过滤空字符串
+    const englishWords = englishWordsArr.length;
 
     return (
       chineseChars / READ_SPEED_CONFIG.CHINESE_CHARS_PER_MINUTE +
-      englishWords / READ_SPEED_CONFIG.WORDS_PER_MINUTE
+      (englishWords > 0 ? englishWords / READ_SPEED_CONFIG.WORDS_PER_MINUTE : 0)
     );
   };
 

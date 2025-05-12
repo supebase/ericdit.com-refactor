@@ -26,6 +26,10 @@ export const useVersionCheck = () => {
   const RETRY_DELAY = 10 * 1000;
   let retryTimeout: ReturnType<typeof setTimeout> | null = null;
 
+  // interval 用 ref 管理，便于动态调整
+  const interval = ref(import.meta.dev ? 30 * 1000 : 2 * 60 * 1000);
+  let intervalId: ReturnType<typeof setInterval> | null = null;
+
   /**
    * 检查版本信息
    * - 获取 /version.json
@@ -35,21 +39,29 @@ export const useVersionCheck = () => {
   const checkVersion = async () => {
     try {
       const response = await fetch(`/version.json?t=${Date.now()}`, {
-        cache: 'no-cache',
+        cache: "no-cache",
         headers: {
-          'Cache-Control': 'no-cache',
+          "Cache-Control": "no-cache",
         },
       });
 
-      if (!response.ok) return;
+      if (!response.ok) {
+        // 业务异常
+        console.error(
+          "Version check failed: response not ok",
+          response.status,
+          response.statusText
+        );
+        return;
+      }
 
       const { buildHash, version } = await response.json();
-      const currentHash = safeStorage.get('app-version-hash');
+      const currentHash = safeStorage.get("app-version-hash");
 
       if (isFirstCheck) {
         // 首次加载或刷新页面，直接写入最新 hash 和 version，不弹提示
-        safeStorage.set('app-version-hash', buildHash);
-        safeStorage.set('app-version', version);
+        safeStorage.set("app-version-hash", buildHash);
+        safeStorage.set("app-version", version);
         needsUpdate.value = false;
         isFirstCheck = false;
         return;
@@ -62,9 +74,13 @@ export const useVersionCheck = () => {
       } else {
         needsUpdate.value = false;
       }
-    } catch (error) {
-      console.error('Version check failed:', error);
-
+    } catch (error: any) {
+      // 区分网络异常和业务异常
+      if (error instanceof TypeError || error?.name === "TypeError") {
+        console.error("Version check failed: 网络异常", error);
+      } else {
+        console.error("Version check failed: 业务异常", error);
+      }
       // 网络异常时重试
       if (retryTimeout) clearTimeout(retryTimeout);
       retryTimeout = setTimeout(checkVersion, RETRY_DELAY);
@@ -79,10 +95,20 @@ export const useVersionCheck = () => {
     if (visible) checkVersion();
   });
 
-  // 定时轮询检测（开发环境30秒，生产2分钟）
-  const interval = import.meta.dev ? 30 * 1000 : 2 * 60 * 1000;
-  const intervalId = setInterval(checkVersion, interval);
-  addCleanup(() => clearInterval(intervalId));
+  // 定时轮询检测，支持动态调整
+  const setupInterval = () => {
+    if (intervalId) clearInterval(intervalId);
+    intervalId = setInterval(checkVersion, interval.value);
+    addCleanup(() => {
+      if (intervalId) clearInterval(intervalId);
+    });
+  };
+  setupInterval();
+
+  // 监听 interval 变化，动态调整轮询间隔
+  watch(interval, () => {
+    setupInterval();
+  });
 
   /**
    * 清理所有定时器和事件监听
@@ -90,19 +116,21 @@ export const useVersionCheck = () => {
   const cleanup = (): void => {
     runCleanup();
     if (retryTimeout) clearTimeout(retryTimeout);
+    if (intervalId) clearInterval(intervalId);
   };
 
   return {
     needsUpdate,
     cleanup,
+    interval, // 暴露 interval，便于外部动态调整
     confirmUpdate: () => {
       // 只有检测到新版本时才写入
       if (pendingVersionInfo) {
-        safeStorage.set('app-version-hash', pendingVersionInfo.buildHash);
-        safeStorage.set('app-version', pendingVersionInfo.version);
+        safeStorage.set("app-version-hash", pendingVersionInfo.buildHash);
+        safeStorage.set("app-version", pendingVersionInfo.version);
         needsUpdate.value = false;
         pendingVersionInfo = null;
       }
-    }
+    },
   };
 };
