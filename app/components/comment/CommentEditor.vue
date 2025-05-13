@@ -2,16 +2,15 @@
   <div
     class="bg-white/80 dark:bg-neutral-950/80 border border-neutral-200/70 dark:border-neutral-800/70 rounded-md p-1 transition-all duration-300"
     :class="isAuthenticated ? 'mt-4' : 'hidden'">
-    <UTextarea ref="commentInput" v-model="content" color="neutral" variant="none" autoresize
-      :rows="1" :maxrows="6" :padded="false" size="lg" class="text-neutral-300 w-full"
-      :class="isAuthenticated ? '' : 'login'" :maxlength="COMMENT_MAX_LENGTH" @input="validateInput"
-      :disabled="!isAuthenticated || isSubmitting"
+    <UTextarea ref="commentInput" v-model="content" color="neutral" variant="none" autoresize :rows="1" :maxrows="6"
+      :padded="false" size="lg" class="text-neutral-300 w-full" :class="isAuthenticated ? '' : 'login'"
+      :maxlength="COMMENT_MAX_LENGTH" @input="validateInput" :disabled="!isAuthenticated || isSubmitting"
       :placeholder="isAuthenticated ? placeholder : '请先登录后再发表评论'" />
     <div class="flex justify-between items-center px-3" v-if="isAuthenticated">
       <div class="flex items-center space-x-4">
         <ReactionsEmojiSelector @emoji="insertEmoji" />
-        <UBadge :label="validation.commentMessage || '禁止输入特殊字符'" color="error" variant="soft"
-          size="lg" class="transform duration-500 ease-in-out"
+        <UBadge :label="validation.commentMessage || '禁止输入特殊字符'" color="error" variant="soft" size="lg"
+          class="transform duration-500 ease-in-out"
           :class="!validation.isValid ? 'translate-x-0 opacity-100' : '-translate-x-3 opacity-0'" />
       </div>
       <div class="flex items-center space-x-6">
@@ -22,8 +21,8 @@
           {{ content.length }} / {{ COMMENT_MAX_LENGTH }}
         </span>
         <UButton @click="submit" color="neutral" size="lg" variant="ghost"
-          class="hover:!bg-transparent cursor-pointer px-0 text-neutral-500" :loading="isSubmitting"
-          :icon="submitIcon" :disabled="!canSubmit" />
+          class="hover:!bg-transparent cursor-pointer px-0 text-neutral-500" :loading="isSubmitting" :icon="submitIcon"
+          :disabled="!canSubmit" />
       </div>
     </div>
   </div>
@@ -91,7 +90,9 @@ const insertEmoji = (emoji: string) => {
 
 const submit = () => {
   if (!canSubmit.value) return;
-  emit("submit", content.value);
+  // 提交前进行 HTML 转义
+  const safeContent = escapeHtml(content.value);
+  emit("submit", safeContent);
   // 不在这里清空，由外部控制
 };
 

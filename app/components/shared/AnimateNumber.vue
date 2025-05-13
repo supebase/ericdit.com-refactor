@@ -27,29 +27,3 @@ const displayDigits = computed(() => {
   return formattedNumber.split("").map((char) => (char === "," ? char : Number(char)));
 });
 </script>
-
-<style scoped>
-.number-column {
-  display: inline-block;
-  height: 1.25em;
-  overflow: hidden;
-  position: relative;
-}
-
-.number-scroll {
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.number-cell {
-  height: 1.25em;
-  width: 0.6em;
-  text-align: center;
-  line-height: 1.25em;
-}
-
-.comma {
-  padding: 0 0.1em;
-  height: 1.25em;
-  line-height: 1.25em;
-}
-</style>

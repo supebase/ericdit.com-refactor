@@ -1,8 +1,7 @@
 import type { CleanupController } from "~/types";
 import type { ValidationResult } from "~/types/auth";
 import { AUTH_VALIDATION_RULES } from "~/types/auth";
-import forbiddenUsernames from "~/data/forbidden_usernames.json";
-import forbiddenCommentKeywords from "~/data/forbidden_comment_keywords.json";
+import blockList from "~/blocklist/forbidden_terms.json";
 
 /**
  * createCleanup
@@ -126,7 +125,7 @@ export const validateUsername = (name: string): ValidationResult => {
 
   // 先进行敏感词检查
   const normalizedName = name.toLowerCase();
-  if (forbiddenUsernames.some((forbidden) => normalizedName.includes(forbidden))) {
+  if (blockList.some((forbidden) => normalizedName.includes(forbidden))) {
     return { valid: false, message: "该名字包含系统保留字或敏感词，请使用其他名字。" };
   }
 
@@ -190,7 +189,7 @@ export const validatePassword = (password: string): ValidationResult => {
  */
 export const validateComment = (comment: string): { valid: boolean; message: string } => {
   const normalizedComment = comment.toLowerCase();
-  if (forbiddenCommentKeywords.some((keyword) => normalizedComment.includes(keyword))) {
+  if (blockList.some((keyword) => normalizedComment.includes(keyword))) {
     return { valid: false, message: "评论中包含敏感词" };
   }
   return { valid: true, message: "" };
