@@ -18,7 +18,7 @@ export default defineAppConfig({
     // 按钮组件配置
     button: {
       slots: {
-        base: "rounded-[calc(var(--ui-radius)*1.5)]", // 按钮圆角大小
+        base: "rounded-[calc(var(--ui-radius)*1.5)] cursor-pointer", // 按钮圆角大小
       },
       compoundVariants: [
         {

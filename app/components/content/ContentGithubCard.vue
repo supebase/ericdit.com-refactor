@@ -5,8 +5,7 @@
         <div class="text-sm text-neutral-400 dark:text-neutral-600">正在获取 GitHub 数据</div>
     </div>
     <div v-else-if="error">
-        <UAlert :ui="{ wrapper: 'flex items-center' }" color="error" variant="soft"
-            :description="error">
+        <UAlert :ui="{ wrapper: 'flex items-center' }" color="error" variant="soft" :description="error">
         </UAlert>
     </div>
     <div v-else-if="projectInfo">
@@ -16,8 +15,8 @@
                 <div class="flex justify-between items-center mb-1.5 z-2">
                     <div class="flex flex-col gap-2.5">
                         <a :href="`https://github.com/${projectInfo.owner}/${projectInfo.repo}`"
-                            rel="noopener noreferrer" target="_blank"
-                            class="flex items-center text-base space-x-1.5" tabindex="-1">
+                            rel="noopener noreferrer" target="_blank" class="flex items-center text-base space-x-1.5"
+                            tabindex="-1">
                             <SharedAvatar :src="projectInfo.projectAvatarUrl" size="2xs"
                                 :alt="projectInfo.projectAuthor" />
                             <span class="text-neutral-400 dark:text-neutral-500 ml-0.5">{{
@@ -32,18 +31,20 @@
                     </div>
                 </div>
                 <div class="flex justify-between mt-3">
-                    <div
+                    <a :href="`https://github.com/${projectInfo.owner}/${projectInfo.repo}/stargazers`"
+                        rel="noopener noreferrer" target="_blank"
                         class="flex items-center space-x-1.5 text-neutral-400 dark:text-neutral-500">
                         <UIcon name="hugeicons:star" class="size-[18px]" />
                         <div class="tabular-nums text-sm mt-[3px]">{{
                             formatStarCount(projectInfo.stargazersCount) }}
                         </div>
-                    </div>
+                    </a>
                     <UBadge variant="soft" color="primary" class="z-2">
                         {{ projectInfo.mainLanguage }}
                     </UBadge>
                     <UBadge variant="soft" color="neutral" class="z-2">
-                        {{ projectInfo.watchersCount }} 人关注
+                        <a :href="`https://github.com/${projectInfo.owner}/${projectInfo.repo}/watchers`"
+                            rel="noopener noreferrer" target="_blank">{{ projectInfo.watchersCount }} 人关注</a>
                     </UBadge>
                     <UBadge variant="soft" color="neutral" class="z-2">
                         {{ formattedDate }}更新

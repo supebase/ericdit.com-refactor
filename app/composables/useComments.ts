@@ -46,6 +46,27 @@ export const useComments = () => {
   };
 
   /**
+ * 获取全站最新评论（评论和回复，不区分 contentId）
+ * @param options - 查询选项，包含排序、分页等条件
+ * @returns Promise<CommentItem[]> 最新评论列表
+ */
+  const getRecentComments = async (
+    options?: CommentQueryOptions
+  ): Promise<CommentItem[]> => {
+    try {
+      const response = await $directus.request<CommentItem[]>(
+        $content.readItems("comments", {
+          ...options,
+          sort: ["-date_created"],
+        })
+      );
+      return response;
+    } catch (error: any) {
+      throw new Error(error.errors?.[0]?.message || "获取最新评论失败");
+    }
+  };
+
+  /**
    * 创建新评论或回复
    * @param data - 评论数据，包含内容、关联ID等信息
    * @returns Promise<Comments.Item> 创建成功的评论
@@ -164,6 +185,7 @@ export const useComments = () => {
 
   return {
     getCommentsList,
+    getRecentComments,
     createComment,
     deleteComment,
     subscribeComments,

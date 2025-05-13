@@ -10,6 +10,7 @@
         <SharedBookmarkCounter v-if="isAuthenticated" class="translate-y-[3px]" />
         <PublishButton />
         <SearchModal />
+        <CommentRecent :limit="10" />
         <ThemePicker />
         <AuthUserStatus />
       </div>

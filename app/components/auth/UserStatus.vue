@@ -2,7 +2,7 @@
   <div class="flex items-center select-none">
     <template v-if="isAuthenticated">
       <div class="flex items-center">
-        <NuxtLink to="/profile" aria-label="profile">
+        <NuxtLink to="/me" aria-label="profile">
           <SharedAvatar :src="user?.avatar" :alt="!user?.avatar ? user?.first_name : undefined"
             size="sm" />
         </NuxtLink>
