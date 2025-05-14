@@ -8,15 +8,59 @@
         class="size-5 text-neutral-500" />
     </div>
   </div>
-
-  <input type="file" ref="fileInput" @change="handleFileUpload" accept="image/*" class="hidden" />
+  <input type="file" ref="fileInput" @change="onSelectFile" accept="image/*" class="hidden" />
+  <UModal v-model:open="showCropper"
+    :ui="{ overlay: 'backdrop-blur-xs', content: 'w-80 bg-neutral-50 dark:bg-neutral-950' }" title="Cropper"
+    description="裁剪头像">
+    <template #content>
+      <div class="p-6">
+        <cropper v-if="previewUrl" ref="cropperRef" :src="previewUrl" class="w-64 h-64 mx-auto" :auto-zoom="true"
+          :stencil-props="{
+            aspectRatio: 1,
+            class: 'cropper-stencil',
+            previewClass: 'cropper-stencil__preview',
+            draggingClass: 'cropper-stencil--dragging',
+            handlersClasses: {
+              default: 'cropper-handler',
+              eastNorth: 'cropper-handler--east-north',
+              westNorth: 'cropper-handler--west-north',
+              eastSouth: 'cropper-handler--east-south',
+              westSouth: 'cropper-handler--west-south',
+            },
+            handlersWrappersClasses: {
+              default: 'cropper-handler-wrapper',
+              eastNorth: 'cropper-handler-wrapper--east-north',
+              westNorth: 'cropper-handler-wrapper--west-north',
+              eastSouth: 'cropper-handler-wrapper--east-south',
+              westSouth: 'cropper-handler-wrapper--west-south',
+            },
+          }" />
+        <div class="text-sm text-center text-neutral-400 dark:text-neutral-600 mt-3">
+          <p>建议使用正方形图片</p>
+          <p>支持的格式：JPG、PNG、GIF</p>
+          <p>文件大小不超过 512KB</p>
+        </div>
+        <div class="w-full border-t border-neutral-200 dark:border-neutral-800 my-2"></div>
+        <div class="flex justify-center gap-4 mt-4">
+          <UButton @click="showCropper = false" color="neutral">取消</UButton>
+          <UButton @click="confirmCrop" color="primary">确定上传</UButton>
+        </div>
+      </div>
+    </template>
+  </UModal>
 </template>
 
 <script setup lang="ts">
+import { Cropper } from "vue-advanced-cropper";
+import "vue-advanced-cropper/dist/style.css";
+
 const { user } = useAuth();
 const { avatarUrl, isLoading, uploadAvatar } = useProfileAvatar();
 const toast = useToast();
 
+const showCropper = ref(false);
+const previewUrl = ref<string | null>(null);
+const cropperRef = ref<any>(null);
 const fileInput = ref<HTMLInputElement | null>(null);
 
 // 定义上传配置
@@ -64,9 +108,52 @@ const validateFile = (file: File): boolean => {
 };
 
 const openFileInput = () => {
-  if (isLoading.value) return;
-  fileInput.value?.click();
-};
+  if (fileInput.value) fileInput.value.value = ''
+  fileInput.value?.click()
+}
+
+const onSelectFile = async (event: Event) => {
+  const target = event.target as HTMLInputElement
+  const file = target.files?.[0]
+  if (!file) return
+  if (!validateFile(file)) {
+    target.value = ""
+    return
+  }
+  // 辅助检测文件真实类型
+  const isRealImage = await checkMagicNumber(file)
+  if (!isRealImage) {
+    toast.add({
+      title: "上传通知",
+      description: "文件内容不是有效的图片格式。",
+      icon: "hugeicons:alert-02",
+      color: "warning",
+    })
+    target.value = ""
+    return
+  }
+  previewUrl.value = URL.createObjectURL(file);
+  showCropper.value = true;
+}
+
+const confirmCrop = async () => {
+  if (!cropperRef.value) return
+  // 获取裁剪后的图片数据
+  const canvas = cropperRef.value.getResult().canvas
+  if (canvas) {
+    canvas.toBlob(async (blob: Blob | null) => {
+      if (blob) {
+        const croppedFile = new File([blob], "avatar.jpg", { type: "image/jpeg" })
+        await uploadAvatar(croppedFile)
+        showCropper.value = false
+        previewUrl.value = null
+      }
+      isLoading.value = false
+    }, "image/jpeg")
+
+    showCropper.value = false;
+  }
+}
 
 // 辅助检测文件真实类型
 const checkMagicNumber = (file: File): Promise<boolean> => {
@@ -84,35 +171,5 @@ const checkMagicNumber = (file: File): Promise<boolean> => {
     };
     reader.readAsArrayBuffer(file.slice(0, 8));
   });
-};
-
-const handleFileUpload = async (event: Event) => {
-  const target = event.target as HTMLInputElement;
-  const file = target.files?.[0];
-
-  if (!file) return;
-
-  if (!validateFile(file)) {
-    target.value = "";
-    return;
-  }
-
-  // 辅助检测文件真实类型
-  const isRealImage = await checkMagicNumber(file);
-  if (!isRealImage) {
-    toast.add({
-      title: "上传通知",
-      description: "文件内容不是有效的图片格式。",
-      icon: "hugeicons:alert-02",
-      color: "warning",
-    });
-    target.value = "";
-    return;
-  }
-
-  uploadAvatar(file);
-
-  // 清理 input 值，允许上传相同文件
-  target.value = "";
 };
 </script>

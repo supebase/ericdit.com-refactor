@@ -64,7 +64,7 @@
           <div class="text-lg font-bold mb-2">丢进垃圾桶</div>
           <div class="mb-4 text-neutral-600 dark:text-neutral-400">确定要删除该内容吗？此操作不可恢复。</div>
           <div class="flex justify-end space-x-2">
-            <UButton color="neutral" variant="soft" @click="showDeleteModal = false">取消</UButton>
+            <UButton color="neutral" @click="showDeleteModal = false">取消</UButton>
             <UButton color="error" :loading="isDeleting" :disabled="isDeleting"
               @click="handleDelete">确认删除</UButton>
           </div>
