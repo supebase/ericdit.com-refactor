@@ -19,7 +19,7 @@
       <span class="text-neutral-400 dark:text-neutral-600 text-sm">或者</span>
     </USeparator>
 
-    <UButton color="neutral" size="xl" block :disabled="isSubmitting" to="/register">
+    <UButton color="neutral" size="xl" block :disabled="isSubmitting" to="/auth?action=register">
       注册新用户
     </UButton>
   </form>

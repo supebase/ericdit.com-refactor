@@ -8,7 +8,7 @@
         <slot />
         <UButton color="neutral" variant="link" size="md" tabindex="-1"
           :icon="showPassword ? 'hugeicons:view-off' : 'hugeicons:view'"
-          @click="showPassword = !showPassword" />
+          @click="togglePassword()" />
       </div>
     </template>
   </UInput>
@@ -26,7 +26,7 @@ defineEmits<{
   (e: "update:modelValue", value: string): void;
 }>();
 
-const showPassword = ref(false);
+const [showPassword, togglePassword] = useToggle(false);
 
 onDeactivated(() => {
   showPassword.value = false;

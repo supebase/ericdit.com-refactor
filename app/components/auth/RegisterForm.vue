@@ -32,7 +32,7 @@
       <span class="text-neutral-400 dark:text-neutral-600 text-sm">或者</span>
     </USeparator>
 
-    <UButton color="neutral" size="xl" block :disabled="isSubmitting" to="/login">
+    <UButton color="neutral" size="xl" block :disabled="isSubmitting" to="/auth">
       返回登录
     </UButton>
   </form>

@@ -9,7 +9,7 @@
       </div>
     </template>
     <template v-else>
-      <NuxtLink to="/login" aria-label="login">
+      <NuxtLink to="/auth" aria-label="auth">
         <UAvatar icon="hugeicons:lock-key" class="size-8" />
       </NuxtLink>
     </template>

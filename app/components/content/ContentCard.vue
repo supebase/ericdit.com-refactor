@@ -42,15 +42,25 @@
       <div class="relative overflow-hidden py-4">
         <UCarousel v-slot="{ item, index }: { item: any, index: number }" dots autoplay class-names
           wheel-gestures :items="carouselImages" :ui="{
-            item: 'transition-opacity duration-500 [&:not(.is-snapped)]:opacity-10',
+            item: 'basis-[80%] transition-all duration-500 scale-100 [&:not(.is-snapped)]:opacity-10 [&:not(.is-snapped)]:scale-93',
             dots: '-bottom-4',
-            dot: 'w-4 h-1'
+            dot: 'w-4 h-1 transition-all duration-500'
           }">
           <div class="relative">
             <NuxtLink :to="{ name: 'article-id', params: { id: content.id } }"
               :aria-label="content.title">
               <NuxtImg provider="directus" :src="item.directus_files_id" alt="预览图片" preload
-                loading="lazy" placeholder class="aspect-[16/7] object-cover w-full" />
+                loading="lazy" placeholder
+                class="aspect-[16/7] object-cover w-full outline-2 outline-neutral-200 dark:outline-neutral-800 my-1"
+                :class="[
+                  index === 0 && content.images.length === 1
+                    ? 'rounded-md'
+                    : index === 0
+                      ? 'rounded-tr-md rounded-br-md'
+                      : index === content.images.length - 1
+                        ? 'rounded-tl-md rounded-bl-md'
+                        : 'rounded-md'
+                ]" />
             </NuxtLink>
             <!-- 当前图片序号/总数 -->
             <UBadge color="neutral" variant="soft"
@@ -76,7 +86,8 @@
         </div>
         <SharedBookmarkButton :content-id="content.id" :icon-size="19" />
       </div>
-      <NuxtLink :to="{ name: 'article-id', params: { id: content.id } }" :aria-label="content.title"
+      <NuxtLink v-if="displayType === 'single'"
+        :to="{ name: 'article-id', params: { id: content.id } }" :aria-label="content.title"
         class="block hover:no-underline">
         <div class="text-neutral-500 dark:text-neutral-400 line-clamp-3 mb-4">
           {{ cleanBody }}

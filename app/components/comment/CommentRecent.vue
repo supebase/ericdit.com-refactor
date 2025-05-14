@@ -1,6 +1,6 @@
 <template>
     <UDrawer
-        :ui="{ overlay: 'backdrop-blur-xs', header: 'hidden', content: 'ring-0 bg-neutral-100 dark:bg-neutral-900', container: 'border-l border-neutral-200/60 dark:border-neutral-800/50 ml-3', handle: '!bg-neutral-300 dark:!bg-accented' }"
+        :ui="{ overlay: 'backdrop-blur-xs', header: 'hidden', content: 'ring-0 bg-neutral-100 dark:bg-neutral-900', container: 'ml-3', handle: '!bg-neutral-300 dark:!bg-accented' }"
         handle-only direction="right" v-model="open" title="最新评论" description="查看最新评论">
         <UButton variant="link" icon="hugeicons:comment-01"
             class="size-5 text-neutral-500 cursor-pointer p-0 hover:text-primary-500" @click="open = true" />
