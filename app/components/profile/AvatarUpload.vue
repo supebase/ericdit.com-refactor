@@ -15,26 +15,7 @@
     <template #content>
       <div class="p-6">
         <cropper v-if="previewUrl" ref="cropperRef" :src="previewUrl" class="w-64 h-64 mx-auto" :auto-zoom="true"
-          :stencil-props="{
-            aspectRatio: 1,
-            class: 'cropper-stencil',
-            previewClass: 'cropper-stencil__preview',
-            draggingClass: 'cropper-stencil--dragging',
-            handlersClasses: {
-              default: 'cropper-handler',
-              eastNorth: 'cropper-handler--east-north',
-              westNorth: 'cropper-handler--west-north',
-              eastSouth: 'cropper-handler--east-south',
-              westSouth: 'cropper-handler--west-south',
-            },
-            handlersWrappersClasses: {
-              default: 'cropper-handler-wrapper',
-              eastNorth: 'cropper-handler-wrapper--east-north',
-              westNorth: 'cropper-handler-wrapper--west-north',
-              eastSouth: 'cropper-handler-wrapper--east-south',
-              westSouth: 'cropper-handler-wrapper--west-south',
-            },
-          }" />
+          :stencil-props="{ aspectRatio: 1 }" />
         <div class="text-sm text-center text-neutral-400 dark:text-neutral-600 mt-3">
           <p>建议使用正方形图片</p>
           <p>支持的格式：JPG、PNG、GIF</p>
