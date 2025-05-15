@@ -36,7 +36,21 @@ defineEmits<{
 }>();
 
 const handleUpdate = () => {
-  props.confirmUpdate?.();
-  window.location.reload();
+  props.confirmUpdate?.(); // 调用 confirmUpdate 更新本地存储的 hash
+
+  // 获取更新后的最新 buildHash
+  const newBuildHash = safeStorage.get("app-version-hash");
+
+  // 构建新的 URL，将 buildHash 作为查询参数
+  const url = new URL(window.location.href);
+  if (newBuildHash) {
+    url.searchParams.set('_v', newBuildHash); // 使用 buildHash 作为版本参数
+  } else {
+    // 如果获取不到新的 buildHash，作为备用方案，仍然可以使用时间戳
+    url.searchParams.set('_t', Date.now().toString());
+  }
+
+  // 导航到新的 URL，强制浏览器重新加载
+  window.location.href = url.toString();
 };
 </script>
