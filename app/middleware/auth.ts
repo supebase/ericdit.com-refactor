@@ -14,23 +14,23 @@ export default defineNuxtRouteMiddleware(async (to) => {
     }
 
     // 未认证用户重定向到登录页，但避免重定向循环
-    if (!isAuthenticated.value && to.path !== "/login") {
+    if (!isAuthenticated.value && to.path !== "/auth") {
       // 保存原始访问路径，以便登录后返回
       if (import.meta.client) {
         safeStorage.set("originalPath", to.fullPath);
       }
-      return navigateTo("/login", { replace: true });
+      return navigateTo("/auth", { replace: true });
     }
 
     // 已认证用户访问登录页时重定向到首页
-    if (isAuthenticated.value && to.path === "/login") {
+    if (isAuthenticated.value && to.path === "/auth") {
       return navigateTo("/", { replace: true });
     }
   } catch (error) {
     console.error("认证中间件执行失败:", error);
     // 发生错误时重定向到登录页，但避免重定向循环
-    if (to.path !== "/login") {
-      return navigateTo("/login", { replace: true });
+    if (to.path !== "/auth") {
+      return navigateTo("/auth", { replace: true });
     }
   }
 });

@@ -124,7 +124,7 @@ export const useAuth = () => {
           color: "warning",
         });
         // 重定向到登录页
-        navigateTo("/login");
+        navigateTo("/auth");
       } else {
         // 其他情况只清除用户状态
         user.value = null;

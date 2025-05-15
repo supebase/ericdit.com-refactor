@@ -11,12 +11,12 @@ export default defineNuxtPlugin(() => {
     () => route.path,
     (newPath) => {
       // 保存登录前的页面路径（用于登录后跳转）
-      if (!newPath.includes("/login") && !newPath.includes("/register")) {
+      if (!newPath.includes("/auth") && !newPath.includes("/auth?action=register")) {
         safeStorage.set("originalPath", newPath);
       }
 
       // 维护路由历史记录
-      if (!newPath.includes("/login") && !newPath.includes("/register")) {
+      if (!newPath.includes("/auth") && !newPath.includes("/auth?action=register")) {
         const history = JSON.parse(safeStorage.get("routeHistory") || "[]");
         if (history[history.length - 1] !== newPath) {
           if (history.length >= 10) history.shift();

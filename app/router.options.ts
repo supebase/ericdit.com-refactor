@@ -1,7 +1,7 @@
 import type { RouterConfig } from "@nuxt/schema";
 
 function isAuthPage(path: string) {
-  return path.includes("/login") || path.includes("/register");
+  return path.includes("/auth") || path.includes("/auth?action=register");
 }
 
 function getPreviousValidPath(history: string[], currentPath: string): string {

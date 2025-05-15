@@ -28,7 +28,7 @@ export const useAuthGuard = () => {
       console.warn('无法访问本地存储，可能处于隐私模式');
     }
 
-    navigateTo("/login");
+    navigateTo("/auth");
   };
 
   /**

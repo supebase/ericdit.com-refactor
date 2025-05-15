@@ -1,6 +1,6 @@
 {
   "name": "eric-app",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "private": true,
   "type": "module",
   "scripts": {
@@ -17,7 +17,7 @@
     "@nuxt/ui": "^3.1.1",
     "@vueuse/nuxt": "^13.2.0",
     "nuxt-emoji-picker": "^1.1.0",
-    "vue": "^3.5.13",
+    "vue": "^3.5.14",
     "vue-advanced-cropper": "^2.8.9"
   },
   "devDependencies": {

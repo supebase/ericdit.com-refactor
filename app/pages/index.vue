@@ -42,7 +42,7 @@
       </div>
 
       <!-- 加载更多按钮 -->
-      <div class="flex justify-center pb-2.5" v-if="hasMore && isNearBottom && scrollable">
+      <div class="flex justify-center pb-2.5" v-if="hasMore && contents && contents.length > 0">
         <UButton @click="loadMore" variant="soft" color="primary" :disabled="isFetchingNextPage"
           :loading="isFetchingNextPage">
           加载更多
@@ -95,17 +95,6 @@ const limit = Number(directusDefaultPageSize);
 const hasMore = ref(true);
 const isFetchingNextPage = ref(false);
 const el = ref<HTMLElement | null>(null);
-
-const { isNearBottom, scrollHeight, clientHeight } = inject('scrollState', {
-  isNearBottom: ref(false),
-  scrollHeight: ref(0),
-  clientHeight: ref(0)
-});
-
-const scrollable = computed(() => {
-  // 只有内容高度大于可视高度时才允许滚动
-  return (scrollHeight?.value || 0) > (clientHeight?.value || 0);
-});
 
 const {
   data: contents,
@@ -164,12 +153,43 @@ async function loadMore() {
 // 新内容计数
 const newContentCount = ref(0);
 
+async function refreshAllPages() {
+  let allContents: ContentItem[] = [];
+  for (let p = 1; p <= page.value; p++) {
+    const pageContents = await getContents({
+      fields: [...CONTENT_FIELDS],
+      sort: ["-pinned", "-date_created"],
+      filter: {
+        status: { _eq: "published" },
+      },
+      limit,
+      page: p,
+    });
+    if (pageContents && pageContents.length > 0) {
+      allContents = [...allContents, ...pageContents];
+      if (pageContents.length < limit) {
+        hasMore.value = false;
+        break;
+      }
+    } else {
+      hasMore.value = false;
+      break;
+    }
+  }
+  contents.value = allContents;
+  // 如果第一页就不足 limit，说明没有更多内容
+  if (allContents.length < limit * page.value) {
+    hasMore.value = false;
+  } else {
+    hasMore.value = true;
+  }
+}
+
 // 处理加载新内容
 async function handleLoadNewContent() {
   page.value = 1;
-  hasMore.value = true;
   newContentCount.value = 0;
-  await refresh();
+  await refreshAllPages();
 }
 
 onMounted(() => {
@@ -181,9 +201,8 @@ onMounted(() => {
       if (event.event === "create") {
         newContentCount.value++;
       } else if (["update", "delete"].includes(event.event)) {
-        page.value = 1;
-        hasMore.value = true;
-        await refresh();
+        // 保持当前已加载页数，刷新所有已加载内容
+        await refreshAllPages();
       }
     }
   );
