@@ -2,8 +2,7 @@
   <UCard :ui="{ body: '!p-0 border-none', footer: '!px-4' }" variant="soft" class="select-none">
     <!-- 单图显示 -->
     <div v-if="displayType === 'single'" class="relative overflow-hidden rounded-t-md">
-      <NuxtLink :to="{ name: 'article-id', params: { id: content.id } }"
-        :aria-label="content.title">
+      <NuxtLink :aria-label="content.title" @click.prevent="handleLinkClick" class="cursor-pointer">
         <NuxtImg provider="directus" :src="content.images[0].directus_files_id" alt="预览图片"
           loading="eager" fetchpriority="high" preload placeholder format="webp" quality="80"
           sizes="(max-width: 768px) 100vw, 768px"
@@ -18,8 +17,7 @@
     </div>
     <!-- 图库轮播显示（新布局） -->
     <div v-else class="overflow-hidden">
-      <NuxtLink :to="{ name: 'article-id', params: { id: content.id } }"
-        :aria-label="content.title">
+      <NuxtLink :aria-label="content.title" @click.prevent="handleLinkClick" class="cursor-pointer">
         <div class="px-4 pt-4 font-bold">
           {{ content.title }}
         </div>
@@ -34,7 +32,7 @@
           <span class="mx-1 text-neutral-300 dark:text-neutral-700 pt-[2px]">&bull;</span>
           <span class="text-sm text-neutral-400 dark:text-neutral-600 pt-[2px]">{{
             useDateFormatter(content.date_created)
-          }}</span>
+            }}</span>
         </div>
         <SharedBookmarkButton :content-id="content.id" :icon-size="19" />
       </div>
@@ -47,8 +45,8 @@
             dot: 'w-4 h-1 transition-all duration-500'
           }">
           <div class="relative">
-            <NuxtLink :to="{ name: 'article-id', params: { id: content.id } }"
-              :aria-label="content.title">
+            <NuxtLink :aria-label="content.title" @click.prevent="handleLinkClick"
+              class="cursor-pointer">
               <NuxtImg provider="directus" :src="item.directus_files_id" alt="预览图片" preload
                 loading="lazy" placeholder
                 class="aspect-[16/7] object-cover w-full outline-2 outline-neutral-200 dark:outline-neutral-800 my-1"
@@ -82,13 +80,12 @@
           <span class="mx-1 text-neutral-300 dark:text-neutral-700 pt-[2px]">&bull;</span>
           <span class="text-sm text-neutral-400 dark:text-neutral-600 pt-[2px]">{{
             useDateFormatter(content.date_created)
-            }}</span>
+          }}</span>
         </div>
         <SharedBookmarkButton :content-id="content.id" :icon-size="19" />
       </div>
-      <NuxtLink v-if="displayType === 'single'"
-        :to="{ name: 'article-id', params: { id: content.id } }" :aria-label="content.title"
-        class="block hover:no-underline">
+      <NuxtLink v-if="displayType === 'single'" :aria-label="content.title"
+        @click.prevent="handleLinkClick" class="block hover:no-underline cursor-pointer">
         <div class="text-neutral-500 dark:text-neutral-400 line-clamp-3 mb-4">
           {{ cleanBody }}
         </div>
@@ -121,6 +118,21 @@ const props = defineProps<{
 
 const { cleanMarkdown } = useContents();
 const { getUserAvatarUrl } = useUserMeta();
+
+const handleLinkClick = () => {
+  const scrollContainer = document.querySelector(".overflow-y-auto");
+  if (scrollContainer) {
+    sessionStorage.setItem(
+      "homeScrollPosition",
+      JSON.stringify({
+        top: scrollContainer.scrollTop,
+        left: scrollContainer.scrollLeft,
+      })
+    );
+  }
+  // Manually navigate
+  navigateTo({ name: 'article-id', params: { id: props.content.id } });
+};
 
 const userAvatarUrl = computed(() =>
   getUserAvatarUrl(props.content.user_created.id, props.content.user_created.avatar)

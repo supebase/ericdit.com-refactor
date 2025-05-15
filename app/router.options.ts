@@ -55,22 +55,22 @@ export default <RouterConfig>{
     const scrollContainer = document.querySelector(".overflow-y-auto");
     if (!scrollContainer) return;
 
-    // 如果是从首页访问文章页面，保存首页的滚动位置
-    if (from.path === "/" && to.path.includes("/article/")) {
-      sessionStorage.setItem(
-        "homeScrollPosition",
-        JSON.stringify({
-          top: scrollContainer.scrollTop,
-          left: scrollContainer.scrollLeft,
-        })
-      );
-      // 文章页面滚动到顶部
-      scrollContainer.scrollTo({
-        top: 0,
-        left: 0,
-      });
-      return;
-    }
+    // 如果是从首页访问文章页面，保存首页的滚动位置 - 这部分现在由组件处理
+    // if (from.path === "/" && to.path.includes("/article/")) {
+    //   sessionStorage.setItem(
+    //     "homeScrollPosition",
+    //     JSON.stringify({
+    //       top: scrollContainer.scrollTop,
+    //       left: scrollContainer.scrollLeft,
+    //     })
+    //   );
+    //   // 文章页面滚动到顶部
+    //   scrollContainer.scrollTo({
+    //     top: 0,
+    //     left: 0,
+    //   });
+    //   return;
+    // }
 
     // 如果是从文章页面返回首页，恢复之前保存的位置
     if (from.path.includes("/article/") && to.path === "/") {
@@ -78,6 +78,8 @@ export default <RouterConfig>{
       if (savedPosition) {
         const position = JSON.parse(savedPosition);
         sessionStorage.removeItem("homeScrollPosition");
+        // 使用 nextTick 确保 DOM 准备好后再恢复滚动位置
+        await nextTick();
         scrollContainer.scrollTo({
           top: position.top,
           left: position.left,

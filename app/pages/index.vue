@@ -1,28 +1,19 @@
 <template>
   <div class="container select-none">
-    <!-- 新内容提示 -->
-    <div class="flex justify-center duration-500 ease-in-out transition-all"
-      :class="newContentCount > 0 ? 'translate-y-2.5 opacity-100' : '-translate-y-8 opacity-0 -mb-8'">
-      <UButton block color="primary" variant="soft" @click="handleLoadNewContent">
-        <UIcon name="hugeicons:sparkles" class="mr-1 size-5 animate-pulse" />
-        发现
-        <SharedAnimateNumber :value="newContentCount" class="font-bold" />
-        条新内容
-      </UButton>
-    </div>
-
     <div v-if="isLoading && !contents?.length">
       <ContentSkeleton />
     </div>
     <div v-else-if="error" class="flex items-center justify-center min-h-[50vh]">
-      <UAlert color="error" variant="soft" icon="hugeicons:alert-02" :description="error?.message || '加载失败，请稍后重试'">
+      <UAlert color="error" variant="soft" icon="hugeicons:alert-02"
+        :description="error?.message || '加载失败，请稍后重试'">
       </UAlert>
     </div>
     <template v-else>
       <div ref="el" class="my-2">
-        <SharedFadeIn v-for="(content, index) in contents" :key="content.id" :delay="index * 50" class="py-3"
-          enter-active-class="transition-all duration-500 ease-in-out"
-          enter-from-class="transform translate-y-3 opacity-0" enter-to-class="transform translate-y-0 opacity-100">
+        <SharedFadeIn v-for="(content, index) in contents" :key="content.id" :delay="index * 10"
+          class="py-3" enter-active-class="transition-all duration-500 ease-in-out"
+          enter-from-class="transform translate-y-3 opacity-0"
+          enter-to-class="transform translate-y-0 opacity-100">
           <template #default>
             <div class="relative overflow-hidden">
               <span v-if="content.pinned"
@@ -37,7 +28,8 @@
       </div>
       <div v-if="contents?.length === 0"
         class="flex flex-col items-center justify-center space-y-4 min-h-[calc(100vh-14rem)] pt-16">
-        <UIcon name="hugeicons:ai-content-generator-01" class="text-4xl text-neutral-300 dark:text-neutral-700" />
+        <UIcon name="hugeicons:ai-content-generator-01"
+          class="text-4xl text-neutral-300 dark:text-neutral-700" />
         <p class="text-neutral-400 dark:text-neutral-700 text-sm font-medium">信息矩阵仍处待填充态</p>
       </div>
 
@@ -98,7 +90,6 @@ const el = ref<HTMLElement | null>(null);
 
 const {
   data: contents,
-  refresh,
   status,
   error,
 } = await useLazyAsyncData<ContentItem[] | null>("contents", () =>
@@ -150,9 +141,6 @@ async function loadMore() {
   }
 }
 
-// 新内容计数
-const newContentCount = ref(0);
-
 async function refreshAllPages() {
   let allContents: ContentItem[] = [];
   for (let p = 1; p <= page.value; p++) {
@@ -185,24 +173,17 @@ async function refreshAllPages() {
   }
 }
 
-// 处理加载新内容
-async function handleLoadNewContent() {
-  page.value = 1;
-  newContentCount.value = 0;
-  await refreshAllPages();
-}
-
 onMounted(() => {
   subscribeContents(
     {
       fields: [...CONTENT_FIELDS],
     },
     async (event) => {
-      if (event.event === "create") {
-        newContentCount.value++;
-      } else if (["update", "delete"].includes(event.event)) {
+      if (["create", "update", "delete"].includes(event.event)) {
         // 保持当前已加载页数，刷新所有已加载内容
-        await refreshAllPages();
+        setTimeout(async () => {
+          await refreshAllPages();
+        }, 1500);
       }
     }
   );
