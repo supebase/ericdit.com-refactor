@@ -84,6 +84,7 @@ export default defineAppConfig({
     position: "top-right" as const, // 消息提示位置
     expand: false, // 禁用消息展开效果
     duration: 3000, // 消息显示持续时间（毫秒）
+    progress: false, // 禁用消息进度条
   },
 
   // 工具提示配置
