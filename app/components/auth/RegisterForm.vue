@@ -51,7 +51,6 @@ const firstName = ref("");
 const email = ref("");
 const password = ref("");
 const password_confirm = ref("");
-const error = ref("");
 const isSubmitting = ref(false);
 
 const handleSubmit = async () => {

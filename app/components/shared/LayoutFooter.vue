@@ -3,7 +3,7 @@
     <hr />
     <div class="py-4 select-none flex justify-center items-center gap-4">
       <div class="text-center text-sm text-neutral-500 space-x-1.5">
-        <span>{{ new Date().getFullYear() }} &copy; {{ settings?.site_name }}</span>
+        <span>{{ new Date().getFullYear() }} &copy; {{ settings?.site_name || 'Eric' }}</span>
         <span class="text-neutral-300 dark:text-neutral-700 text-xs">&bull;</span>
         <span>v{{ version }}（{{ useDateFormatter(buildTime) }}构建）</span>
       </div>

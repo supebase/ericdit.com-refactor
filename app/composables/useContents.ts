@@ -25,7 +25,7 @@ export const useContents = () => {
       );
       return response;
     } catch (error: any) {
-      throw new Error(error.errors?.[0]?.message || "获取内容列表失败");
+      throw new Error(error.errors?.[0]?.message || "请检查网络连接及数据库结构，建议验证网络连通性、数据库服务状态及接口参数。");
     }
   };
 

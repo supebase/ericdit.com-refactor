@@ -62,7 +62,7 @@ export const useComments = () => {
       );
       return response;
     } catch (error: any) {
-      throw new Error(error.errors?.[0]?.message || "获取最新评论失败");
+      throw new Error(error.errors?.[0]?.message || "最新评论获取失败");
     }
   };
 

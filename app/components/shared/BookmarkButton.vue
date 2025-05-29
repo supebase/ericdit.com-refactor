@@ -7,11 +7,10 @@
     </transition>
     <button aria-label="bookmarks" @click="handleBookmark" :disabled="isProcessing"
       class="text-sm flex items-center space-x-2 text-neutral-400 dark:text-neutral-500 cursor-pointer disabled:cursor-not-allowed">
-      <UIcon name="svg-spinners:ring-resize" :size="iconSize"
-        class="text-neutral-400 dark:text-neutral-500" v-if="isProcessing" />
+      <UIcon name="svg-spinners:ring-resize" :size="iconSize" class="text-neutral-400 dark:text-neutral-500"
+        v-if="isProcessing" />
       <UIcon v-else class="hover:text-primary-500"
-        :name="isBookmarked ? 'hugeicons:bookmark-minus-02' : 'hugeicons:bookmark-add-02'"
-        :size="iconSize" :class="[
+        :name="isBookmarked ? 'hugeicons:bookmark-minus-02' : 'hugeicons:bookmark-add-02'" :size="iconSize" :class="[
           { 'bookmark-animation': showAnimation },
           isBookmarked ? 'text-neutral-700 dark:text-neutral-300' : ''
         ]" />
@@ -90,6 +89,9 @@ const handleBookmarkAction = async () => {
     }, 2000);
   } catch (error) {
     console.error("Failed to toggle bookmark:", error);
+    // 添加用户反馈
+    messageText.value = '操作失败';
+    showMessage.value = true;
   } finally {
     isProcessing.value = false;
   }
