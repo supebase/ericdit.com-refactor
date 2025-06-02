@@ -15,7 +15,6 @@ export default defineNuxtConfig({
   experimental: {
     payloadExtraction: true,
     renderJsonPayloads: true,
-    crossOriginPrefetch: true, // 启用跨域预取优化
   },
 
   runtimeConfig: {
@@ -65,7 +64,7 @@ export default defineNuxtConfig({
       chunkSizeWarningLimit: 700,
     },
     optimizeDeps: {
-      include: ["vue", "vue-router", "@vueuse/core", "@directus/sdk"],
+      include: ["vue", "vue-router", "@vueuse/core", "@directus/sdk", "debug"],
     },
   },
 

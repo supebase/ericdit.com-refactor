@@ -17,6 +17,7 @@ export const useAuthGuard = () => {
     toast.add({
       title: "访问受限",
       description: message || "该功能需要登录账号后使用",
+      icon: "hugeicons:alert-02",
       color: "warning",
     });
 
