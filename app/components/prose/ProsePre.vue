@@ -84,9 +84,3 @@ const copyWithFeedback = async (text: string) => {
   }
 };
 </script>
-
-<style>
-pre code .line {
-  display: block;
-}
-</style>

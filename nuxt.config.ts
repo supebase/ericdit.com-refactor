@@ -76,6 +76,12 @@ export default defineNuxtConfig({
     },
     prerender: {
       crawlLinks: true,
+      routes: [
+        "/assets/fonts/Roboto-Regular.woff2",
+        "/assets/fonts/Roboto-Medium.woff2",
+        "/assets/fonts/Roboto-Bold.woff2",
+        "/assets/fonts/Roboto-Regular-Italic.woff2",
+      ],
     },
     publicAssets: [
       {
@@ -136,5 +142,5 @@ export default defineNuxtConfig({
     preference: "dark",
   },
 
-  css: ["~/assets/app.css"],
+  css: ["~/assets/css/app.css"],
 });

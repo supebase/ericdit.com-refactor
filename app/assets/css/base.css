@@ -1,7 +1,38 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
 @import "tailwindcss";
 @import "@nuxt/ui";
 @plugin "@tailwindcss/typography";
+
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  src: url("@/assets/fonts/Roboto-Regular.woff2") format("woff2");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 500;
+  src: url("@/assets/fonts/Roboto-Medium.woff2") format("woff2");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 700;
+  src: url("@/assets/fonts/Roboto-Bold.woff2") format("woff2");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Roboto";
+  font-style: italic;
+  font-weight: 400;
+  src: url("@/assets/fonts/Roboto-Regular-Italic.woff2") format("woff2");
+  font-display: swap;
+}
 
 html {
   font-family: "Roboto";
@@ -47,6 +78,10 @@ hr {
          prose-a:underline-offset-4
          prose-a:decoration-wavy
          prose-a:decoration-[1px];
+}
+
+pre code .line {
+  display: block;
 }
 
 .alert-diagonal-bg::before {
