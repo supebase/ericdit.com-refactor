@@ -10,7 +10,7 @@
         :disabled="isSubmitting" />
     </div>
 
-    <UButton type="submit" size="xl" color="success" block :disabled="isSubmitting"
+    <UButton type="submit" size="xl" color="success" block :disabled="!email || !password || isSubmitting"
       :loading="isSubmitting">
       {{ isSubmitting ? "正在登录" : "立即登录" }}
     </UButton>

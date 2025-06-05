@@ -5,7 +5,7 @@
             <div class="w-full flex justify-center relative">
                 <NuxtImg provider="directus" :src="talk.images?.[0]?.directus_files_id" alt="预览图片"
                     loading="eager" fetchpriority="high" preload placeholder format="webp"
-                    quality="80" sizes="(max-width: 768px) 100vw, 768px"
+                    quality="80" sizes="(max-width: 480px) 100vw, 480px"
                     class="aspect-[16/4] object-cover rounded-t-md w-full mask-b-from-0" />
                 <div
                     class="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-1/2 z-10 rounded-full outline-3 outline-neutral-100/50 dark:outline-neutral-800/50">

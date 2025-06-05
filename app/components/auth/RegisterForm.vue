@@ -1,13 +1,13 @@
 <template>
   <form @submit.prevent="handleSubmit" class="space-y-6">
     <div class="form-group">
-      <UInput v-model="email" type="email" id="email" variant="soft" size="xl" icon="hugeicons:at"
-        class="w-full" placeholder="电子邮件" @keydown.space.prevent :disabled="isSubmitting" />
+      <UInput v-model="email" type="email" id="email" variant="soft" size="xl" icon="hugeicons:at" class="w-full"
+        placeholder="电子邮件" @keydown.space.prevent :disabled="isSubmitting" />
     </div>
 
     <div class="form-group">
-      <UInput v-model="firstName" type="text" id="firstName" variant="soft" size="xl"
-        icon="hugeicons:user-circle" class="w-full" placeholder="你的名字" :disabled="isSubmitting" />
+      <UInput v-model="firstName" type="text" id="firstName" variant="soft" size="xl" icon="hugeicons:user-circle"
+        class="w-full" placeholder="你的名字" :disabled="isSubmitting" />
     </div>
 
     <div class="form-group">
@@ -19,12 +19,12 @@
     </div>
 
     <div class="form-group">
-      <AuthSecurityInput v-model="password_confirm" placeholder="确认密码"
-        icon="hugeicons:square-lock-check-02" :disabled="isSubmitting" />
+      <AuthSecurityInput v-model="password_confirm" placeholder="确认密码" icon="hugeicons:square-lock-check-02"
+        :disabled="isSubmitting" />
     </div>
 
-    <UButton type="submit" size="xl" color="primary" block :disabled="isSubmitting"
-      :loading="isSubmitting">
+    <UButton type="submit" size="xl" color="primary" block
+      :disabled="!email || !firstName || !password || !password_confirm || isSubmitting" :loading="isSubmitting">
       {{ isSubmitting ? "正在登录" : "完成注册" }}
     </UButton>
 

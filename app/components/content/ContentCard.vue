@@ -3,10 +3,9 @@
     <!-- 单图显示 -->
     <div v-if="displayType === 'single'" class="relative overflow-hidden rounded-t-md">
       <NuxtLink :aria-label="content.title" @click.prevent="handleLinkClick" class="cursor-pointer">
-        <NuxtImg provider="directus" :src="content.images[0].directus_files_id" alt="预览图片"
-          loading="eager" fetchpriority="high" preload placeholder format="webp" quality="80"
-          sizes="(max-width: 768px) 100vw, 768px"
-          class="aspect-[16/7] object-cover w-full transition-transform duration-500" />
+        <NuxtImg provider="directus" :src="content.images[0].directus_files_id" alt="预览图片" loading="eager"
+          fetchpriority="high" preload placeholder format="webp" quality="80" sizes="(max-width: 480px) 100vw, 480px"
+          class="aspect-[16/7] object-cover w-full" />
         <!-- 标题叠加在图片下方，带模糊背景 -->
         <div class="absolute bottom-0 left-0 w-full px-4 py-3 bg-neutral-900/40 backdrop-blur-sm">
           <div class="font-bold text-white text-shadow-md/30">
@@ -25,30 +24,28 @@
       <!-- 作者、名字、时间和收藏 -->
       <div class="flex items-center justify-between px-4 pt-3">
         <div class="flex items-center gap-1.5">
-          <SharedAvatar :src="userAvatarUrl || undefined" size="2xs"
-            :alt="content.user_created.first_name" class="mr-0.5" />
+          <SharedAvatar :src="userAvatarUrl || undefined" size="2xs" :alt="content.user_created.first_name"
+            class="mr-0.5" />
           <span class="text-[15px] text-neutral-400 dark:text-neutral-500 font-medium">{{
             content.user_created.first_name }}</span>
           <span class="mx-1 text-neutral-300 dark:text-neutral-700 pt-[2px]">&bull;</span>
           <span class="text-sm text-neutral-400 dark:text-neutral-600 pt-[2px]">{{
             useDateFormatter(content.date_created)
-            }}</span>
+          }}</span>
         </div>
         <SharedBookmarkButton :content-id="content.id" :icon-size="19" />
       </div>
       <!-- 轮播居中 -->
       <div class="relative overflow-hidden py-4">
-        <UCarousel v-slot="{ item, index }: { item: any, index: number }" dots autoplay class-names
-          wheel-gestures :items="carouselImages" :ui="{
+        <UCarousel v-slot="{ item, index }: { item: any, index: number }" dots autoplay class-names wheel-gestures
+          :items="carouselImages" :ui="{
             item: 'basis-[80%] transition-all duration-500 scale-100 [&:not(.is-snapped)]:opacity-10 [&:not(.is-snapped)]:scale-93',
             dots: '-bottom-4',
             dot: 'w-4 h-1 transition-all duration-500'
           }">
           <div class="relative">
-            <NuxtLink :aria-label="content.title" @click.prevent="handleLinkClick"
-              class="cursor-pointer">
-              <NuxtImg provider="directus" :src="item.directus_files_id" alt="预览图片" preload
-                loading="lazy" placeholder
+            <NuxtLink :aria-label="content.title" @click.prevent="handleLinkClick" class="cursor-pointer">
+              <NuxtImg provider="directus" :src="item.directus_files_id" alt="预览图片" preload loading="lazy" placeholder
                 class="aspect-[16/7] object-cover w-full outline-2 outline-neutral-200 dark:outline-neutral-800 my-1"
                 :class="[
                   index === 0 && content.images.length === 1
@@ -73,19 +70,19 @@
     <template #footer>
       <div class="flex items-center justify-between mb-3" v-if="displayType === 'single'">
         <div class="flex items-center gap-1.5">
-          <SharedAvatar :src="userAvatarUrl || undefined" size="2xs"
-            :alt="content.user_created.first_name" class="mr-0.5" />
+          <SharedAvatar :src="userAvatarUrl || undefined" size="2xs" :alt="content.user_created.first_name"
+            class="mr-0.5" />
           <span class="text-[15px] text-neutral-400 dark:text-neutral-500 font-medium">{{
             content.user_created.first_name }}</span>
           <span class="mx-1 text-neutral-300 dark:text-neutral-700 pt-[2px]">&bull;</span>
           <span class="text-sm text-neutral-400 dark:text-neutral-600 pt-[2px]">{{
             useDateFormatter(content.date_created)
-          }}</span>
+            }}</span>
         </div>
         <SharedBookmarkButton :content-id="content.id" :icon-size="19" />
       </div>
-      <NuxtLink v-if="displayType === 'single'" :aria-label="content.title"
-        @click.prevent="handleLinkClick" class="block hover:no-underline cursor-pointer">
+      <NuxtLink v-if="displayType === 'single'" :aria-label="content.title" @click.prevent="handleLinkClick"
+        class="block hover:no-underline cursor-pointer">
         <div class="text-neutral-500 dark:text-neutral-400 line-clamp-3 mb-4">
           {{ cleanBody }}
         </div>
@@ -96,8 +93,7 @@
             <SharedLikeButton :content-id="content.id" :icon-size="21" likeType="clap" />
           </div>
           <div class="flex items-center gap-1">
-            <SharedCommentCounter :content-id="content.id" :allow-comments="content.allow_comments"
-              :icon-size="18" />
+            <SharedCommentCounter :content-id="content.id" :allow-comments="content.allow_comments" :icon-size="18" />
           </div>
           <div class="flex items-center gap-1">
             <SharedContentViews :content-id="content.id" :icon-size="19" />
