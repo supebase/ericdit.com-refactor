@@ -1,9 +1,12 @@
-import type { GitHubProjectInfo } from "~/types";
+import type { GitHubProjectInfo, CacheItem } from "~/types";
 
 // 缓存最大数量，防止内存泄漏
 const MAX_CACHE_SIZE = 100;
+// 缓存过期时间（毫秒），例如 1 小时
+const CACHE_EXPIRATION_TIME = 1000 * 60 * 60;
+
 // 使用 Map 作为简单的内存缓存，避免重复请求同一个仓库信息
-const projectCache = new Map<string, GitHubProjectInfo>();
+const projectCache = new Map<string, CacheItem<GitHubProjectInfo>>();
 
 function setCache(key: string, value: GitHubProjectInfo) {
   if (projectCache.size >= MAX_CACHE_SIZE) {
@@ -13,7 +16,7 @@ function setCache(key: string, value: GitHubProjectInfo) {
       projectCache.delete(firstKey);
     }
   }
-  projectCache.set(key, value);
+  projectCache.set(key, { data: value, timestamp: Date.now() });
 }
 
 /**
@@ -36,13 +39,19 @@ export function useGithubRepo(githubRepo: string) {
    */
   const fetchProjectInfo = (): Promise<GitHubProjectInfo | null> => {
     return new Promise(async (resolve, reject) => {
-      // 如果缓存中已有数据，直接返回缓存内容
+      // 如果缓存中已有数据且未过期，直接返回缓存内容
       if (projectCache.has(githubRepo)) {
-        projectInfo.value = projectCache.get(githubRepo)!;
-        isLoaded.value = true;
-        error.value = null;
-        resolve(projectInfo.value);
-        return;
+        const cachedItem = projectCache.get(githubRepo)!;
+        if (Date.now() - cachedItem.timestamp < CACHE_EXPIRATION_TIME) {
+          projectInfo.value = cachedItem.data;
+          isLoaded.value = true;
+          error.value = null;
+          resolve(projectInfo.value);
+          return;
+        } else {
+          // 缓存过期，删除旧缓存
+          projectCache.delete(githubRepo);
+        }
       }
 
       // 重置加载状态和错误信息

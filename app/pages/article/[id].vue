@@ -49,8 +49,14 @@ const {
   }
 );
 
-onMounted(() => {
-  subscribeContents(
+const subscriptionCleanup = ref<(() => void) | null>(null);
+
+const setupSubscription = async () => {
+  if (subscriptionCleanup.value) {
+    subscriptionCleanup.value();
+    subscriptionCleanup.value = null;
+  }
+  subscriptionCleanup.value = await subscribeContents(
     {
       fields: [...CONTENT_FIELDS],
     },
@@ -60,6 +66,17 @@ onMounted(() => {
       }
     }
   );
+};
+
+onActivated(() => {
+  setupSubscription();
+});
+
+onDeactivated(() => {
+  if (subscriptionCleanup.value) {
+    subscriptionCleanup.value();
+    subscriptionCleanup.value = null;
+  }
 });
 
 useSeo({

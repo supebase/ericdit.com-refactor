@@ -30,7 +30,7 @@ import { validateEmail } from "~/utils";
 import { AUTH_ERROR_MESSAGES } from "~/types/auth";
 import { safeBack } from "~/router.options";
 
-const { login, updateUserLocation, getUserStatusByEmail } = useAuth();
+const { login, getUserStatusByEmail } = useAuth();
 const toast = useToast();
 
 const email = ref("");
@@ -58,16 +58,7 @@ const handleSubmit = async () => {
     return;
   }
 
-  const status = await getUserStatusByEmail(email.value);
-  if (status === "suspended") {
-    toast.add({
-      title: "登录提示",
-      description: "尝试登录次数太多已被停用，请联系管理员。",
-      icon: "hugeicons:alert-02",
-      color: "error",
-    });
-    return;
-  }
+
 
   try {
     isSubmitting.value = true;
@@ -81,7 +72,17 @@ const handleSubmit = async () => {
     });
 
     await safeBack();
-    updateUserLocation();
+
+    const status = await getUserStatusByEmail(email.value);
+    if (status === "suspended") {
+      toast.add({
+        title: "登录提示",
+        description: "尝试登录次数太多已被停用，请联系管理员。",
+        icon: "hugeicons:alert-02",
+        color: "error",
+      });
+      return;
+    }
   } catch (error: any) {
     toast.add({
       title: "登录提示",

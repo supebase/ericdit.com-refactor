@@ -13,12 +13,7 @@
 const route = useRoute();
 const { isAuthenticated } = useAuth();
 
-const isAuth = ref(route.query.action !== 'register');
-
-watch(() => route.query.action, val => {
-    isAuth.value = val !== 'register';
-});
-
+const isAuth = computed(() => route.query.action !== 'register');
 const siteName = computed(() => isAuth.value ? "用户登录" : "注册新用户");
 
 watch(isAuthenticated, (newValue) => {

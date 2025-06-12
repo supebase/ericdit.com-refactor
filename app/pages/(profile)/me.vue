@@ -52,42 +52,44 @@ const { commentsCount, likesCount, fetchStats } = useUserMetrics();
 const toast = useToast();
 
 const isLoading = ref(false);
-const isStatsLoading = ref(false);
-const isFirstLoad = ref(true);
 
-// 添加重试机制和缓存控制
-const loadUserStats = async (forceRefresh = false) => {
-  if (!user.value?.id || (isStatsLoading.value && !forceRefresh)) return;
-
-  try {
-    isStatsLoading.value = true;
-
-    // 添加重试逻辑
-    let retries = 0;
-    const maxRetries = 3;
-
-    while (retries < maxRetries) {
-      try {
-        await fetchStats(user.value.id);
-        break; // 成功获取数据，跳出循环
-      } catch (error) {
-        retries++;
-        if (retries >= maxRetries) throw error;
-        // 指数退避，直接用 setTimeout
-        await new Promise((resolve) => setTimeout(resolve, 1000 * Math.pow(2, retries - 1)));
-      }
-    }
-  } catch (error) {
-    toast.add({
-      title: "获取数据失败",
-      description: "请稍后重试",
-      color: "error",
-    });
-  } finally {
-    isStatsLoading.value = false;
-    isFirstLoad.value = false;
-  }
+const loadUserStats = async () => {
+  if (!user.value?.id) return;
+  await fetchStats(user.value.id);
 };
+
+const { pending: isStatsLoading } = useAsyncData(
+  "user-stats",
+  async () => {
+    if (user.value?.id) {
+      await loadUserStats();
+    }
+  },
+  { watch: [() => user.value?.id] }
+);
+
+// 监听用户ID变化，当用户ID存在时加载统计数据
+watch(() => user.value?.id, (newId) => {
+  if (newId) {
+    loadUserStats();
+  }
+}, { immediate: true });
+
+// 页面激活时刷新数据
+onActivated(() => {
+  loadUserStats();
+});
+
+// 错误处理
+// watch(isStatsLoading, (newVal, oldVal) => {
+//   if (!newVal && oldVal && !user.value?.id) {
+//     toast.add({
+//       title: "获取数据失败",
+//       description: "请稍后重试",
+//       color: "error",
+//     });
+//   }
+// });
 
 const handleLogout = async () => {
   if (isLoading.value) return;
@@ -107,26 +109,7 @@ const handleLogout = async () => {
   }
 };
 
-// 使用 useAsyncData 来管理数据加载状态
-useAsyncData(
-  "user-stats",
-  async () => {
-    if (user.value?.id) {
-      await loadUserStats();
-    }
-  },
-  { watch: [() => user.value?.id] }
-);
 
-onActivated(() => {
-  if (!isFirstLoad.value && !isStatsLoading.value) {
-    loadUserStats();
-  }
-});
-
-onMounted(() => {
-  loadUserStats();
-});
 
 useSeo({
   site_name: "个人资料",

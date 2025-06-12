@@ -16,3 +16,9 @@ export interface GitHubProjectInfo {
     watchersCount: number;
     mainLanguage?: string | null;
 }
+
+// 定义缓存项的类型，包含数据和时间戳
+export interface CacheItem<T> {
+    data: T;
+    timestamp: number;
+}
