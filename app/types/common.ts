@@ -50,3 +50,8 @@ export interface VersionInfo {
   buildHash: string;
   fullVersion: string;
 }
+
+export interface UseWebSocketStatusReturn {
+  status: Ref<'OPEN' | 'CONNECTING' | 'CLOSED'>;
+  missingConfig: boolean;
+}

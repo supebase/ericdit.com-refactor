@@ -1,3 +1,5 @@
+import type { UseWebSocketStatusReturn } from "~/types";
+
 // 获取运行时配置中的 WebSocket 地址
 const {
     public: { directusWebSocketUrl },
@@ -48,7 +50,7 @@ if (!missingConfig) {
  * 暴露 WebSocket 连接状态的组合式函数
  * @returns {Object} status - 当前 WebSocket 连接状态（'OPEN' | 'CONNECTING' | 'CLOSED'）
  */
-export function useWebSocketStatus(): object {
+export function useWebSocketStatus(): UseWebSocketStatusReturn {
     // 也可以直接暴露 wsStatus，这里做了一个映射，便于后续扩展
     const connectionStatus = computed(() => wsStatus.value)
     return {

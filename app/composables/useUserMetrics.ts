@@ -46,7 +46,7 @@ export const useUserMetrics = (): UserMetricsReturn => {
       commentsCount.value = comments.length;
       likesCount.value = likes.length;
     } catch (error) {
-      console.error("Failed to fetch user stats:", error);
+      console.warn("Failed to fetch user stats:", error);
       commentsCount.value = 0;
       likesCount.value = 0;
     }

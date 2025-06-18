@@ -7,17 +7,17 @@ export function useSwipeToDelete(canDelete: () => boolean) {
     // 每个项目的偏移量（用于滑动动画）
     const offsets = ref<number[]>([0]);
     // 记录每个项目拖拽开始时的 X 坐标
-    const dragStartX = ref<number[]>([0]);
+    const dragStartX = ref<number[]>([]);
     // 记录每个项目拖拽开始时的 Y 坐标
-    const dragStartY = ref<number[]>([0]);
+    const dragStartY = ref<number[]>([]);
     // 标记每个项目当前是否处于拖拽状态
-    const isDragging = ref<boolean[]>([false]);
+    const isDragging = ref<boolean[]>([]);
     // 拖拽方向判定的阈值
     const dragThreshold = 10;
     // 当前已打开（显示删除按钮）的项目索引
     const currentOpenIndex = ref<number | null>(null);
     // 记录每个项目当前锁定的拖拽方向（水平/垂直/未锁定）
-    const directionLocked = ref<('horizontal' | 'vertical' | null)[]>([null]);
+    const directionLocked = ref<('horizontal' | 'vertical' | null)[]>([]);
 
     /**
      * 拖拽开始事件处理

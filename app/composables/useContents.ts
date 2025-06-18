@@ -174,7 +174,7 @@ export const useContents = () => {
             callback(item);
           }
         } catch (error) {
-          console.error("Error in content subscription:", error);
+          console.warn("Error in content subscription:", error);
         }
       })();
 
@@ -190,7 +190,7 @@ export const useContents = () => {
             }
           }
         } catch (error) {
-          console.error("Error in user subscription:", error);
+          console.warn("Error in user subscription:", error);
         }
       })();
 

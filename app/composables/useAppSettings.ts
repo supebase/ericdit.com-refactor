@@ -36,7 +36,7 @@ export const useAppSettings = () => {
         callback(item);
       }
     } catch (error) {
-      console.error("Error in settings subscription:", error);
+      console.warn("Error in settings subscription:", error);
     }
   };
 

@@ -26,7 +26,7 @@ export const useAuthGuard = () => {
         safeStorage.set("originalPath", window.location.pathname);
       }
     } catch (error) {
-      console.warn('无法访问本地存储，可能处于隐私模式');
+      console.error('无法访问本地存储，可能处于隐私模式');
     }
 
     navigateTo("/auth");

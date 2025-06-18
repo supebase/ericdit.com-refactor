@@ -3,7 +3,7 @@ export default defineNuxtPlugin(() => {
 
   // 初始化路由历史数组
   if (!safeStorage.get("routeHistory")) {
-    safeStorage.set("routeHistory", JSON.stringify(["/"]));
+    safeStorage.set("routeHistory", JSON.stringify([]));
   }
 
   // 监听路由变化
@@ -17,7 +17,7 @@ export default defineNuxtPlugin(() => {
 
       // 维护路由历史记录
       if (!newPath.includes("/auth") && !newPath.includes("/auth?action=register")) {
-        const history = JSON.parse(safeStorage.get("routeHistory") || "[]");
+        const history = JSON.parse(safeStorage.get("routeHistory") ?? "[]");
         if (history[history.length - 1] !== newPath) {
           if (history.length >= 10) history.shift();
           history.push(newPath);

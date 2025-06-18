@@ -55,7 +55,7 @@ export const useUserStats = (): UserStatsReturn => {
             totalUsers.value = users.length;
             lastFetchTime.value = now;
         } catch (error) {
-            console.error("Failed to fetch total users:", error);
+            console.warn("Failed to fetch total users:", error);
             totalUsers.value = 0;
         } finally {
             isFetching = false;

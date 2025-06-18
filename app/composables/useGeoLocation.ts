@@ -18,7 +18,7 @@ export const useGeoLocation = async () => {
     });
 
     // 校验返回数据有效性
-    if (!data.ipinfo?.text || !data.ipdata?.info1) {
+    if (!data?.ipinfo?.text || !data?.ipdata?.info1) {
       return {
         ip: "未知",
         location: "地球",

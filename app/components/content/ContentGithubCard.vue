@@ -83,7 +83,12 @@ const formatStarCount = (num: number) => {
 };
 
 // 使用 watchEffect 监听 githubRepo 变化自动刷新
-watchEffect(() => {
-    fetchProjectInfo();
+watchEffect(async () => {
+    try {
+        await fetchProjectInfo();
+    } catch (err: any) {
+        // 错误已经在 useGithubRepo 中设置，这里可以根据需要进行额外处理或日志记录
+        console.warn("Failed to fetch GitHub project info:", err);
+    }
 });
 </script>

@@ -78,7 +78,7 @@ export const safeStorage = {
       localStorage.setItem(key, value);
       return true;
     } catch (error) {
-      console.warn("无法访问本地存储，可能处于隐私模式:", error);
+      console.error("无法访问本地存储，可能处于隐私模式:", error);
       return false;
     }
   },
@@ -86,7 +86,7 @@ export const safeStorage = {
     try {
       return localStorage.getItem(key);
     } catch (error) {
-      console.warn("无法访问本地存储，可能处于隐私模式:", error);
+      console.error("无法访问本地存储，可能处于隐私模式:", error);
       return null;
     }
   },
@@ -95,7 +95,7 @@ export const safeStorage = {
       localStorage.removeItem(key);
       return true;
     } catch (error) {
-      console.warn("无法访问本地存储，可能处于隐私模式:", error);
+      console.error("无法访问本地存储，可能处于隐私模式:", error);
       return false;
     }
   }

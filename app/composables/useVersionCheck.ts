@@ -7,9 +7,6 @@
  * - 提供 cleanup 方法用于组件卸载时清理定时器和事件
  */
 export const useVersionCheck = () => {
-  // 首次检测标志
-  let isFirstCheck = true;
-
   // 标记是否需要更新
   const needsUpdate = ref(false);
 
@@ -58,16 +55,11 @@ export const useVersionCheck = () => {
       const { buildHash, version } = await response.json();
       const currentHash = safeStorage.get("app-version-hash");
 
-      if (isFirstCheck) {
-        // 首次加载或刷新页面，直接写入最新 hash 和 version，不弹提示
-        safeStorage.set("app-version-hash", buildHash);
-        safeStorage.set("app-version", version);
-        needsUpdate.value = false;
-        isFirstCheck = false;
-        return;
-      }
-
       // 检测到新版本，暂存新版本信息
+      // 每次检查都更新本地存储的 hash 和 version
+      safeStorage.set("app-version-hash", buildHash);
+      safeStorage.set("app-version", version);
+
       if (currentHash && buildHash !== currentHash) {
         needsUpdate.value = true;
         pendingVersionInfo = { buildHash, version };
@@ -126,8 +118,6 @@ export const useVersionCheck = () => {
     confirmUpdate: () => {
       // 只有检测到新版本时才写入
       if (pendingVersionInfo) {
-        safeStorage.set("app-version-hash", pendingVersionInfo.buildHash);
-        safeStorage.set("app-version", pendingVersionInfo.version);
         needsUpdate.value = false;
         pendingVersionInfo = null;
       }

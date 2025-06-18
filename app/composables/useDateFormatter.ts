@@ -73,7 +73,7 @@ export function useDateFormatter(date: string | Date | number | null): ComputedR
         fullDateFormatter,
       }).value;
     } catch (error) {
-      console.error("Date formatting error:", error);
+      console.warn("Date formatting error:", error);
       return messages.invalid;
     }
   });

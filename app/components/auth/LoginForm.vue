@@ -58,8 +58,6 @@ const handleSubmit = async () => {
     return;
   }
 
-
-
   try {
     isSubmitting.value = true;
     await login(email.value, password.value);
