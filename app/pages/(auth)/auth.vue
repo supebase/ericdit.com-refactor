@@ -18,7 +18,7 @@ const siteName = computed(() => isAuth.value ? "用户登录" : "注册新用户
 
 watch(isAuthenticated, (newValue) => {
     if (newValue) navigateTo("/");
-}, { immediate: true, once: true });
+}, { immediate: true });
 
 useSeo({
     site_name: siteName,
