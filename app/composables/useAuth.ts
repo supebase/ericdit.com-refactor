@@ -32,7 +32,7 @@ export const useAuth = () => {
    */
   const login = async (email: string, password: string): Promise<void> => {
     try {
-      await $authClient.login(email, password);
+      await $authClient.login({email, password});
       // 并行执行刷新用户和更新用户位置，不阻塞登录流程
       await Promise.all([refreshUser(), updateUserLocation()]);
     } catch (error: any) {
