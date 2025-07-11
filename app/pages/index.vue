@@ -34,7 +34,7 @@
       </div>
 
       <!-- 加载更多按钮 -->
-      <div class="flex justify-center pb-2.5" v-if="hasMore && contents && contents.length > 0">
+      <div class="flex justify-center pb-2.5" v-if="hasMore && contents && contents.length >= limit">
         <UButton @click="loadMore" variant="soft" color="primary" :disabled="isFetchingNextPage"
           :loading="isFetchingNextPage">
           加载更多
@@ -42,7 +42,7 @@
       </div>
 
       <!-- 没有更多内容的提示 -->
-      <div v-if="!hasMore && contents && contents.length > 0"
+      <div v-if="!hasMore && contents && contents.length >= limit"
         class="text-center text-sm text-neutral-400 dark:text-neutral-700 pb-2.5">
         已显示全部内容
       </div>
@@ -195,11 +195,11 @@ const setupSubscription = async () => {
   );
 };
 
-onActivated(() => {
+onMounted(() => {
   setupSubscription();
 });
 
-onDeactivated(() => {
+onUnmounted(() => {
   if (subscriptionCleanup.value) {
     subscriptionCleanup.value();
     subscriptionCleanup.value = null;

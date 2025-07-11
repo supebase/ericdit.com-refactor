@@ -1,6 +1,6 @@
 {
   "name": "eric-app",
-  "version": "1.4.6",
+  "version": "1.4.7",
   "private": true,
   "type": "module",
   "scripts": {
@@ -21,11 +21,11 @@
     "vue-advanced-cropper": "^2.8.9"
   },
   "devDependencies": {
-    "@iconify-json/hugeicons": "^1.2.5",
+    "@iconify-json/hugeicons": "^1.2.6",
     "@iconify-json/svg-spinners": "^1.2.2",
     "@nuxtjs/mdc": "^0.17.0",
     "@tailwindcss/typography": "^0.5.16",
-    "@types/node": "^24.0.10",
+    "@types/node": "^24.0.13",
     "nuxt": "^3.17.6",
     "typescript": "^5.8.3",
     "vue-router": "^4.5.1"
