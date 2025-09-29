@@ -5,3 +5,5 @@
 /.DS_Store
 app/.DS_Store
 app/components/.DS_Store
+.pnpm-store/
+pnpm-lock.yaml

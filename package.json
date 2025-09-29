@@ -5,11 +5,11 @@
   "type": "module",
   "scripts": {
     "bump": "node bump-version.js",
-    "build": "nuxt build",
-    "dev": "nuxt dev --host=0.0.0.0",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "build": "pnpm nuxt build",
+    "dev": "pnpm nuxt dev --host=0.0.0.0",
+    "generate": "pnpm nuxt generate",
+    "preview": "pnpm nuxt preview",
+    "postinstall": "pnpm nuxt prepare"
   },
   "dependencies": {
     "@directus/sdk": "^20.0.0",
