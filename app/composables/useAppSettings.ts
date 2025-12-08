@@ -51,16 +51,18 @@ export const useAppSettings = () => {
 
     try {
       // 订阅设置更新
-      const settingsSub = await $realtimeClient.subscribe("settings", {
-        query: {
-          limit: 1,
-        },
-      });
+      const settingsSub = await $realtimeClient.subscribe("settings");
       settingsSubscription = settingsSub.subscription;
       addCleanup(() => settingsSubscription?.return());
 
       // 处理设置更新
-      processSettingsUpdates(settingsSubscription, callback);
+      processSettingsUpdates(settingsSubscription, callback)
+        .catch(error => {
+            // 捕获循环内部的错误，比如连接断开
+            console.error("Settings subscription loop failed:", error);
+            // 如果循环退出（非正常退出），执行清理
+            runCleanup();
+        });
 
       return runCleanup;
     } catch (error) {

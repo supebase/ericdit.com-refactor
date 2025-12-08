@@ -6,7 +6,7 @@
             <div class="flex flex-col items-center">
                 <div v-if="settings?.donate_images">
                     <NuxtImg provider="directus" class="rounded-md"
-                        :src="settings?.donate_images as unknown as string" loading="eager"
+                        :src="settings?.donate_images" loading="eager"
                         fetchpriority="high" preload placeholder format="webp" quality="80" />
                 </div>
             </div>

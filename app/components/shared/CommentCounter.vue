@@ -36,7 +36,7 @@ function useCommentsSubscription(contentId: string, onUpdate: () => void) {
     if (unsubscribe) unsubscribe();
     unsubscribe = await subscribeComments(contentId, async (event) => {
       if (["create", "delete"].includes(event.event)) {
-        await onUpdate();
+        onUpdate();
       }
     });
   };

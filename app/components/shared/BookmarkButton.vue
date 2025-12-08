@@ -19,8 +19,6 @@
 </template>
 
 <script setup lang="ts">
-import { UBadge } from '#components';
-
 const props = defineProps<{
   contentId: string;
   iconSize?: number;

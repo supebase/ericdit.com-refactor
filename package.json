@@ -1,6 +1,6 @@
 {
   "name": "eric-app",
-  "version": "1.4.7",
+  "version": "1.5.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -12,22 +12,25 @@
     "postinstall": "pnpm nuxt prepare"
   },
   "dependencies": {
-    "@directus/sdk": "^20.0.0",
-    "@nuxt/image": "^1.10.0",
-    "@nuxt/ui": "^3.2.0",
-    "@vueuse/nuxt": "^13.5.0",
-    "nuxt-emoji-picker": "^1.1.0",
-    "vue": "^3.5.17",
+    "@directus/sdk": "^20.2.0",
+    "@nuxt/image": "^2.0.0",
+    "@nuxt/ui": "^4.2.1",
+    "@vueuse/nuxt": "^14.1.0",
+    "nuxt-emoji-picker": "^1.2.1",
+    "std-env": "^3.10.0",
+    "vue": "^3.5.25",
     "vue-advanced-cropper": "^2.8.9"
   },
   "devDependencies": {
-    "@iconify-json/hugeicons": "^1.2.6",
-    "@iconify-json/svg-spinners": "^1.2.2",
-    "@nuxtjs/mdc": "^0.17.0",
-    "@tailwindcss/typography": "^0.5.16",
-    "@types/node": "^24.0.13",
-    "nuxt": "^3.17.6",
-    "typescript": "^5.8.3",
-    "vue-router": "^4.5.1"
-  }
+    "@iconify-json/hugeicons": "^1.2.20",
+    "@iconify-json/svg-spinners": "^1.2.4",
+    "@nuxtjs/mdc": "^0.19.1",
+    "@tailwindcss/typography": "^0.5.19",
+    "@types/node": "^24.10.1",
+    "nuxt": "^4.2.1",
+    "nuxt-security": "2.5.0",
+    "typescript": "^5.9.3",
+    "vue-router": "^4.6.3"
+  },
+  "packageManager": "pnpm@10.24.0+sha512.01ff8ae71b4419903b65c60fb2dc9d34cf8bb6e06d03bde112ef38f7a34d6904c424ba66bea5cdcf12890230bf39f9580473140ed9c946fef328b6e5238a345a"
 }

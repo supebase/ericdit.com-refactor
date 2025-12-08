@@ -38,7 +38,7 @@ const init = async () => {
         const settings = await getSettings();
         updateMaintenanceMode(settings);
     } catch (error) {
-        console.error('Failed to check maintenance mode:', error);
+        console.error('尝试检查系统是否处于维护模式时遇到了问题:', error);
     }
 };
 

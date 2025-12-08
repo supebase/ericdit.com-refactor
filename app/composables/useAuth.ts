@@ -14,8 +14,22 @@ export const useAuth = () => {
   /**
    * 用户信息状态
    * null 表示未登录或登录失效
+   * 初始化时从本地存储恢复用户状态，避免刷新页面时状态闪烁
    */
-  const user = useState<UserProfile | null>("auth:user", () => null);
+  const user = useState<UserProfile | null>("auth:user", () => {
+    // 从本地存储恢复用户状态
+    if (import.meta.client) {
+      try {
+        const storedUser = safeStorage.get("auth:user");
+        if (storedUser) {
+          return JSON.parse(storedUser) as UserProfile;
+        }
+      } catch (error) {
+        console.error("Failed to parse stored user data:", error);
+      }
+    }
+    return null;
+  });
 
   /**
    * 用户认证状态
@@ -23,6 +37,13 @@ export const useAuth = () => {
    * false: 未登录或登录失效
    */
   const isAuthenticated = computed(() => !!user.value);
+
+  /**
+   * 认证状态加载中
+   * true: 正在验证认证状态
+   * false: 认证状态已确定
+   */
+  const isLoading = ref(false);
 
   /**
    * 用户登录
@@ -51,6 +72,10 @@ export const useAuth = () => {
       // 清除存储的原始路径
       safeStorage.remove("originalPath");
       user.value = null;
+      // 清除本地存储中的用户状态
+      if (import.meta.client) {
+        safeStorage.remove("auth:user");
+      }
     } catch (error: any) {
       throw new Error(error.errors?.[0]?.message || "登出失败");
     }
@@ -106,9 +131,15 @@ export const useAuth = () => {
    * @throws Error 当获取用户信息失败时抛出错误
    */
   const refreshUser = async (): Promise<void> => {
+    // 设置加载状态
+    isLoading.value = true;
     try {
       const response = await $directus.request<UserProfile>($user.readMe());
       user.value = response;
+      // 成功获取用户信息后保存到本地存储
+      if (import.meta.client) {
+        safeStorage.set("auth:user", JSON.stringify(response));
+      }
     } catch (error: any) {
       // 只在用户之前是登录状态，且遇到认证失败（401）或权限不足（403）时处理
       if (
@@ -116,6 +147,10 @@ export const useAuth = () => {
         user.value !== null
       ) {
         user.value = null;
+        // 清除本地存储中的用户状态
+        if (import.meta.client) {
+          safeStorage.remove("auth:user");
+        }
 
         const toast = useToast();
         toast.add({
@@ -129,8 +164,15 @@ export const useAuth = () => {
       } else {
         // 其他情况只清除用户状态
         user.value = null;
+        // 清除本地存储中的用户状态
+        if (import.meta.client) {
+          safeStorage.remove("auth:user");
+        }
       }
       // throw new Error(error.errors?.[0]?.message || "获取用户信息失败");
+    } finally {
+      // 无论成功失败，都结束加载状态
+      isLoading.value = false;
     }
   };
 
@@ -207,6 +249,7 @@ export const useAuth = () => {
   return {
     user,
     isAuthenticated,
+    isLoading,
     login,
     logout,
     register,

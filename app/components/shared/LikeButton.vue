@@ -133,7 +133,7 @@ function useLikesSubscription(commentId: string | undefined, contentId: string |
       },
       async (event) => {
         if (["create", "delete"].includes(event.event)) {
-          await onUpdate();
+          onUpdate();
         }
       }
     );

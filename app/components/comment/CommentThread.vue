@@ -1,7 +1,7 @@
 <template>
   <div class="select-none pb-6">
     <div class="fixed bottom-17 z-30 left-1/2 -translate-x-1/2">
-      <UButtonGroup
+      <UFieldGroup
         class="shadow-lg rounded-2xl hover:shadow-xl ring-1 ring-neutral-300/70 dark:ring-neutral-800/70 transition-shadow duration-300 bg-white/90 dark:bg-neutral-950/90">
         <UButton :ui="{
           base: 'rounded-[calc(var(--ui-radius)*2)] transition-transform duration-200 hover:bg-white/10 dark:hover:bg-neutral-950/10',
@@ -28,7 +28,7 @@
             class="size-5 text-primary-500 transition-transform duration-500"
             :class="showBackToTop ? 'rotate-0' : 'rotate-180'" />
         </UButton>
-      </UButtonGroup>
+      </UFieldGroup>
     </div>
 
     <UAlert v-if="!allowComments" :ui="{ wrapper: 'flex items-center' }" color="neutral"
@@ -43,7 +43,7 @@
 
       <div v-else-if="isLoading && !comments"
         class="flex flex-col justify-center items-center space-y-3 py-8">
-        <UProgress animation="swing" color="primary" size="sm" class="max-w-[80px]" />
+        <UProgress animation="swing" color="primary" size="sm" class="max-w-20" />
         <div class="text-sm text-neutral-400 dark:text-neutral-600">正在加载评论</div>
       </div>
 

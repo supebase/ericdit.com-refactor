@@ -1,4 +1,5 @@
 import { createResolver } from "@nuxt/kit";
+import { isDevelopment, isWindows } from "std-env";
 
 const { resolve } = createResolver(import.meta.url);
 
@@ -6,24 +7,27 @@ export default defineNuxtConfig({
   compatibilityDate: "2025-05-05",
   devtools: { enabled: false },
   ssr: false,
-  modules: ["@nuxt/ui", "@nuxt/image", "@vueuse/nuxt", "@nuxtjs/mdc", "nuxt-emoji-picker"],
-
-  future: {
-    compatibilityVersion: 4,
-  },
+  modules: [
+    "@nuxt/ui",
+    "@nuxt/image",
+    "@vueuse/nuxt",
+    "@nuxtjs/mdc",
+    "nuxt-emoji-picker",
+    ...(isDevelopment || isWindows ? [] : ["nuxt-security"]),
+  ],
 
   experimental: {
-    payloadExtraction: true,
+    payloadExtraction: false,
     renderJsonPayloads: true,
   },
 
   runtimeConfig: {
     public: {
-      siteUrl: import.meta.env.SITE_URL,
-      directusApiUrl: import.meta.env.DIRECTUS_API_URL,
-      directusDefaultPageSize: import.meta.env.DIRECTUS_DEFAULT_PAGE_SIZE,
-      directusWebSocketUrl: import.meta.env.DIRECTUS_WEBSOCKET_URL,
-      ipDataApiUrl: import.meta.env.PUBLIC_IPDATA_API_URL,
+      siteUrl: process.env.SITE_URL,
+      directusApiUrl: process.env.DIRECTUS_API_URL,
+      directusDefaultPageSize: process.env.DIRECTUS_DEFAULT_PAGE_SIZE,
+      directusWebSocketUrl: process.env.DIRECTUS_WEBSOCKET_URL,
+      ipDataApiUrl: process.env.PUBLIC_IPDATA_API_URL,
     },
     privateGitHubToken: process.env.PRIVATE_GITHUB_ACCESS_TOKENS,
   },
@@ -85,6 +89,24 @@ export default defineNuxtConfig({
     ],
   },
 
+  security: {
+    headers: {
+      // 启用并配置 Content Security Policy
+      contentSecurityPolicy: {
+        "default-src": ["'self'"],
+        "frame-ancestors": ["'none'"],
+        "frame-src": ["https:"],
+        "img-src": ["'self'", "https:", "http:", "data:", "blob:"],
+        "object-src": ["'none'"],
+        "script-src": ["'self'", "'unsafe-inline'", "'wasm-unsafe-eval'"],
+        "script-src-attr": ["'none'"],
+        "style-src": ["'self'", "'unsafe-inline'"],
+        "connect-src": ["'self'", "https:", "http:", "wss:", "ws:"],
+      },
+    },
+    rateLimiter: false,
+  },
+
   routeRules: {
     "/": {
       prerender: true,
@@ -93,13 +115,7 @@ export default defineNuxtConfig({
 
   image: {
     directus: {
-      baseURL: import.meta.env.DIRECTUS_API_URL + "/assets",
-      modifiers: {
-        withoutEnlargement: "true",
-        format: "webp",
-        quality: 80,
-        lazy: true,
-      },
+      baseURL: process.env.DIRECTUS_API_URL + "/assets",
     },
   },
 

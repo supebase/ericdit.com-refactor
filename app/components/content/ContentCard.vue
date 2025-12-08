@@ -5,7 +5,7 @@
       <NuxtLink :aria-label="content.title" @click.prevent="handleLinkClick" class="cursor-pointer">
         <NuxtImg provider="directus" :src="content.images[0].directus_files_id" alt="预览图片" loading="eager"
           fetchpriority="high" preload placeholder format="webp" quality="80" sizes="(max-width: 480px) 100vw, 480px"
-          class="aspect-[16/7] object-cover w-full" />
+          class="aspect-16/7 object-cover w-full" />
         <!-- 标题叠加在图片下方，带模糊背景 -->
         <div class="absolute bottom-0 left-0 w-full px-4 py-3 bg-neutral-900/40 backdrop-blur-sm">
           <div class="font-bold text-white text-shadow-md/30">
@@ -28,8 +28,8 @@
             class="mr-0.5" />
           <span class="text-[15px] text-neutral-400 dark:text-neutral-500 font-medium">{{
             content.user_created.first_name }}</span>
-          <span class="mx-1 text-neutral-300 dark:text-neutral-700 pt-[2px]">&bull;</span>
-          <span class="text-sm text-neutral-400 dark:text-neutral-600 pt-[2px]">{{
+          <span class="mx-1 text-neutral-300 dark:text-neutral-700 pt-0.5">&bull;</span>
+          <span class="text-sm text-neutral-400 dark:text-neutral-600 pt-0.5">{{
             useDateFormatter(content.date_created)
           }}</span>
         </div>
@@ -46,7 +46,7 @@
           <div class="relative">
             <NuxtLink :aria-label="content.title" @click.prevent="handleLinkClick" class="cursor-pointer">
               <NuxtImg provider="directus" :src="item.directus_files_id" alt="预览图片" preload loading="lazy" placeholder
-                class="aspect-[16/7] object-cover w-full outline-2 outline-neutral-200 dark:outline-neutral-800 my-1"
+                class="aspect-16/7 object-cover w-full outline-2 outline-neutral-200 dark:outline-neutral-800 my-1"
                 :class="[
                   index === 0 && content.images.length === 1
                     ? 'rounded-md'
@@ -74,8 +74,8 @@
             class="mr-0.5" />
           <span class="text-[15px] text-neutral-400 dark:text-neutral-500 font-medium">{{
             content.user_created.first_name }}</span>
-          <span class="mx-1 text-neutral-300 dark:text-neutral-700 pt-[2px]">&bull;</span>
-          <span class="text-sm text-neutral-400 dark:text-neutral-600 pt-[2px]">{{
+          <span class="mx-1 text-neutral-300 dark:text-neutral-700 pt-0.5">&bull;</span>
+          <span class="text-sm text-neutral-400 dark:text-neutral-600 pt-0.5">{{
             useDateFormatter(content.date_created)
             }}</span>
         </div>

@@ -31,7 +31,7 @@
                                     <SharedAvatar :src="comment.user_created?.avatar" size="xs"
                                         class="mt-0.5 shrink-0" />
                                     <div
-                                        class="flex-1 ml-2 py-2 px-3 rounded-md bg-white dark:bg-neutral-800/60 break-words">
+                                        class="flex-1 ml-2 py-2 px-3 rounded-md bg-white dark:bg-neutral-800/60 wrap-break-word">
                                         <div class="flex items-center gap-2 mb-1">
                                             <span class="font-medium text-sm text-neutral-800 dark:text-neutral-200">{{
                                                 comment.user_created?.first_name

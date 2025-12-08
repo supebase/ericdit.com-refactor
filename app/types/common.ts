@@ -41,7 +41,7 @@ export interface AppSettings {
   maintenance_mode: boolean;
   type?: "website" | "article";
   noindex?: boolean;
-  donate_images: any[];
+  donate_images: string;
 }
 
 export interface VersionInfo {

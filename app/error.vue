@@ -5,11 +5,11 @@
       <div class="mb-8 flex justify-center">
         <NavigationLogo />
       </div>
-      <h1 id="error-title" class="text-xl font-extrabold mb-3"
+      <h1 id="error-title" class="font-extrabold mb-3"
         :aria-label="error?.statusCode === 404 ? '页面未找到' : '系统错误'">
         {{ error?.statusCode === 404 ? "页面未找到" : "发生错误" }}
       </h1>
-      <p class="text-base text-neutral-500 mb-8" role="alert">
+      <p class="text-sm text-neutral-500 mb-8" role="alert">
         {{ error?.message }}
       </p>
       <UButton variant="solid" color="neutral" to="/">返回首页</UButton>

@@ -1,7 +1,7 @@
 <template>
     <div class="relative w-full mx-auto">
         <div
-            class="relative w-full aspect-[16/7] bg-white dark:bg-neutral-950 rounded-md flex items-center justify-center overflow-hidden">
+            class="relative w-full aspect-16/7 bg-white dark:bg-neutral-950 rounded-md flex items-center justify-center overflow-hidden">
             <img v-if="previewUrl" :src="previewUrl"
                 class="absolute inset-0 w-full h-full object-cover z-0" />
             <div class="absolute inset-0 flex items-center justify-center space-x-3 z-10"

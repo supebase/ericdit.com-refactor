@@ -7,8 +7,8 @@
       </Transition>
 
       <div class="flex items-center space-x-8">
-        <SharedBookmarkCounter v-if="isAuthenticated" class="translate-y-[3px]" />
         <PublishButton />
+        <SharedBookmarkCounter v-if="isAuthenticated" class="translate-y-[3px]" />
         <SearchModal />
         <CommentRecent :limit="10" />
         <ThemePicker />

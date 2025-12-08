@@ -1,6 +1,6 @@
 <template>
   <div v-if="loading && bookmarksCount === null">
-    <UIcon name="svg-spinners:3-dots-scale" class="size-5 text-neutral-500 dark:text-orange-200" />
+    <UIcon name="hugeicons:bookmark-02" class="size-5 text-neutral-500 animate-pulse" />
   </div>
   <div v-else class="select-none">
     <UChip :color="bookmarksCount ? 'primary' : 'neutral'"

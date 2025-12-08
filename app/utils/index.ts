@@ -1,7 +1,7 @@
 import type { CleanupController } from "~/types";
 import type { ValidationResult } from "~/types/auth";
 import { AUTH_VALIDATION_RULES } from "~/types/auth";
-import blockList from "~/blocklist/forbidden_terms.json";
+import { hasSensitiveWords } from "./sensitive";
 
 /**
  * createCleanup
@@ -58,14 +58,20 @@ export const debounce = <T extends (...args: any[]) => any>(
  * @returns 转义后的安全字符串
  */
 export const escapeHtml = (text: string): string => {
-  // 类型和边界检查：只处理字符串类型
   if (typeof text !== "string" || !text) return "";
   return text
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
+    .replace(/'/g, "&#039;")
+    .replace(/`/g, "&#x60;")
+    .replace(/=/g, "&#x3d;")
+    .replace(/;/g, "&#x3b;")
+    .replace(/\(/g, "&#x28;")
+    .replace(/\)/g, "&#x29;")
+    .replace(/\[/g, "&#x5b;")
+    .replace(/\]/g, "&#x5d;");
 };
 
 /**
@@ -124,8 +130,7 @@ export const validateUsername = (name: string): ValidationResult => {
   if (!name) return { valid: false, message: "请输入你的名字。" };
 
   // 先进行敏感词检查
-  const normalizedName = name.toLowerCase();
-  if (blockList.some((forbidden) => normalizedName.includes(forbidden))) {
+  if (hasSensitiveWords(name)) {
     return { valid: false, message: "该名字包含系统保留字或敏感词，请使用其他名字。" };
   }
 
@@ -188,8 +193,7 @@ export const validatePassword = (password: string): ValidationResult => {
  * @returns 校验结果对象
  */
 export const validateComment = (comment: string): { valid: boolean; message: string } => {
-  const normalizedComment = comment.toLowerCase();
-  if (blockList.some((keyword) => normalizedComment.includes(keyword))) {
+  if (hasSensitiveWords(comment)) {
     return { valid: false, message: "评论中包含敏感词" };
   }
   return { valid: true, message: "" };
