@@ -26,14 +26,14 @@
         <div class="flex items-center gap-1.5">
           <SharedAvatar :src="userAvatarUrl || undefined" size="2xs" :alt="content.user_created.first_name"
             class="mr-0.5" />
-          <span class="text-[15px] text-neutral-400 dark:text-neutral-500 font-medium">{{
+          <span class="text-[15px] text-neutral-600 dark:text-neutral-400 font-medium">{{
             content.user_created.first_name }}</span>
           <span class="mx-1 text-neutral-300 dark:text-neutral-700 pt-0.5">&bull;</span>
           <span class="text-sm text-neutral-400 dark:text-neutral-600 pt-0.5">{{
             useDateFormatter(content.date_created)
           }}</span>
         </div>
-        <SharedBookmarkButton :content-id="content.id" :icon-size="19" />
+        <div class="text-sm text-neutral-400 dark:text-neutral-600">阅读约 {{ useArticleMetrics(content.body) }}</div>
       </div>
       <!-- 轮播居中 -->
       <div class="relative overflow-hidden py-4">
@@ -72,14 +72,14 @@
         <div class="flex items-center gap-1.5">
           <SharedAvatar :src="userAvatarUrl || undefined" size="2xs" :alt="content.user_created.first_name"
             class="mr-0.5" />
-          <span class="text-[15px] text-neutral-400 dark:text-neutral-500 font-medium">{{
+          <span class="text-[15px] text-neutral-600 dark:text-neutral-400 font-medium">{{
             content.user_created.first_name }}</span>
           <span class="mx-1 text-neutral-300 dark:text-neutral-700 pt-0.5">&bull;</span>
           <span class="text-sm text-neutral-400 dark:text-neutral-600 pt-0.5">{{
             useDateFormatter(content.date_created)
             }}</span>
         </div>
-        <SharedBookmarkButton :content-id="content.id" :icon-size="19" />
+        <div class="text-sm text-neutral-400 dark:text-neutral-600">阅读约 {{ useArticleMetrics(content.body) }}</div>
       </div>
       <NuxtLink v-if="displayType === 'single'" :aria-label="content.title" @click.prevent="handleLinkClick"
         class="block hover:no-underline cursor-pointer">
@@ -99,7 +99,7 @@
             <SharedContentViews :content-id="content.id" :icon-size="19" />
           </div>
         </div>
-        <div class="text-sm">阅读约 {{ useArticleMetrics(content.body) }}</div>
+        <SharedBookmarkButton :content-id="content.id" :icon-size="19" />
       </div>
     </template>
   </UCard>

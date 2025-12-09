@@ -141,17 +141,18 @@ export const useAuth = () => {
         safeStorage.set("auth:user", JSON.stringify(response));
       }
     } catch (error: any) {
+      // 清除用户状态
+      user.value = null;
+      // 清除本地存储中的用户状态
+      if (import.meta.client) {
+        safeStorage.remove("auth:user");
+      }
+      
       // 只在用户之前是登录状态，且遇到认证失败（401）或权限不足（403）时处理
       if (
         (error.response?.status === 401 || error.response?.status === 403) &&
         user.value !== null
       ) {
-        user.value = null;
-        // 清除本地存储中的用户状态
-        if (import.meta.client) {
-          safeStorage.remove("auth:user");
-        }
-
         const toast = useToast();
         toast.add({
           title: "会话已过期",
@@ -161,15 +162,7 @@ export const useAuth = () => {
         });
         // 重定向到登录页
         navigateTo("/auth");
-      } else {
-        // 其他情况只清除用户状态
-        user.value = null;
-        // 清除本地存储中的用户状态
-        if (import.meta.client) {
-          safeStorage.remove("auth:user");
-        }
       }
-      // throw new Error(error.errors?.[0]?.message || "获取用户信息失败");
     } finally {
       // 无论成功失败，都结束加载状态
       isLoading.value = false;

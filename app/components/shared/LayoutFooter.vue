@@ -3,7 +3,7 @@
     <hr />
     <div class="py-4 select-none flex justify-center items-center gap-4">
       <div class="text-center text-sm text-neutral-500 space-x-1.5">
-        <span>{{ new Date().getFullYear() }} &copy; {{ settings?.site_name || 'Eric' }}</span>
+        <span>{{ settings?.site_name || 'Eric' }}</span>
         <span class="text-neutral-300 dark:text-neutral-700 text-xs">&bull;</span>
         <span>v{{ version }}（{{ useDateFormatter(buildTime) }}构建）</span>
       </div>
@@ -16,6 +16,9 @@
           <UserStats />
         </template>
       </UPopover>
+
+      <UIcon name="hugeicons:github" class="size-4 text-neutral-500 hover:text-primary-500 cursor-pointer"
+        @click="() => navigateTo('https://github.com/supebase/ericdit.com-refactor', { external: true, open: { target: '_blank' } })" />
 
       <UPopover arrow
         :ui="{ content: 'bg-white dark:bg-neutral-950', arrow: 'fill-neutral-200 dark:fill-neutral-800' }">

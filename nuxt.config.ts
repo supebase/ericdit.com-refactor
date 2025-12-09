@@ -9,7 +9,7 @@ export default defineNuxtConfig({
   modules: ["@nuxt/ui", "@nuxt/image", "@vueuse/nuxt", "@nuxtjs/mdc", "nuxt-emoji-picker"],
 
   experimental: {
-    payloadExtraction: false,
+    payloadExtraction: true,
     renderJsonPayloads: true,
   },
 

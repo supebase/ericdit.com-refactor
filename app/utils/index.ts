@@ -44,12 +44,7 @@ export const createCleanup = (): CleanupController => {
  * @param delay 延迟时间（毫秒）
  * @returns 防抖后的新函数
  */
-export const debounce = <T extends (...args: any[]) => any>(
-  fn: T,
-  delay: number
-): ((...args: Parameters<T>) => void) => {
-  return useDebounceFn(fn, delay);
-};
+export const debounce = useDebounceFn;
 
 /**
  * escapeHtml
@@ -109,15 +104,30 @@ export const safeStorage = {
 
 /**
  * 校验邮箱格式是否合法
- * - 使用更严格的正则表达式
  * @param email 邮箱地址
  * @returns 是否为合法邮箱
  */
 export const validateEmail = (email: string): boolean => {
+  // 基本检查
+  if (typeof email !== 'string' || email.trim().length === 0) {
+    return false;
+  }
+  
+  // 长度检查（RFC 5321）
+  if (email.length > 254) {
+    return false;
+  }
+  
+  // 本地部分长度检查（RFC 5321）
+  const atIndex = email.indexOf('@');
+  if (atIndex < 1 || atIndex > 64 || email.length - atIndex - 1 > 253) {
+    return false;
+  }
+  
   // 更严格的邮箱验证正则
-  const emailRegex =
-    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-  return email.length <= 254 && emailRegex.test(email);
+  const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+  
+  return emailRegex.test(email);
 };
 
 /**
