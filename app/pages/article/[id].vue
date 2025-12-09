@@ -89,6 +89,6 @@ useSeo({
   site_description: computed(() => cleanMarkdown(content.value?.body?.substring(0, 100) || "")),
   seo_keywords: "",
   maintenance_mode: false,
-  donate_images: [],
+  donate_images: "",
 });
 </script>

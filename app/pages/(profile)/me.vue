@@ -34,6 +34,8 @@
       </div>
     </div>
 
+    <PublishButton />
+
     <!-- 退出按钮 -->
     <UButton @click="handleLogout" size="xl" color="error" variant="soft" block
       :disabled="isLoading" :loading="isLoading" class="mt-10">
@@ -117,6 +119,6 @@ useSeo({
   seo_keywords: '',
   maintenance_mode: false,
   noindex: true,
-  donate_images: [],
+  donate_images: "",
 });
 </script>

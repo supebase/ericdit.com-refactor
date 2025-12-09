@@ -67,6 +67,7 @@ const publishTypeItems: RadioGroupItem[] = [
 const { createContent, createContentFiles, updateContent } = useContents();
 const toast = useToast();
 
+// 表单状态
 const body = ref("");
 const allowComments = ref(true);
 const isSubmitting = ref(false);
@@ -74,32 +75,35 @@ const publishType = ref<'status' | 'github'>('status');
 const githubLink = ref('');
 const statusPinned = ref(false);
 const githubPinned = ref(false);
+const imageFileId = ref<string | null>(null);
+const resetKey = ref(0);
 
 const canSubmit = computed(() => {
-    return (publishType.value === 'status' && !!body.value.trim() && !!imageFileId.value)
+    return (publishType.value === 'status' && !!body.value.trim())
         || (publishType.value === 'github' && !!githubLink.value.trim());
 });
 
-const resetKey = ref(0);
-
+/**
+ * 重置表单状态
+ * @description 确保所有表单字段都恢复到初始状态
+ */
 function resetForm() {
-    if (publishType.value === 'status') {
-        body.value = "";
-        allowComments.value = true;
-        statusPinned.value = false;
-        imageFileId.value = null;
-        resetKey.value++;
-    } else if (publishType.value === 'github') {
-        githubLink.value = "";
-        githubPinned.value = false;
-    }
+    // 重置所有状态
+    body.value = "";
+    allowComments.value = true;
+    statusPinned.value = false;
+    githubLink.value = "";
+    githubPinned.value = false;
+    imageFileId.value = null;
+    resetKey.value++;
+    // 重置发布类型到默认值
+    publishType.value = 'status';
 }
-
-const imageFileId = ref<string | null>(null);
 
 function onImageUploaded(id: string) {
     imageFileId.value = id;
 }
+
 function onImageRemoved() {
     imageFileId.value = null;
 }

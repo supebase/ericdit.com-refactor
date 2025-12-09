@@ -17,7 +17,7 @@ export interface UserStatus {
 
 export interface UserStatusComposable {
   usersStatus: Ref<Record<string, boolean>>;
-  updateUserStatus: () => Promise<void>;
+  updateUserStatus: (isOnline?: boolean, userId?: string) => Promise<void>;
   checkUserStatus: (userId: string) => Promise<boolean>;
   updateLastActivity: () => void;
   subscribeUserStatus: (userId: string) => Promise<(() => void) | undefined>;

@@ -49,7 +49,7 @@ const mode = computed({
     <UPopover arrow
         :ui="{ content: 'w-72 px-6 py-4 flex flex-col gap-4 bg-white dark:bg-neutral-950', arrow: 'fill-neutral-100 dark:fill-neutral-800' }">
         <template #default>
-            <UIcon name="hugeicons:computer-settings"
+            <UIcon name="hugeicons:dress-06"
                 class="size-5 text-neutral-500 hover:text-primary-500 cursor-pointer" />
         </template>
 

@@ -9,6 +9,9 @@
                         :src="settings?.donate_images" loading="eager"
                         fetchpriority="high" preload placeholder format="webp" quality="80" />
                 </div>
+                <div v-else class="flex justify-center items-center w-20 h-20">
+                    <UIcon name="hugeicons:coffee-02" class="w-8 h-8 text-neutral-600 dark:text-neutral-400" />
+                </div>
             </div>
         </template>
     </UPopover>

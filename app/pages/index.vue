@@ -211,6 +211,6 @@ useSeo({
   site_description: "",
   seo_keywords: "",
   maintenance_mode: false,
-  donate_images: [],
+  donate_images: "",
 });
 </script>

@@ -18,6 +18,8 @@ export function useSwipeToDelete(canDelete: () => boolean) {
     const currentOpenIndex = ref<number | null>(null);
     // 记录每个项目当前锁定的拖拽方向（水平/垂直/未锁定）
     const directionLocked = ref<('horizontal' | 'vertical' | null)[]>([]);
+    // 用于存储requestAnimationFrame的ID，以便取消动画
+    let animationFrameId: number | null = null;
 
     /**
      * 拖拽开始事件处理
@@ -44,15 +46,24 @@ export function useSwipeToDelete(canDelete: () => boolean) {
     const handleDragMove = (event: MouseEvent | TouchEvent, index: number) => {
         if (!canDelete()) return;
         if (!isDragging.value[index]) return;
+        
+        // 使用可选链和空值合并运算符优化事件坐标获取
         const currentX = event instanceof MouseEvent ? event.clientX : event.touches?.[0]?.clientX ?? 0;
         const currentY = event instanceof MouseEvent ? event.clientY : event.touches?.[0]?.clientY ?? 0;
-        const diff = currentX - (dragStartX.value[index] ?? 0);
-        const diffY = currentY - (dragStartY.value[index] ?? 0);
+        
+        // 预计算差值
+        const startX = dragStartX.value[index] ?? 0;
+        const startY = dragStartY.value[index] ?? 0;
+        const diff = currentX - startX;
+        const diffY = currentY - startY;
 
-        // 判断拖拽方向
-        if (directionLocked.value[index] === null) {
-            if (Math.abs(diff) > dragThreshold || Math.abs(diffY) > dragThreshold) {
-                directionLocked.value[index] = Math.abs(diff) > Math.abs(diffY) ? 'horizontal' : 'vertical';
+        // 优化方向锁定判断，减少计算量
+        const currentLockedDirection = directionLocked.value[index];
+        if (currentLockedDirection === null) {
+            const absDiff = Math.abs(diff);
+            const absDiffY = Math.abs(diffY);
+            if (absDiff > dragThreshold || absDiffY > dragThreshold) {
+                directionLocked.value[index] = absDiff > absDiffY ? 'horizontal' : 'vertical';
             }
         }
 
@@ -64,15 +75,20 @@ export function useSwipeToDelete(canDelete: () => boolean) {
             event.preventDefault();
         }
 
-        // 只处理横向滑动
+        // 只处理横向滑动，优化偏移量计算
         if (directionLocked.value[index] === 'horizontal') {
-            let newOffset = diff;
-            if (currentOpenIndex.value === index) {
-                newOffset = Math.max(Math.min(diff - 75, 0), -75);
-            } else {
-                newOffset = Math.max(Math.min(diff, 0), -75);
+            // 使用requestAnimationFrame优化动画性能
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
             }
-            offsets.value[index] = newOffset;
+            
+            animationFrameId = requestAnimationFrame(() => {
+                const isCurrentlyOpen = currentOpenIndex.value === index;
+                const baseDiff = isCurrentlyOpen ? diff - 75 : diff;
+                // 使用Math.max和Math.min限制偏移量范围
+                const newOffset = Math.max(Math.min(baseDiff, 0), -75);
+                offsets.value[index] = newOffset;
+            });
         }
     };
 
@@ -83,6 +99,13 @@ export function useSwipeToDelete(canDelete: () => boolean) {
     const handleDragEnd = (index: number) => {
         if (!canDelete()) return;
         if (!isDragging.value[index]) return;
+        
+        // 取消任何挂起的动画帧请求
+        if (animationFrameId) {
+            cancelAnimationFrame(animationFrameId);
+            animationFrameId = null;
+        }
+        
         const offset = offsets.value[index];
         const isOpen = Math.abs(offset || 0) > 35;
         offsets.value[index] = isOpen ? -75 : 0;

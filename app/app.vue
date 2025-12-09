@@ -65,8 +65,9 @@ const settings = ref<any>(null);
 // 组件挂载时初始化用户会话
 onMounted(async () => {
   if (typeof window !== 'undefined') {
-    useEventListener(document, 'gesturestart', (e) => e.preventDefault())
-    useEventListener(document, 'dblclick', (e) => e.preventDefault())
+    // 保存事件监听器的 stop 函数，以便后续清理
+    activityListeners.add(useEventListener(document, 'gesturestart', (e) => e.preventDefault()));
+    activityListeners.add(useEventListener(document, 'dblclick', (e) => e.preventDefault()));
   }
 
   settings.value = await getSettings();
@@ -96,7 +97,8 @@ if (import.meta.client) {
       } else if (!newValue && isActivityTrackingEnabled.value) {
         await disableActivityTracking();
         if (oldValue) {
-          await updateUserStatus();
+          // 用户登出时，更新状态为离线
+          await updateUserStatus(false);
         }
       }
     },

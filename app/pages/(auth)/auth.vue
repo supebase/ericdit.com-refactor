@@ -26,6 +26,6 @@ useSeo({
     seo_keywords: '',
     maintenance_mode: false,
     noindex: true,
-    donate_images: [],
+    donate_images: "",
 });
 </script>

@@ -1,19 +1,19 @@
 <template>
   <div class="relative overflow-hidden touch-pan-y select-none active:cursor-grabbing"
     :class="{ 'cursor-grab': canDelete }" @touchstart="handleDragStart($event, 0)"
-    @touchmove.passive="false" @touchmove="handleDragMove($event, 0)" @touchend="handleDragEnd(0)"
+    @touchmove="handleDragMove($event, 0)" @touchend="handleDragEnd(0)"
     @touchcancel="handleDragEnd(0)" @mousedown.prevent="handleDragStart($event, 0)"
     @mousemove.prevent="handleDragMove($event, 0)" @mouseup="handleDragEnd(0)"
     @mouseleave="handleDragEnd(0)">
-    <div class="relative transform transition-transform duration-200 ease-out"
-      :style="{ transform: `translateX(${offsets[0] || 0}px)` }">
+    <div class="relative transform" :class="isDragging?.[0] ? '' : 'transition-transform duration-500 ease-out'"
+      :style="{ transform: `translateX(${offsets[0] || 0}px)`, willChange: 'transform' }">
       <div class="relative">
         <div v-if="showArrow" class="absolute top-0 left-2">
           <UIcon name="hugeicons:arrow-move-down-right"
             class="size-5 text-neutral-300/80 dark:text-neutral-700/80" />
         </div>
         <div class="flex items-center ml-10">
-          <div class="mr-3">
+          <div class="mr-3" :class="userAvatarUrl ? '' : 'mb-1.5'">
             <UChip :show="userStatus" inset size="sm" position="bottom-right" color="success">
               <SharedAvatar :src="userAvatarUrl || undefined"
                 :alt="!reply.user_created.avatar ? reply.user_created.first_name : undefined"
@@ -43,7 +43,7 @@
     </div>
     <div>
       <button v-if="canDelete"
-        class="absolute top-0.5 right-0 text-red-500 p-1 flex items-center justify-center cursor-pointer transition-all duration-200 ease-out origin-right"
+        class="absolute top-0.5 right-0 text-red-500 p-1 flex items-center justify-center cursor-pointer transition-all duration-500 ease-out origin-right"
         :style="{
           opacity: Math.min(Math.abs(offsets[0] || 0) / 60, 1),
           transform: `translateX(${60 - Math.abs(offsets[0] || 0)}px)`
@@ -92,6 +92,7 @@ const isDeleting = ref(false);
 // 使用抽离的滑动删除逻辑
 const {
   offsets,
+  isDragging,
   handleDragStart,
   handleDragMove,
   handleDragEnd,

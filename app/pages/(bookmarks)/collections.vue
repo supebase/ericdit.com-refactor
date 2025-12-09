@@ -27,13 +27,13 @@
 
       <div v-for="(bookmark, index) in bookmarks" :key="bookmark.id"
         class="relative overflow-hidden touch-pan-y select-none cursor-grab active:cursor-grabbing"
-        @touchstart="handleDragStart($event, index)" @touchmove.passive="false"
+        @touchstart="handleDragStart($event, index)"
         @touchmove="handleDragMove($event, index)" @touchend="handleDragEnd(index)"
         @touchcancel="handleDragEnd(index)" @mousedown.prevent="handleDragStart($event, index)"
         @mousemove.prevent="handleDragMove($event, index)" @mouseup="handleDragEnd(index)"
         @mouseleave="handleDragEnd(index)">
-        <div class="relative transform transition-transform duration-200 ease-out"
-          :style="{ transform: `translateX(${offsets[index] || 0}px)` }">
+        <div class="relative transform" :class="isDragging[index] ? '' : 'transition-transform duration-500 ease-out'"
+          :style="{ transform: `translateX(${offsets[index] || 0}px)`, willChange: 'transform' }">
           <UCard :ui="{ body: 'py-3 sm:py-3' }" variant="soft" class="relative">
             <div class="flex items-center space-x-3">
               <SharedAvatar :src="bookmark.user_created.avatar"
@@ -56,7 +56,7 @@
 
         <div class="absolute top-0 right-0 h-full">
           <button
-            class="bg-red-500 h-full px-6 rounded-md flex items-center justify-center cursor-pointer text-white transition-all duration-200 ease-out origin-right"
+            class="bg-red-500 h-full px-6 rounded-md flex items-center justify-center cursor-pointer text-white transition-all duration-500 ease-out origin-right"
             :style="{
               opacity: Math.min(Math.abs(offsets[index] || 0) / 75, 1),
               transform: `translateX(${75 - Math.abs(offsets[index] || 0)}px)`,
@@ -237,6 +237,6 @@ useSeo({
   seo_keywords: "",
   maintenance_mode: false,
   noindex: true,
-  donate_images: [],
+  donate_images: "",
 });
 </script>

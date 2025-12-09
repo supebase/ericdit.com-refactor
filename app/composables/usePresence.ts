@@ -25,19 +25,21 @@ export const usePresence = (): UserStatusComposable => {
 
   /**
    * 更新用户在线状态
-   * @param status - 用户状态（true: 在线，false: 离线）
+   * @param isOnline - 用户状态（true: 在线，false: 离线）
+   * @param userId - 可选，指定要更新的用户ID，默认为当前登录用户
    */
-  const updateUserStatus = async () => {
-    if (!user.value?.id || isUpdating) return;
+  const updateUserStatus = async (isOnline = true, userId?: string) => {
+    const targetUserId = userId || user.value?.id;
+    if (!targetUserId || isUpdating) return;
 
     try {
       isUpdating = true;
-      const now = new Date().toISOString();
+      const now = isOnline ? new Date().toISOString() : null;
 
       const existingStatus = await $directus.request(
         $content.readItems("users_status", {
           filter: {
-            user_created: { _eq: user.value.id },
+            user_created: { _eq: targetUserId },
           },
           limit: 1,
         })
@@ -53,9 +55,13 @@ export const usePresence = (): UserStatusComposable => {
         await $directus.request(
           $content.createItem("users_status", {
             last_activity_at: now,
+            user_created: targetUserId,
           })
         );
       }
+      
+      // 更新本地状态映射
+      usersStatus.value[targetUserId] = isOnline;
     } catch (error) {
       console.error("Failed to update user status:", error);
     } finally {
@@ -113,28 +119,44 @@ export const usePresence = (): UserStatusComposable => {
       const checkInterval = setInterval(async () => {
         await checkUserStatus(userId);
       }, STATUS_CHECK_INTERVAL_MS);
-      addCleanup(() => clearInterval(checkInterval));
 
+      // 订阅处理标志，用于控制循环
+      let isSubscribed = true;
+      
       // 创建订阅处理器
       const subscriptionHandler = async () => {
-        for await (const item of subscription) {
-          if (!item) continue;
-          if (item.event === "update" || item.event === "create") {
-            await checkUserStatus(userId);
+        try {
+          for await (const item of subscription) {
+            if (!isSubscribed || !item) break;
+            if (item.event === "update" || item.event === "create") {
+              await checkUserStatus(userId);
+            }
+          }
+        } catch (error) {
+          if (isSubscribed) {
+            console.error("Error in user status subscription:", error);
           }
         }
       };
 
       // 启动订阅处理
-      subscriptionHandler();
+      subscriptionHandler().catch(error => {
+        if (isSubscribed) {
+          console.error("Failed to start subscription handler:", error);
+        }
+      });
 
-      addCleanup(() => subscription.return());
+      // 统一的清理函数
+      const cleanupSubscription = () => {
+        isSubscribed = false;
+        clearInterval(checkInterval);
+        subscription.return?.();
+      };
+      
+      addCleanup(cleanupSubscription);
 
       // 返回单个清理函数（可选）
-      return () => {
-        clearInterval(checkInterval);
-        subscription.return();
-      };
+      return cleanupSubscription;
     } catch (error) {
       console.error("Failed to subscribe to user status:", error);
     }
