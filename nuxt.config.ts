@@ -1,20 +1,12 @@
 import { createResolver } from "@nuxt/kit";
-import { isDevelopment, isWindows } from "std-env";
 
 const { resolve } = createResolver(import.meta.url);
 
 export default defineNuxtConfig({
-  compatibilityDate: "2025-05-05",
+  compatibilityDate: "2025-07-15",
   devtools: { enabled: false },
   ssr: false,
-  modules: [
-    "@nuxt/ui",
-    "@nuxt/image",
-    "@vueuse/nuxt",
-    "@nuxtjs/mdc",
-    "nuxt-emoji-picker",
-    ...(isDevelopment || isWindows ? [] : ["nuxt-security"]),
-  ],
+  modules: ["@nuxt/ui", "@nuxt/image", "@vueuse/nuxt", "@nuxtjs/mdc", "nuxt-emoji-picker"],
 
   experimental: {
     payloadExtraction: false,
@@ -87,24 +79,6 @@ export default defineNuxtConfig({
         maxAge: 60 * 60 * 24 * 90,
       },
     ],
-  },
-
-  security: {
-    headers: {
-      // 启用并配置 Content Security Policy
-      contentSecurityPolicy: {
-        "default-src": ["'self'"],
-        "frame-ancestors": ["'none'"],
-        "frame-src": ["https:"],
-        "img-src": ["'self'", "https:", "http:", "data:", "blob:"],
-        "object-src": ["'none'"],
-        "script-src": ["'self'", "'unsafe-inline'", "'wasm-unsafe-eval'"],
-        "script-src-attr": ["'none'"],
-        "style-src": ["'self'", "'unsafe-inline'"],
-        "connect-src": ["'self'", "https:", "http:", "wss:", "ws:"],
-      },
-    },
-    rateLimiter: false,
   },
 
   routeRules: {

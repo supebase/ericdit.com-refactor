@@ -17,7 +17,6 @@
     "@nuxt/ui": "^4.2.1",
     "@vueuse/nuxt": "^14.1.0",
     "nuxt-emoji-picker": "^1.2.1",
-    "std-env": "^3.10.0",
     "vue": "^3.5.25",
     "vue-advanced-cropper": "^2.8.9"
   },
@@ -28,7 +27,6 @@
     "@tailwindcss/typography": "^0.5.19",
     "@types/node": "^24.10.1",
     "nuxt": "^4.2.1",
-    "nuxt-security": "2.5.0",
     "typescript": "^5.9.3",
     "vue-router": "^4.6.3"
   },
