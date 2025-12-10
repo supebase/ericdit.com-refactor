@@ -84,8 +84,12 @@ export const useContents = () => {
       // @ts-ignore
       const response = await $directus.request<ContentItem>($content.createItem("contents", data));
       
-      // 清除内容列表缓存
-      cache.delete("contents:list");
+      // 清除内容列表缓存 - 使用通配符删除所有匹配的缓存键
+      for (const key of cache.keys()) {
+        if (key.startsWith("contents:list")) {
+          cache.delete(key);
+        }
+      }
       
       return response;
     } catch (error: any) {
@@ -129,9 +133,12 @@ export const useContents = () => {
       const response = await $directus.request<ContentItem>($content.updateItem("contents", id, data)
       );
       
-      // 清除内容列表和当前内容缓存
-      cache.delete("contents:list");
-      cache.delete(`contents:item:${id}`);
+      // 清除内容列表和当前内容缓存 - 使用通配符删除所有匹配的缓存键
+      for (const key of cache.keys()) {
+        if (key.startsWith("contents:list") || key.startsWith(`contents:item:${id}`)) {
+          cache.delete(key);
+        }
+      }
       
       return response;
     } catch (error: any) {
@@ -149,9 +156,12 @@ export const useContents = () => {
       // @ts-ignore
       await $directus.request($content.deleteItem("contents", id));
       
-      // 清除内容列表和当前内容缓存
-      cache.delete("contents:list");
-      cache.delete(`contents:item:${id}`);
+      // 清除内容列表和当前内容缓存 - 使用通配符删除所有匹配的缓存键
+      for (const key of cache.keys()) {
+        if (key.startsWith("contents:list") || key.startsWith(`contents:item:${id}`)) {
+          cache.delete(key);
+        }
+      }
     } catch (error: any) {
       throw new Error(error.errors?.[0]?.message || "删除内容失败");
     }

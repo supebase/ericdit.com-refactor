@@ -9,7 +9,7 @@
       <div class="flex items-center space-x-8">
         <SearchModal />
         <SharedBookmarkCounter v-if="isAuthenticated" class="translate-y-[3px]" />
-        <CommentRecent :limit="10" />
+        <!-- <CommentRecent :limit="10" /> -->
         <ThemePicker />
         <AuthUserStatus />
       </div>

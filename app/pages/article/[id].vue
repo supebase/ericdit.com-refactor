@@ -4,8 +4,7 @@
       <UIcon name="svg-spinners:ring-resize" class="size-7 text-primary-500" />
     </div>
     <div v-else-if="error" class="flex items-center justify-center min-h-[50vh]">
-      <UAlert color="error" variant="soft" icon="hugeicons:alert-02" :description="error?.message || '加载失败，请稍后重试'">
-      </UAlert>
+      <UAlert color="error" variant="soft" icon="hugeicons:alert-02" :description="error?.message || '加载失败，请稍后重试'" />
     </div>
     <ContentDetails v-else-if="content" :content="content" />
     <CommentThread v-if="content" :content-id="content.id" :allow-comments="content.allow_comments" />

@@ -230,8 +230,7 @@ export const useAuth = () => {
     if (isAuthenticated.value) {
       try {
         // @ts-ignore
-        const response = await $directus.request<UserProfile>(
-          $user.readMe({ fields: ["role"] })
+        const response = await $directus.request<UserProfile>($user.readMe({ fields: ["role.name"] })
         );
         return response?.role?.name ?? null;
       } catch (error: any) {

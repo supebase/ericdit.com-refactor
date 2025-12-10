@@ -100,12 +100,14 @@ export const useComments = () => {
       // @ts-ignore
       const response = await $directus.request<CommentItem>($content.createItem("comments", data));
       
-      // 清除相关缓存
-      if (data.content_id) {
-        cache.delete(`comments:content:${data.content_id}`);
-      }
-      if (data.parent_comment_id) {
-        cache.delete(`comments:reply:${data.parent_comment_id}`);
+      // 清除相关缓存 - 使用通配符删除所有匹配的缓存键
+      for (const key of cache.keys()) {
+        if (data.content_id && key.startsWith(`comments:content:${data.content_id}`)) {
+          cache.delete(key);
+        }
+        if (data.parent_comment_id && key.startsWith(`comments:reply:${data.parent_comment_id}`)) {
+          cache.delete(key);
+        }
       }
       cache.delete("comments:recent");
       
@@ -146,12 +148,14 @@ export const useComments = () => {
       // @ts-ignore
       await $directus.request($content.deleteItem("comments", commentId));
       
-      // 清除相关缓存
-      if (comment.content_id) {
-        cache.delete(`comments:content:${comment.content_id}`);
-      }
-      if (comment.parent_comment_id) {
-        cache.delete(`comments:reply:${comment.parent_comment_id}`);
+      // 清除相关缓存 - 使用通配符删除所有匹配的缓存键
+      for (const key of cache.keys()) {
+        if (comment.content_id && key.startsWith(`comments:content:${comment.content_id}`)) {
+          cache.delete(key);
+        }
+        if (comment.parent_comment_id && key.startsWith(`comments:reply:${comment.parent_comment_id}`)) {
+          cache.delete(key);
+        }
       }
       cache.delete("comments:recent");
     } catch (error: any) {

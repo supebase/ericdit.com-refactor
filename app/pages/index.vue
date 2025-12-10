@@ -1,7 +1,8 @@
 <template>
   <div class="container select-none">
-    <div v-if="isLoading && !contents?.length">
-      <ContentSkeleton />
+    <div v-if="isLoading && !contents?.length" class="flex flex-col justify-center items-center space-y-3 min-h-[calc(100vh-14rem)]">
+      <UProgress animation="swing" color="primary" size="sm" class="max-w-20" />
+        <div class="text-sm text-neutral-400 dark:text-neutral-600">正在加载数据</div>
     </div>
     <div v-else-if="error" class="flex items-center justify-center min-h-[50vh]">
       <UAlert color="error" variant="soft" icon="hugeicons:alert-02"
