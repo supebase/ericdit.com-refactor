@@ -112,6 +112,10 @@ export default defineNuxtConfig({
     },
   ],
 
+  ui: {
+    fonts: false,
+  },
+
   icon: {
     serverBundle: {
       collections: ["hugeicons", "svg-spinners"],

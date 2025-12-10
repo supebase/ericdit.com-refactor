@@ -27,8 +27,8 @@ export const useUserMetrics = (): UserMetricsReturn => {
     try {
       // 并发获取评论和点赞数据
       const [comments, likes] = await Promise.all([
-        $directus.request(
-          $content.readItems("comments", {
+        // @ts-ignore
+        $directus.request($content.readItems("comments", {
             fields: ["id"],
             filter: {
               user_created: { _eq: userId },

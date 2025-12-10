@@ -19,9 +19,8 @@ export const useBookmarks = () => {
    */
   const getBookmarks = async (options?: BookmarkQueryOptions): Promise<BookmarkItem[]> => {
     try {
-      const response = await $directus.request<BookmarkItem[]>(
-        $content.readItems("bookmarks", options)
-      );
+      // @ts-ignore
+      const response = await $directus.request<BookmarkItem[]>($content.readItems("bookmarks", options));
       return response;
     } catch (error: any) {
       throw new Error(error.errors?.[0]?.message || "获取书签列表失败");
@@ -36,9 +35,8 @@ export const useBookmarks = () => {
  */
   const createBookmark = async (data: Partial<BookmarkItem>): Promise<BookmarkItem> => {
     try {
-      const response = await $directus.request<BookmarkItem>(
-        $content.createItem("bookmarks", data)
-      );
+      // @ts-ignore
+      const response = await $directus.request<BookmarkItem>($content.createItem("bookmarks", data));
       return response;
     } catch (error: any) {
       throw new Error(error.errors?.[0]?.message || "创建书签失败");
@@ -53,6 +51,7 @@ export const useBookmarks = () => {
  */
   const deleteBookmark = async (id: string): Promise<void> => {
     try {
+      // @ts-ignore
       await $directus.request($content.deleteItem("bookmarks", id));
     } catch (error: any) {
       throw new Error(error.errors?.[0]?.message || "删除书签失败");

@@ -61,6 +61,7 @@ export const useProfileAvatar = (): ProfileAvatarReturn => {
       const uploadResponse = await $authClient.request($file.uploadFiles(formData));
       if (uploadResponse && uploadResponse.id) {
         // 更新用户信息中的头像ID
+        // @ts-ignore
         const updatedUser = await $authClient.request<UserProfile>(
           $user.updateMe({ avatar: uploadResponse.id })
         );

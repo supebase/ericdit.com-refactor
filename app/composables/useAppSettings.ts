@@ -1,4 +1,6 @@
 import type { AppSettings } from "~/types";
+import cache from "~/utils/cache";
+import { useLoading } from "./useLoading";
 
 /**
  * 应用设置管理组合式函数
@@ -8,6 +10,7 @@ import type { AppSettings } from "~/types";
  */
 export const useAppSettings = () => {
   const { $directus, $content, $realtimeClient } = useNuxtApp();
+  const { wrap: withLoading } = useLoading();
 
   /**
    * 获取应用设置
@@ -16,12 +19,22 @@ export const useAppSettings = () => {
    * @throws Error 当 API 请求失败时抛出错误
    */
   const getSettings = async (): Promise<AppSettings | null> => {
-    try {
-      const response = await $directus.request<AppSettings>($content.readSingleton("settings"));
-      return response;
-    } catch (error: any) {
-      throw new Error(error.errors?.[0]?.message || "获取应用数据失败");
-    }
+    const fetchSettings = async () => {
+      try {
+        // @ts-ignore
+        const response = await $directus.request<AppSettings>($content.readSingleton("settings"));
+        return response;
+      } catch (error: any) {
+        throw new Error(error.errors?.[0]?.message || "获取应用数据失败");
+      }
+    };
+
+    // 使用缓存包装，应用设置缓存 30 分钟
+    return await cache.wrap(
+      "app:settings",
+      () => withLoading(fetchSettings),
+      30 * 60 * 1000 // 30 分钟
+    );
   };
 
   /**
@@ -33,6 +46,8 @@ export const useAppSettings = () => {
   ) => {
     try {
       for await (const item of settingsSubscription) {
+        // 清除缓存
+        cache.delete("app:settings");
         callback(item);
       }
     } catch (error) {

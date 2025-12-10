@@ -120,9 +120,9 @@ const handleSubmit = async () => {
       })
     );
 
-    const emailExists = existingUsers.some((user) => user.email === email.value.toLowerCase());
+    const emailExists = existingUsers.some((user: { email: string; }) => user.email === email.value.toLowerCase());
     const nameExists = existingUsers.some(
-      (user) => user.first_name.toLowerCase() === firstName.value.toLowerCase()
+      (user: { first_name: string; }) => user.first_name.toLowerCase() === firstName.value.toLowerCase()
     );
 
     if (emailExists) {

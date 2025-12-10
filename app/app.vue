@@ -1,5 +1,6 @@
 <template>
   <UApp :toaster="appConfig.toaster" :tooltip="appConfig.tooltip">
+    <NuxtLoadingIndicator />
     <NuxtLayout>
       <NuxtPage />
       <!-- 版本更新提示 -->

@@ -134,6 +134,7 @@ export const useAuth = () => {
     // 设置加载状态
     isLoading.value = true;
     try {
+      // @ts-ignore
       const response = await $directus.request<UserProfile>($user.readMe());
       user.value = response;
       // 成功获取用户信息后保存到本地存储
@@ -228,8 +229,9 @@ export const useAuth = () => {
   const getUserRoleName = async (): Promise<string | null> => {
     if (isAuthenticated.value) {
       try {
+        // @ts-ignore
         const response = await $directus.request<UserProfile>(
-          $user.readMe({ fields: ["role.name"] })
+          $user.readMe({ fields: ["role"] })
         );
         return response?.role?.name ?? null;
       } catch (error: any) {

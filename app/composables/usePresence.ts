@@ -36,8 +36,8 @@ export const usePresence = (): UserStatusComposable => {
       isUpdating = true;
       const now = isOnline ? new Date().toISOString() : null;
 
-      const existingStatus = await $directus.request(
-        $content.readItems("users_status", {
+      // @ts-ignore
+      const existingStatus = await $directus.request($content.readItems("users_status", {
           filter: {
             user_created: { _eq: targetUserId },
           },
@@ -46,14 +46,14 @@ export const usePresence = (): UserStatusComposable => {
       );
 
       if (existingStatus.length > 0) {
-        await $directus.request(
-          $content.updateItem("users_status", existingStatus[0]?.id ?? "", {
+        // @ts-ignore
+        await $directus.request($content.updateItem("users_status", existingStatus[0]?.id ?? "", {
             last_activity_at: now,
           })
         );
       } else {
-        await $directus.request(
-          $content.createItem("users_status", {
+        // @ts-ignore
+        await $directus.request($content.createItem("users_status", {
             last_activity_at: now,
             user_created: targetUserId,
           })
@@ -76,8 +76,8 @@ export const usePresence = (): UserStatusComposable => {
    */
   const checkUserStatus = async (userId: string): Promise<boolean> => {
     try {
-      const response = await $directus.request<UserStatus[]>(
-        $content.readItems("users_status", {
+      // @ts-ignore
+      const response = await $directus.request<UserStatus[]>($content.readItems("users_status", {
           filter: {
             user_created: { _eq: userId },
           },

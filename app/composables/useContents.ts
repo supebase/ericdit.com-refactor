@@ -1,4 +1,6 @@
 import type { ContentItem, ContentQueryOptions } from "~/types";
+import cache from "~/utils/cache";
+import { useLoading } from "./useLoading";
 
 /**
  * 内容管理组合式函数
@@ -9,6 +11,7 @@ import type { ContentItem, ContentQueryOptions } from "~/types";
  */
 export const useContents = () => {
   const { $directus, $content, $realtimeClient } = useNuxtApp();
+  const { wrap: withLoading } = useLoading();
 
   const { setUserAvatar, getUserAvatarUrl } = useUserMeta();
 
@@ -19,14 +22,24 @@ export const useContents = () => {
    * @throws Error 当 API 请求失败时抛出错误
    */
   const getContents = async (options?: ContentQueryOptions): Promise<ContentItem[] | null> => {
-    try {
-      const response = await $directus.request<ContentItem[]>(
-        $content.readItems("contents", options)
-      );
-      return response;
-    } catch (error: any) {
-      throw new Error(error.errors?.[0]?.message || "请检查网络连接及数据库结构，建议验证网络连通性、数据库服务状态及接口参数。");
-    }
+    const fetchContents = async () => {
+      try {
+        // @ts-ignore
+        const response = await $directus.request<ContentItem[]>($content.readItems("contents", options)
+        );
+        return response;
+      } catch (error: any) {
+        throw new Error(error.errors?.[0]?.message || "请检查网络连接及数据库结构，建议验证网络连通性、数据库服务状态及接口参数。");
+      }
+    };
+
+    // 使用缓存包装，内容列表缓存 1 分钟
+    return await cache.wrap(
+      "contents:list",
+      () => withLoading(fetchContents),
+      60 * 1000, // 1 分钟
+      options
+    );
   };
 
   /**
@@ -40,14 +53,24 @@ export const useContents = () => {
     id: string,
     options?: ContentQueryOptions
   ): Promise<ContentItem | null> => {
-    try {
-      const response = await $directus.request<ContentItem>(
-        $content.readItem("contents", id, options)
-      );
-      return response;
-    } catch (error: any) {
-      throw new Error(error.errors?.[0]?.message || "获取内容详情失败");
-    }
+    const fetchContent = async () => {
+      try {
+        // @ts-ignore
+        const response = await $directus.request<ContentItem>($content.readItem("contents", id, options)
+        );
+        return response;
+      } catch (error: any) {
+        throw new Error(error.errors?.[0]?.message || "获取内容详情失败");
+      }
+    };
+
+    // 使用缓存包装，单个内容缓存 5 分钟
+    return await cache.wrap(
+      `contents:item:${id}`,
+      () => withLoading(fetchContent),
+      5 * 60 * 1000, // 5 分钟
+      { id, ...options }
+    );
   };
 
   /**
@@ -58,7 +81,12 @@ export const useContents = () => {
    */
   const createContent = async (data: Partial<ContentItem>): Promise<ContentItem> => {
     try {
+      // @ts-ignore
       const response = await $directus.request<ContentItem>($content.createItem("contents", data));
+      
+      // 清除内容列表缓存
+      cache.delete("contents:list");
+      
       return response;
     } catch (error: any) {
       throw new Error(error.errors?.[0]?.message || "创建内容失败");
@@ -73,12 +101,16 @@ export const useContents = () => {
    */
   const createContentFiles = async (contents_id: string, directus_files_id: string) => {
     try {
-      const response = await $directus.request(
-        $content.createItem("contents_files", {
+      // @ts-ignore
+      const response = await $directus.request($content.createItem("contents_files", {
           contents_id,
           directus_files_id,
         })
       );
+      
+      // 清除相关内容缓存
+      cache.delete(`contents:item:${contents_id}`);
+      
       return response; // response.id 即为 contents_files 的 id
     } catch (error: any) {
       throw new Error(error.errors?.[0]?.message || "创建 contents_files 失败");
@@ -93,9 +125,14 @@ export const useContents = () => {
    */
   const updateContent = async (id: string, data: Partial<ContentItem>): Promise<ContentItem> => {
     try {
-      const response = await $directus.request<ContentItem>(
-        $content.updateItem("contents", id, data)
+      // @ts-ignore
+      const response = await $directus.request<ContentItem>($content.updateItem("contents", id, data)
       );
+      
+      // 清除内容列表和当前内容缓存
+      cache.delete("contents:list");
+      cache.delete(`contents:item:${id}`);
+      
       return response;
     } catch (error: any) {
       throw new Error(error.errors?.[0]?.message || "更新内容失败");
@@ -109,7 +146,12 @@ export const useContents = () => {
    */
   const deleteContent = async (id: string): Promise<void> => {
     try {
+      // @ts-ignore
       await $directus.request($content.deleteItem("contents", id));
+      
+      // 清除内容列表和当前内容缓存
+      cache.delete("contents:list");
+      cache.delete(`contents:item:${id}`);
     } catch (error: any) {
       throw new Error(error.errors?.[0]?.message || "删除内容失败");
     }

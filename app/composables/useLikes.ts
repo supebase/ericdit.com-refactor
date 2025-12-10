@@ -19,6 +19,7 @@ export const useLikes = () => {
    */
   const getLikes = async (options?: LikeQueryOptions): Promise<LikeItem[]> => {
     try {
+      // @ts-ignore
       const response = await $directus.request<LikeItem[]>($content.readItems("likes", options));
       return response;
     } catch (error: any) {
@@ -34,6 +35,7 @@ export const useLikes = () => {
    */
   const createLike = async (data: Partial<LikeItem>): Promise<LikeItem> => {
     try {
+      // @ts-ignore
       const response = await $directus.request<LikeItem>($content.createItem("likes", data));
       return response;
     } catch (error: any) {
@@ -48,6 +50,7 @@ export const useLikes = () => {
    */
   const deleteLike = async (id: string): Promise<void> => {
     try {
+      // @ts-ignore
       await $directus.request($content.deleteItem("likes", id));
     } catch (error: any) {
       throw new Error(error.errors?.[0]?.message || "删除点赞失败");

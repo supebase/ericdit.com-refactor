@@ -1,4 +1,6 @@
 import type { CommentItem, CommentQueryOptions } from "~/types";
+import cache from "~/utils/cache";
+import { useLoading } from "./useLoading";
 
 /**
  * 评论管理组合式函数
@@ -10,6 +12,7 @@ import type { CommentItem, CommentQueryOptions } from "~/types";
  */
 export const useComments = () => {
   const { $directus, $content, $realtimeClient } = useNuxtApp();
+  const { wrap: withLoading } = useLoading();
 
   const { setUserAvatar, setUserLocation, getUserAvatarUrl, getUserLocation } = useUserMeta();
 
@@ -26,23 +29,33 @@ export const useComments = () => {
     id: string,
     options?: CommentQueryOptions
   ): Promise<CommentItem[]> => {
-    try {
-      const filterKey = type === "content" ? "content_id" : "parent_comment_id";
-      const response = await $directus.request<CommentItem[]>(
-        $content.readItems("comments", {
-          ...options,
-          filter: {
-            ...options?.filter,
-            [filterKey]: { _eq: id },
-          },
-        })
-      );
-      return response;
-    } catch (error: any) {
-      throw new Error(
-        error.errors?.[0]?.message || `获取${type === "content" ? "评论" : "回复"}列表失败`
-      );
-    }
+    const fetchComments = async () => {
+      try {
+        const filterKey = type === "content" ? "content_id" : "parent_comment_id";
+        // @ts-ignore
+        const response = await $directus.request<CommentItem[]>($content.readItems("comments", {
+            ...options,
+            filter: {
+              ...options?.filter,
+              [filterKey]: { _eq: id },
+            },
+          })
+        );
+        return response;
+      } catch (error: any) {
+        throw new Error(
+          error.errors?.[0]?.message || `获取${type === "content" ? "评论" : "回复"}列表失败`
+        );
+      }
+    };
+
+    // 使用缓存包装，评论列表缓存 2 分钟
+    return await cache.wrap(
+      `comments:${type}:${id}`,
+      () => withLoading(fetchComments),
+      2 * 60 * 1000, // 2 分钟
+      { type, id, ...options }
+    );
   };
 
   /**
@@ -53,17 +66,27 @@ export const useComments = () => {
   const getRecentComments = async (
     options?: CommentQueryOptions
   ): Promise<CommentItem[]> => {
-    try {
-      const response = await $directus.request<CommentItem[]>(
-        $content.readItems("comments", {
-          ...options,
-          sort: ["-date_created"],
-        })
-      );
-      return response;
-    } catch (error: any) {
-      throw new Error(error.errors?.[0]?.message || "最新评论获取失败");
-    }
+    const fetchRecentComments = async () => {
+      try {
+        // @ts-ignore
+        const response = await $directus.request<CommentItem[]>($content.readItems("comments", {
+            ...options,
+            sort: ["-date_created"],
+          })
+        );
+        return response;
+      } catch (error: any) {
+        throw new Error(error.errors?.[0]?.message || "最新评论获取失败");
+      }
+    };
+
+    // 使用缓存包装，最新评论缓存 1 分钟
+    return await cache.wrap(
+      "comments:recent",
+      () => withLoading(fetchRecentComments),
+      60 * 1000, // 1 分钟
+      options
+    );
   };
 
   /**
@@ -74,7 +97,18 @@ export const useComments = () => {
    */
   const createComment = async (data: Partial<CommentItem>): Promise<CommentItem> => {
     try {
+      // @ts-ignore
       const response = await $directus.request<CommentItem>($content.createItem("comments", data));
+      
+      // 清除相关缓存
+      if (data.content_id) {
+        cache.delete(`comments:content:${data.content_id}`);
+      }
+      if (data.parent_comment_id) {
+        cache.delete(`comments:reply:${data.parent_comment_id}`);
+      }
+      cache.delete("comments:recent");
+      
       return response;
     } catch (error: any) {
       throw new Error(error.errors?.[0]?.message || "创建评论失败");
@@ -88,9 +122,16 @@ export const useComments = () => {
    */
   const deleteComment = async (commentId: string): Promise<void> => {
     try {
+      // 先获取评论信息，用于清除缓存
+      // @ts-ignore
+      const comment = await $directus.request<CommentItem>($content.readItem("comments", commentId, {
+          fields: ["id", "content_id", "parent_comment_id"]
+        })
+      );
+      
       // 先查找所有子回复
-      const replies = await $directus.request<CommentItem[]>(
-        $content.readItems("comments", {
+      // @ts-ignore
+      const replies = await $directus.request<CommentItem[]>($content.readItems("comments", {
           filter: {
             parent_comment_id: { _eq: commentId },
           },
@@ -102,7 +143,17 @@ export const useComments = () => {
         await deleteComment(reply.id);
       }
       // 删除主评论
+      // @ts-ignore
       await $directus.request($content.deleteItem("comments", commentId));
+      
+      // 清除相关缓存
+      if (comment.content_id) {
+        cache.delete(`comments:content:${comment.content_id}`);
+      }
+      if (comment.parent_comment_id) {
+        cache.delete(`comments:reply:${comment.parent_comment_id}`);
+      }
+      cache.delete("comments:recent");
     } catch (error: any) {
       throw new Error(error.errors?.[0]?.message || "删除评论失败");
     }
