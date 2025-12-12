@@ -1,6 +1,4 @@
 import type { AppSettings } from "~/types";
-import cache from "~/utils/cache";
-import { useLoading } from "./useLoading";
 
 /**
  * 应用设置管理组合式函数

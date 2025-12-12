@@ -4,7 +4,7 @@
       <div class="flex items-center gap-1.5">
         <SharedAvatar
           :src="userAvatarUrl || undefined"
-          size="2xs"
+          size="sm"
           :alt="talk.user_created.first_name"
           class="mr-0.5" />
         <span class="text-[15px] text-neutral-600 dark:text-neutral-400 font-medium">{{

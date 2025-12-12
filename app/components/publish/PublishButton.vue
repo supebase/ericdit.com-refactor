@@ -1,8 +1,8 @@
 <template>
   <UButton
     size="xl"
-    :color="isLoading ? 'primary' : isAdmin ? 'success' : 'neutral'"
-    variant="soft"
+    color="neutral"
+    variant="solid"
     block
     :disabled="isLoading || !isAdmin"
     :loading="isLoading"

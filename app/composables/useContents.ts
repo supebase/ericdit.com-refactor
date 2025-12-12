@@ -1,6 +1,4 @@
 import type { ContentItem, ContentQueryOptions } from "~/types";
-import cache from "~/utils/cache";
-import { useLoading } from "./useLoading";
 
 /**
  * 内容管理组合式函数

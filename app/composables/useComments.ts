@@ -1,6 +1,4 @@
 import type { CommentItem, CommentQueryOptions } from "~/types";
-import cache from "~/utils/cache";
-import { useLoading } from "./useLoading";
 
 /**
  * 评论管理组合式函数

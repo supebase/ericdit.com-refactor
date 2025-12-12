@@ -142,6 +142,9 @@ export const useAuth = () => {
         safeStorage.set("auth:user", JSON.stringify(response));
       }
     } catch (error: any) {
+      // 保存原始用户状态，用于判断是否需要显示过期提示
+      const wasAuthenticated = user.value !== null;
+      
       // 清除用户状态
       user.value = null;
       // 清除本地存储中的用户状态
@@ -152,7 +155,7 @@ export const useAuth = () => {
       // 只在用户之前是登录状态，且遇到认证失败（401）或权限不足（403）时处理
       if (
         (error.response?.status === 401 || error.response?.status === 403) &&
-        user.value !== null
+        wasAuthenticated
       ) {
         const toast = useToast();
         toast.add({

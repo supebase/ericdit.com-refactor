@@ -14,63 +14,11 @@
         </div>
       </NuxtLink>
     </div>
-    <!-- 图库轮播显示（新布局） -->
-    <div v-else class="overflow-hidden">
-      <NuxtLink :aria-label="content.title" @click.prevent="handleLinkClick" class="cursor-pointer">
-        <div class="px-4 pt-4 font-bold">
-          {{ content.title }}
-        </div>
-      </NuxtLink>
-      <!-- 作者、名字、时间和收藏 -->
-      <div class="flex items-center justify-between px-4 pt-3">
-        <div class="flex items-center gap-1.5">
-          <SharedAvatar :src="userAvatarUrl || undefined" size="2xs" :alt="content.user_created.first_name"
-            class="mr-0.5" />
-          <span class="text-[15px] text-neutral-600 dark:text-neutral-400 font-medium">{{
-            content.user_created.first_name }}</span>
-          <span class="mx-1 text-neutral-300 dark:text-neutral-700 pt-0.5">&bull;</span>
-          <span class="text-sm text-neutral-400 dark:text-neutral-600 pt-0.5">{{
-            useDateFormatter(content.date_created)
-          }}</span>
-        </div>
-        <div class="text-sm text-neutral-400 dark:text-neutral-600">阅读约 {{ useArticleMetrics(content.body) }}</div>
-      </div>
-      <!-- 轮播居中 -->
-      <div class="relative overflow-hidden py-4">
-        <UCarousel v-slot="{ item, index }: { item: any, index: number }" dots autoplay class-names wheel-gestures
-          :items="carouselImages" :ui="{
-            item: 'basis-[80%] transition-all duration-500 scale-100 [&:not(.is-snapped)]:opacity-10 [&:not(.is-snapped)]:scale-93',
-            dots: '-bottom-4',
-            dot: 'w-4 h-1 transition-all duration-500'
-          }">
-          <div class="relative">
-            <NuxtLink :aria-label="content.title" @click.prevent="handleLinkClick" class="cursor-pointer">
-              <NuxtImg provider="directus" :src="item.directus_files_id" alt="预览图片" preload loading="lazy" placeholder
-                class="aspect-16/7 object-cover w-full outline-2 outline-neutral-200 dark:outline-neutral-800 my-1"
-                :class="[
-                  index === 0 && content.images.length === 1
-                    ? 'rounded-md'
-                    : index === 0
-                      ? 'rounded-tr-md rounded-br-md'
-                      : index === content.images.length - 1
-                        ? 'rounded-tl-md rounded-bl-md'
-                        : 'rounded-md'
-                ]" />
-            </NuxtLink>
-            <!-- 当前图片序号/总数 -->
-            <UBadge color="neutral" variant="soft"
-              class="absolute top-3 right-3 bg-accented/50 backdrop-blur-sm tabular-nums shadow-xl">
-              {{ index + 1 }} / {{ content.images.length }}
-            </UBadge>
-          </div>
-        </UCarousel>
-      </div>
-    </div>
     <!-- 内容区 -->
     <template #footer>
       <div class="flex items-center justify-between mb-3" v-if="displayType === 'single'">
         <div class="flex items-center gap-1.5">
-          <SharedAvatar :src="userAvatarUrl || undefined" size="2xs" :alt="content.user_created.first_name"
+          <SharedAvatar :src="userAvatarUrl || undefined" size="sm" :alt="content.user_created.first_name"
             class="mr-0.5" />
           <span class="text-[15px] text-neutral-600 dark:text-neutral-400 font-medium">{{
             content.user_created.first_name }}</span>
@@ -138,14 +86,6 @@ const cleanBody = computed(() => cleanMarkdown(props.content.body));
 // 计算显示类型（简化）
 const displayType = computed(() =>
   props.content.images?.length === 1 ? "single" : "carousel"
-);
-
-// 过滤有效图片
-const carouselImages = computed(() =>
-  (props.content.images ?? []).filter(
-    (img): img is { directus_files_id: string } =>
-      !!img && typeof img.directus_files_id === "string"
-  )
 );
 
 // 预加载图片

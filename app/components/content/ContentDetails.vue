@@ -49,7 +49,7 @@
           <UIcon
             name="hugeicons:delete-01"
             v-else-if="isAdmin"
-            class="size-5 cursor-pointer"
+            class="size-5 text-error cursor-pointer"
             @click="showDeleteModal = true" />
           <template #content>
             <div class="p-6">

@@ -9,7 +9,7 @@ export default defineAppConfig({
     // 颜色主题配置
     colors: {
       primary: "violet", // 主色调：紫色
-      neutral: "zinc", // 中性色：灰色
+      neutral: "neutral", // 中性色：自然色
     },
     // 图标配置
     icons: {

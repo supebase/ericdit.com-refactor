@@ -6,7 +6,7 @@
                 class="absolute inset-0 w-full h-full object-cover z-0" />
             <div class="absolute inset-0 flex items-center justify-center space-x-3 z-10"
                 :class="previewUrl ? 'backdrop-brightness-50' : ''">
-                <UButton size="md" color="neutral" variant="solid" @click="openFileInput"
+                <UButton size="md" color="neutral" variant="solid" icon="hugeicons:image-add-02" @click="openFileInput"
                     :loading="isUploading" :disabled="isUploading">
                     上传图片
                 </UButton>

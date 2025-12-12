@@ -11,7 +11,7 @@
 
     <div v-else-if="bookmarks?.length === 0"
       class="flex flex-col items-center justify-center space-y-4 min-h-[calc(100vh-14rem)]">
-      <UIcon name="hugeicons:bookmark-block-02"
+      <UIcon name="hugeicons:bookmark-off-02"
         class="text-4xl text-neutral-400/70 dark:text-neutral-700/70" />
       <p class="text-neutral-400/70 dark:text-neutral-700/70 text-sm font-medium">
         收藏夹当前为空置状态

@@ -1,4 +1,5 @@
 import type { AppSettings } from "~/types";
+import { isRef, isReactive, toRaw } from "vue";
 
 /**
  * 深度解包 ref 或 reactive 对象
@@ -6,7 +7,12 @@ import type { AppSettings } from "~/types";
  * @returns 解包后的原始值
  */
 function deepUnref<T>(val: T): any {
-  return isRef(val) ? deepUnref(val.value) : val;
+  if (isRef(val)) {
+    return deepUnref(val.value);
+  } else if (isReactive(val)) {
+    return toRaw(val);
+  }
+  return val;
 }
 
 /**

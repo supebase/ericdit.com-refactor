@@ -8,7 +8,7 @@
             <div class="bg-white dark:bg-neutral-950 rounded-md p-1">
                 <UInput :ui="{ base: 'placeholder:text-base' }" v-model="title" color="neutral"
                     variant="none" size="xl" class="w-full" :disabled="isSubmitting"
-                    placeholder="分享的标题" />
+                    placeholder="内容标题" />
                 <USeparator type="dashed" class="px-3 py-1" />
                 <UTextarea :ui="{ base: 'placeholder:text-base' }" v-model="body" color="neutral"
                     variant="none" autoresize :rows="6" :maxrows="10" :padded="false" size="xl"
@@ -48,7 +48,7 @@
                 </template>
             </UInput>
         </template>
-        <UButton block size="xl" color="primary" :loading="isSubmitting"
+        <UButton block size="xl" color="neutral" :loading="isSubmitting"
             :disabled="body.length >= BODY_MAX_LENGTH || isSubmitting || !canSubmit"
             @click="handlePublish">
             {{ isSubmitting ? '正在发布' : '立即发布' }}

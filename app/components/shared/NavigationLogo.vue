@@ -3,7 +3,7 @@
     <svg
       width="240"
       height="200"
-      viewBox="0 0 210 170"
+      viewBox="0 0 210 150"
       fill="none"
       xmlns="http://www.w3.org/2000/svg">
       <path
@@ -11,19 +11,19 @@
         stroke="currentColor"
         stroke-width="8.5"
         stroke-linejoin="round"
-        class="stroke-neutral-900 dark:stroke-primary-500" />
+        class="stroke-neutral-900 dark:stroke-neutral-100" />
       <path
         d="M146.5 96.5C144.905 99.4507 144.957 101.0915 146.5 104"
         stroke="currentColor"
         stroke-width="6.5"
         stroke-linejoin="round"
-        class="stroke-neutral-900 dark:stroke-primary-500" />
+        class="stroke-neutral-900 dark:stroke-neutral-100" />
       <path
         d="M197.5 133C196.193 135.929 196.074 137.571 197.5 140.5"
         stroke="currentColor"
         stroke-width="6.5"
         stroke-linejoin="round"
-        class="stroke-neutral-900 dark:stroke-primary-500" />
+        class="stroke-neutral-900 dark:stroke-neutral-100" />
     </svg>
   </div>
 </template>

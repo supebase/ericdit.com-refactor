@@ -8,6 +8,7 @@
         <slot />
         <UButton color="neutral" variant="link" size="md" tabindex="-1"
           :icon="showPassword ? 'hugeicons:view-off' : 'hugeicons:view'"
+          :ui="{ leadingIcon: 'size-5' }"
           @click="togglePassword()" />
       </div>
     </template>

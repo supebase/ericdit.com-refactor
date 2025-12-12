@@ -49,7 +49,8 @@
           class="hover:bg-transparent! cursor-pointer px-0 text-neutral-500"
           :loading="isSubmitting"
           :icon="submitIcon"
-          :disabled="!canSubmit" />
+          :disabled="!canSubmit"
+          :ui="{ leadingIcon: 'size-5' }" />
       </div>
     </div>
   </div>
@@ -68,7 +69,7 @@ const emit = defineEmits<{
 
 const { isAuthenticated } = useAuth();
 
-const COMMENT_MAX_LENGTH = 500;
+const COMMENT_MAX_LENGTH = 300;
 const INVALID_CHARS_REGEX = /[<>/&"'`=;()\[\]]/;
 
 const content = ref("");
