@@ -75,11 +75,9 @@
           <span class="text-[15px] text-neutral-600 dark:text-neutral-400 font-medium">{{
             content.user_created.first_name }}</span>
           <span class="mx-1 text-neutral-300 dark:text-neutral-700 pt-0.5">&bull;</span>
-          <span class="text-sm text-neutral-400 dark:text-neutral-600 pt-0.5">{{
-            useDateFormatter(content.date_created)
-            }}</span>
+          <div class="text-sm text-neutral-400 dark:text-neutral-600">阅读约 {{ useArticleMetrics(content.body) }}</div>
         </div>
-        <div class="text-sm text-neutral-400 dark:text-neutral-600">阅读约 {{ useArticleMetrics(content.body) }}</div>
+        <SharedBookmarkButton :content-id="content.id" :icon-size="19" />
       </div>
       <NuxtLink v-if="displayType === 'single'" :aria-label="content.title" @click.prevent="handleLinkClick"
         class="block hover:no-underline cursor-pointer">
@@ -88,6 +86,7 @@
         </div>
       </NuxtLink>
       <div class="flex justify-between items-center text-neutral-400 dark:text-neutral-600">
+        <span class="text-sm text-neutral-400 dark:text-neutral-600 pt-0.5">{{ useDateFormatter(content.date_created) }}</span>
         <div class="flex gap-10">
           <div class="flex items-center gap-1">
             <SharedLikeButton :content-id="content.id" :icon-size="21" likeType="clap" />
@@ -99,7 +98,6 @@
             <SharedContentViews :content-id="content.id" :icon-size="19" />
           </div>
         </div>
-        <SharedBookmarkButton :content-id="content.id" :icon-size="19" />
       </div>
     </template>
   </UCard>

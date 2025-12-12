@@ -14,6 +14,9 @@ export default defineAppConfig({
     // 图标配置
     icons: {
       loading: "svg-spinners:ring-resize", // 加载动画图标
+      chevronDown: "hugeicons:arrow-down-01", // 箭头图标
+      copy: "hugeicons:copy-01", // 复制图标
+      copyCheck: "hugeicons:checkmark-square-03", // 复制成功图标
     },
     // 按钮组件配置
     button: {
@@ -23,7 +26,7 @@ export default defineAppConfig({
       compoundVariants: [
         {
           class: {
-            leadingIcon: "animate-none size-5", // 禁用按钮前置图标的动画效果
+            leadingIcon: "animate-none size-4", // 禁用按钮前置图标的动画效果
           },
         },
       ],

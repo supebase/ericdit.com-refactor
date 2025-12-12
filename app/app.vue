@@ -1,10 +1,15 @@
 <template>
-  <UApp :toaster="appConfig.toaster" :tooltip="appConfig.tooltip">
+  <UApp
+    :locale="locale"
+    :toaster="appConfig.toaster"
+    :tooltip="appConfig.tooltip">
     <NuxtLoadingIndicator />
     <NuxtLayout>
       <NuxtPage />
       <!-- 版本更新提示 -->
-      <UpdateNotification v-model="needsUpdate" :confirmUpdate="confirmUpdate" />
+      <UpdateNotification
+        v-model="needsUpdate"
+        :confirmUpdate="confirmUpdate" />
       <!-- 维护模式提示 -->
       <MaintenanceMode />
     </NuxtLayout>
@@ -12,6 +17,21 @@
 </template>
 
 <script setup lang="ts">
+import { zh_cn } from "@nuxt/ui/locale";
+
+const locale = extendLocale(zh_cn, {
+  code: "zh-CN",
+  messages: {
+    prose: {
+      codeCollapse: {
+        name: "",
+        closeText: "隐藏代码",
+        openText: "显示全部代码",
+      },
+    },
+  },
+});
+
 const appConfig = useAppConfig();
 
 const MaintenanceMode = defineAsyncComponent(
@@ -41,9 +61,9 @@ let activityListeners = new Set<() => void>();
  */
 const enableActivityTracking = async () => {
   // 先移除旧的监听，避免重复
-  activityListeners.forEach(stop => stop());
+  activityListeners.forEach((stop) => stop());
   activityListeners.clear();
-  USER_ACTIVITY_EVENTS.forEach(event => {
+  USER_ACTIVITY_EVENTS.forEach((event) => {
     activityListeners.add(useEventListener(window, event, updateLastActivity));
   });
   isActivityTrackingEnabled.value = true;
@@ -55,7 +75,7 @@ const enableActivityTracking = async () => {
  * @description 移除用户活动事件监听器
  */
 const disableActivityTracking = async () => {
-  activityListeners.forEach(stop => stop());
+  activityListeners.forEach((stop) => stop());
   activityListeners.clear();
   isActivityTrackingEnabled.value = false;
 };
@@ -65,10 +85,10 @@ const settings = ref<any>(null);
 
 // 组件挂载时初始化用户会话
 onMounted(async () => {
-  if (typeof window !== 'undefined') {
+  if (typeof window !== "undefined") {
     // 保存事件监听器的 stop 函数，以便后续清理
-    activityListeners.add(useEventListener(document, 'gesturestart', (e) => e.preventDefault()));
-    activityListeners.add(useEventListener(document, 'dblclick', (e) => e.preventDefault()));
+    activityListeners.add(useEventListener(document, "gesturestart", (e) => e.preventDefault()));
+    activityListeners.add(useEventListener(document, "dblclick", (e) => e.preventDefault()));
   }
 
   settings.value = await getSettings();

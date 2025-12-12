@@ -1,8 +1,7 @@
 <template>
   <div class="container select-none">
-    <div v-if="isLoading && !contents?.length" class="flex flex-col justify-center items-center space-y-3 min-h-[calc(100vh-14rem)]">
-      <UProgress animation="swing" color="primary" size="sm" class="max-w-20" />
-        <div class="text-sm text-neutral-400 dark:text-neutral-600">正在加载数据</div>
+    <div v-if="isLoading && !contents?.length" class="fixed inset-0 flex justify-center items-center">
+      <UIcon name="svg-spinners:ring-resize" class="size-7 text-primary-500" />
     </div>
     <div v-else-if="error" class="flex items-center justify-center min-h-[50vh]">
       <UAlert color="error" variant="soft" icon="hugeicons:alert-02"
@@ -58,7 +57,7 @@ function getContentComponentAndProps(content: any) {
   if (content.github_repo) {
     return { is: resolveComponent('ContentGithubCard'), props: { 'github-repo': content.github_repo } };
   }
-  if (!content.title) {
+  if (!content.images?.length) {
     return { is: resolveComponent('ContentTalkCard'), props: { talk: content } };
   }
   return { is: resolveComponent('ContentCard'), props: { content } };

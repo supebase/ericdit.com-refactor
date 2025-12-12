@@ -1,7 +1,7 @@
 <template>
   <div class="flex justify-end items-center space-x-2">
     <transition name="slide-fade">
-      <UBadge v-if="showMessage" variant="soft" size="sm" class="rounded-md pointer-events-none">
+      <UBadge v-if="showMessage" variant="soft" size="md" class="rounded-md pointer-events-none">
         {{ messageText }}
       </UBadge>
     </transition>

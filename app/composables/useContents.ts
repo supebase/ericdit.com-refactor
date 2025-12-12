@@ -185,7 +185,9 @@ export const useContents = () => {
       .replace(/~~(.+?)~~/g, "$1")
       .replace(/>\s(.+)/g, "$1")
       .replace(/\n\s*[-*+]\s/g, "\n")
-      .replace(/\n\s*\d+\.\s/g, "\n");
+      .replace(/\n\s*\d+\.\s/g, "\n")
+      .replace(/::.*?::/gs, "")
+      .replace(/`.*?`/gs, "");
 
     return escapeHtml(cleaned);
   };

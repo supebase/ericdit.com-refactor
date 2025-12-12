@@ -39,7 +39,6 @@ html {
 }
 
 body {
-  font-smoothing: antialiased;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -61,7 +60,7 @@ hr {
   );
 }
 
-.mdc-prose {
+/* .mdc-prose {
   @apply prose-img:rounded-md 
          prose-pre:rounded-md 
          prose-pre:bg-white/50 
@@ -77,11 +76,11 @@ hr {
          dark:prose-blockquote:border-neutral-800
          prose-a:underline-offset-4
          prose-a:decoration-wavy
-         prose-a:decoration-[1px];
-}
+         prose-a:decoration-1;
+} */
 
-pre code .line {
-  display: block;
+.prose .bg-default {
+    background-color: var(--ui-bg-code);
 }
 
 .alert-diagonal-bg::before {

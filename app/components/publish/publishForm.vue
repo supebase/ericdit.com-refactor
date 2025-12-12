@@ -1,16 +1,17 @@
 <template>
     <div class="space-y-6">
-        <UAlert color="neutral" variant="soft" icon="hugeicons:alert-02"
-            description="目前仅支持发布状态卡片和 GitHub 卡片"
-            class="text-neutral-500 relative overflow-hidden alert-diagonal-bg" />
         <URadioGroup
             :ui="{ item: 'bg-white dark:bg-neutral-950 rounded-md border has-data-[state=checked]:shadow-lg has-data-[state=checked]:shadow-primary-500/30 w-full cursor-pointer', label: 'text-base', description: 'text-muted/80', fieldset: 'gap-4 justify-center' }"
             v-model="publishType" :items="publishTypeItems" size="md" indicator="hidden"
             orientation="horizontal" color="primary" variant="card" />
         <template v-if="publishType === 'status'">
             <div class="bg-white dark:bg-neutral-950 rounded-md p-1">
+                <UInput :ui="{ base: 'placeholder:text-base' }" v-model="title" color="neutral"
+                    variant="none" size="xl" class="w-full" :disabled="isSubmitting"
+                    placeholder="分享的标题" />
+                <USeparator type="dashed" class="px-3 py-1" />
                 <UTextarea :ui="{ base: 'placeholder:text-base' }" v-model="body" color="neutral"
-                    variant="none" autoresize :rows="3" :maxrows="6" :padded="false" size="xl"
+                    variant="none" autoresize :rows="6" :maxrows="10" :padded="false" size="xl"
                     class="w-full" :maxlength="BODY_MAX_LENGTH" :disabled="isSubmitting"
                     placeholder="说点什么 ..." />
                 <div class="flex justify-between items-center p-3">
@@ -58,16 +59,17 @@
 <script setup lang="ts">
 import type { RadioGroupItem } from '@nuxt/ui';
 
-const BODY_MAX_LENGTH = 100;
+const BODY_MAX_LENGTH = 2000;
 const publishTypeItems: RadioGroupItem[] = [
-    { label: '状态卡片', value: 'status', description: '近期有没有可分享的内容' },
+    { label: '内容卡片', value: 'status', description: '近期有没有可分享的内容' },
     { label: 'GitHub 卡片', value: 'github', description: '可通过链接地址分享项目' }
 ];
 
 const { createContent, createContentFiles, updateContent } = useContents();
 const toast = useToast();
 
-// 表单状态
+// 表单状态管理
+const title = ref("");
 const body = ref("");
 const allowComments = ref(true);
 const isSubmitting = ref(false);
@@ -88,7 +90,8 @@ const canSubmit = computed(() => {
  * @description 确保所有表单字段都恢复到初始状态
  */
 function resetForm() {
-    // 重置所有状态
+    // 重置所有状态字段
+    title.value = "";
     body.value = "";
     allowComments.value = true;
     statusPinned.value = false;
@@ -110,6 +113,15 @@ function onImageRemoved() {
 
 const handlePublish = async () => {
     if (publishType.value === 'status') {
+        if (!title.value.trim()) {
+            toast.add({
+                title: "发布提示",
+                description: "标题不能为空。",
+                icon: "hugeicons:alert-02",
+                color: "warning",
+            });
+            return;
+        }
         if (!body.value.trim()) {
             toast.add({
                 title: "发布提示",
@@ -128,15 +140,15 @@ const handlePublish = async () => {
             });
             return;
         }
-        if (!imageFileId.value) {
-            toast.add({
-                title: "发布提示",
-                description: "请上传一张背景图片。",
-                icon: "hugeicons:alert-02",
-                color: "warning",
-            });
-            return;
-        }
+        // if (!imageFileId.value) {
+        //     toast.add({
+        //         title: "发布提示",
+        //         description: "请上传一张背景图片。",
+        //         icon: "hugeicons:alert-02",
+        //         color: "warning",
+        //     });
+        //     return;
+        // }
     } else if (publishType.value === 'github') {
         if (!githubLink.value.trim()) {
             toast.add({
@@ -155,6 +167,7 @@ const handlePublish = async () => {
         switch (publishType.value) {
             case 'status':
                 content = await createContent({
+                    title: title.value,
                     body: body.value,
                     allow_comments: allowComments.value,
                     pinned: statusPinned.value,
